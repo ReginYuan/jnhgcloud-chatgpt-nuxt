@@ -47,7 +47,7 @@ function _fetchTMDB(
       // 是否需要设置 token
       const isToken = (options.headers || {})?.isToken === false
       if (getToken() && !isToken) {
-         // 让每个请求携带自定义token 请根据实际情况自行修改
+        // 让每个请求携带自定义token 请根据实际情况自行修改
         config.headers.Authorization = 'Bearer ' + getToken()
       }
     },
@@ -63,6 +63,32 @@ function _fetchTMDB(
         showFailToast({
           message: msg
         })
+
+        // 判断是ios环境还是安卓的环境
+        let us = navigator.userAgent
+        let isAndroid = us.indexOf('Android') > -1 || us.indexOf('Linux') > -1
+        let isIOS = !!us.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
+
+        if (window) {
+          // reload 是刷新的方法
+          // 如果是在安卓环境下就调用对应返回安卓登录界面的方法
+          if ((window as any).androidInterface && isAndroid) {
+            ;(window as any).androidInterface.reload()
+            return
+          }
+
+          // 如果是在安卓环境下就调用对应返回安卓登录界面的方法
+          if (
+            (window as any).webkit &&
+            (window as any).webkit.messageHandlers.reload &&
+            isIOS
+          ) {
+            ;(window as any).webkit.messageHandlers.reload.postMessage('')
+            return
+          }
+          // location.reload()
+        }
+
         return Promise.reject('无效的会话，或者会话已过期，请重新登录。')
       } else if (code === 500) {
         showFailToast({
