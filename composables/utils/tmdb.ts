@@ -47,26 +47,22 @@ function _fetchTMDB(
       // 是否需要设置 token
       const isToken = (options.headers || {})?.isToken === false
       if (getToken() && !isToken) {
-        // options?.headers?.Authorization = 'Bearer ' + getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
-        config.headers.Authorization = 'Bearer ' + getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
+         // 让每个请求携带自定义token 请根据实际情况自行修改
+        config.headers.Authorization = 'Bearer ' + getToken()
       }
     },
 
     // 响应拦截
     onResponse({ response }) {
-      // // const userStore = useUserStore()
-
-      console.log('response', response)
-      let res = response
       // 未设置状态码则默认成功状态
-      const code = res._data.code || 200
+      let data = JSON.parse(response._data)
+      const code = data.code || 200
       // 获取错误信息
-      const msg = errorCode[code] || res._data.msg || errorCode['default']
-      // 二进制数据则直接返回
-      // if (res.type === 'blob' || res.type === 'arraybuffer') {
-      //   return res._data
-      // }
+      const msg = errorCode[code] || data.msg || errorCode['default']
       if (code === 401) {
+        showFailToast({
+          message: msg
+        })
         return Promise.reject('无效的会话，或者会话已过期，请重新登录。')
       } else if (code === 500) {
         showFailToast({
@@ -84,28 +80,8 @@ function _fetchTMDB(
         })
         return Promise.reject('error')
       } else {
-        return Promise.resolve(res._data)
+        return Promise.resolve(data)
       }
-    },
-    // 错误处理
-    onResponseError({ request, options, response }) {
-      // console.log('err' + request)
-      // console.log('err' + options)
-      // console.log('err' + response)
-      // let { message } = error
-      // if (message == 'Network Error') {
-      //   message = '后端接口连接异常'
-      // } else if (message.includes('timeout')) {
-      //   message = '系统接口请求超时'
-      // } else if (message.includes('Request failed with status code')) {
-      //   message = '系统接口' + message.substr(message.length - 3) + '异常'
-      // }
-      // showFailToast({
-      //   duration: 0,
-      //   forbidClick: true,
-      //   message: message
-      // })
-      // return Promise.reject(error)
     }
   })
 }
