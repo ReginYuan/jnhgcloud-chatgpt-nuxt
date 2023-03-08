@@ -1,11 +1,9 @@
 import { $fetch } from 'ohmyfetch'
 import LRU from 'lru-cache'
 import { hash as ohash } from 'ohash'
-import { showSuccessToast, showFailToast } from 'vant'
+import { showFailToast } from 'vant'
 import errorCode from '~/composables/utils/errorCode'
 import { getToken } from '~/composables/utils/auth'
-import { tansParams } from '~/composables/utils/validate'
-import cachea from '~/composables/utils/cache'
 const apiBaseUrl = import.meta.env.VITE_APP_BASE_API
 
 const cache = new LRU({
@@ -43,9 +41,8 @@ function _fetchTMDB(
     params,
     // 请求拦截器
     onRequest({ request, options }) {
-      console.log('options', options)
       // 是否需要设置 token
-      const isToken = (options.headers || {})?.isToken === false
+      const isToken = options.headers?.isToken === false
       if (getToken() && !isToken) {
         // 让每个请求携带自定义token 请根据实际情况自行修改
         config.headers.Authorization = 'Bearer ' + getToken()
@@ -58,7 +55,7 @@ function _fetchTMDB(
       let data = JSON.parse(response._data)
       const code = data.code || 200
       // 获取错误信息
-      const msg = errorCode[code] || data.msg || errorCode['default']
+      const msg = (errorCode as any)[code] || data.msg || errorCode['default']
       if (code === 401) {
         showFailToast({
           message: msg
@@ -88,7 +85,6 @@ function _fetchTMDB(
           }
           // location.reload()
         }
-
         return Promise.reject('无效的会话，或者会话已过期，请重新登录。')
       } else if (code === 500) {
         showFailToast({
@@ -127,5 +123,5 @@ export function fetchTMDB(
       })
     )
   }
-  return cache.get(hash)!
+  return (cache as any).get(hash)!
 }
