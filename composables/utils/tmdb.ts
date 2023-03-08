@@ -46,7 +46,6 @@ function _fetchTMDB(
       console.log('options', options)
       // 是否需要设置 token
       const isToken = (options.headers || {})?.isToken === false
-      debugger
       if (getToken() && !isToken) {
         // options?.headers?.Authorization = 'Bearer ' + getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
         config.headers.Authorization = 'Bearer ' + getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
@@ -90,7 +89,6 @@ function _fetchTMDB(
     },
     // 错误处理
     onResponseError({ request, options, response }) {
-      // debugger
       // console.log('err' + request)
       // console.log('err' + options)
       // console.log('err' + response)
