@@ -4,7 +4,7 @@ import { getInfo } from '~/server/api/user'
 // 获取组件的实例
 const listData = ref()
 const lsitAll = async () => {
-   const params = { pageNuaaaaam: 80, pageaaaaaa: 10 }
+   const params = { pageNum: 80, page: 10 }
    const list = await getInfo(params)
    listData.value = list
    console.log('list', list)
