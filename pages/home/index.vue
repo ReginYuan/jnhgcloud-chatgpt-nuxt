@@ -8,6 +8,7 @@ const lsitAll = async () => {
    const list = await getInfo(params)
    listData.value = list
    console.log('list', list)
+   console.log('111')
 }
 // 获取组件的实例
 const imageList = ref([
