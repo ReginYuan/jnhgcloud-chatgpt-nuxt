@@ -1,5 +1,5 @@
 import { fetchTMDB } from '~/composables/utils/tmdb'
-// 获取用户详细信息
+// 接口示例
 export function getInfo(params: any) {
   /**
    *参数
@@ -8,7 +8,7 @@ export function getInfo(params: any) {
    *传递数据 object
    */
   return fetchTMDB(
-    '/system/notice/list',
+    'system/information/list',
     {
       method: 'get',
       headers: {
