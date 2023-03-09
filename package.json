@@ -42,10 +42,12 @@
     "husky": "^8.0.0",
     "inquirer": "^8.2.5",
     "lint-staged": "^13.1.2",
+    "node-sass": "^8.0.0",
     "nuxt": "^3.2.2",
     "postcss": "^8.4.21",
     "postcss-pxtorem": "^6.0.0",
     "prettier": "^2.8.4",
+    "sass-loader": "^13.2.0",
     "unocss": "^0.50.3"
   },
   "dependencies": {
@@ -58,6 +60,7 @@
     "lru-cache": "^7.18.1",
     "ohmyfetch": "^0.4.21",
     "pinia": "^2.0.32",
+    "sass": "^1.58.3",
     "typescript": "^4.9.5",
     "vant": "^4.0.11",
     "vite": "4.0.0",
