@@ -4,7 +4,7 @@
     <div class="header">
       <div class="title">
         <van-icon name="arrow-left" />
-        <span>产业头条</span>
+        <span>政策法规</span>
       </div>
       <div class="input">
         <van-search
@@ -16,14 +16,11 @@
       </div>
     </div>
     <van-tabs v-model:active="active" line-height="0">
-      <van-tab
-        :title="item"
-        v-for="(item, index) in tabList"
-        :key="index"
-      ></van-tab>
+      <van-tab :title="item" v-for="(item, index) in tabList" :key="index">
+        <ItemList :itemList="itemLists" type="`bossBank`"></ItemList>
+      </van-tab>
     </van-tabs>
   </div>
-  <ItemList :itemList="itemLists" :type="`industry`"></ItemList>
 </template>
 <script lang="ts" setup>
 import { ItemListType } from '~/types/itemList'
@@ -87,10 +84,9 @@ itemLists.value = [
   top: 0;
   left: 0;
   right: 0;
-  z-index: 99;
 }
 .header {
-  background: url('~/assets/img/bg-hand-red.png') no-repeat;
+  background: url('~/assets/img/bg-hand-yellow.png') no-repeat;
   background-size: 100% 100%;
   display: flex;
   justify-content: space-between;
@@ -114,19 +110,24 @@ itemLists.value = [
     color: #000000;
     &::after {
       content: '';
-      width: 7px;
-      height: 7px;
+      width: 80%;
+      height: 5px;
       border-radius: 7px;
-      background-color: red;
+      background-image: linear-gradient(
+        to right,
+        #ffa432,
+        rgba($color: #edb469, $alpha: 0)
+      );
       position: absolute;
-      top: 0;
-      right: -8px;
+      bottom: -7px;
+      left: 10%;
     }
   }
 }
 .content {
-  height: calc(100vh - 100px);
+  // height: calc(100%-100px);
   overflow: auto;
-  // margin-top: 105px;
+  margin-top: 40px;
+  z-index: 99;
 }
 </style>

@@ -1,5 +1,43 @@
 <template>
   <div class="content">
+    <!-- 老板智库推荐 -->
+    <div class="industry_recommend" v-if="false">
+      <div class="hot_header">
+        <img src="~/assets/img/icon-hot.png" alt="" />
+      </div>
+      <div class="hot_titile">
+        <div class="hot_titile-item">
+          <img src="~/assets/img/icon-one.png" alt="" />
+          <span
+            >英国副首相承认已经为乌克兰培训了约2.2英国副首相承认已经为乌克兰培训了约2.2英国副首相承认已经为乌克兰培训了约2.2</span
+          >
+        </div>
+        <div class="hot_titile-item">
+          <img src="~/assets/img/icon-two.png" alt="" />
+          <span
+            >腾讯校招三年，已润，知无不言英国副首相承认已经为乌克兰培训了约2.2</span
+          >
+        </div>
+        <div class="hot_titile-item">
+          <img src="~/assets/img/icon-three.png" alt="" />
+          <span>华为0d与浙江大华，选哪个，感觉都是坑</span>
+        </div>
+      </div>
+      <div class="hot_pic"></div>
+    </div>
+    <!-- 政策法规 -->
+    <div class="policyRule" v-if="props.type === 'policyRule'">
+      <van-swipe class="my-swipe" :show-indicators="false">
+        <van-swipe-item v-for="(item, index) in 5" :key="index">
+          <van-image
+            src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg"
+          />
+          <div class="swipe_title">
+            俄乌谈判乌方代表：乌方不再致力于申请加入北约
+          </div>
+        </van-swipe-item>
+      </van-swipe>
+    </div>
     <div v-for="(item, index) in list" :key="index">
       <!-- 一张图片 -->
       <div class="content-item">
@@ -38,16 +76,12 @@
 
 <script setup lang="ts">
 import { ItemListType } from '~/types/itemList'
-const props = defineProps<{ itemList: Array<ItemListType> }>()
+const props = defineProps<{ itemList: Array<ItemListType>; type: string }>()
 const list = props.itemList
 </script>
 
 <style scoped lang="scss">
-.main {
-  width: 100%;
-}
 .content {
-  width: 100%;
   .content-item {
     display: flex;
     justify-content: space-between;
@@ -66,14 +100,14 @@ const list = props.itemList
     flex: 1;
     .title {
       font-size: 16px;
-      line-height: 25px;
+      line-height: 20px;
       color: #222222;
       overflow: hidden;
       text-overflow: ellipsis;
       display: -webkit-box; //使用自适应布局
       -webkit-line-clamp: 2; //设置超出行数，要设置超出几行显示省略号就把这里改成几
       -webkit-box-orient: vertical;
-      padding-top: 10px;
+      padding-top: 5px;
     }
     .info {
       display: flex;
@@ -93,9 +127,62 @@ const list = props.itemList
       }
       .time {
         font-size: 12px;
-        color: rgba($color: #222222, $alpha: 0.7);
+        color: rgba($color: #222222, $alpha: 0.5);
       }
     }
   }
 }
+// 老板智库推荐
+.industry_recommend {
+  .hot_header {
+    padding: 0px 16px;
+  }
+  .hot_titile {
+    font-size: 16px;
+    color: #222222;
+    padding: 0px 16px;
+    .hot_titile-item {
+      line-height: 36px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      img {
+        vertical-align: middle;
+        margin-right: 5px;
+        margin-bottom: 2px;
+      }
+    }
+  }
+  .hot_pic {
+    height: 188px;
+    background-color: pink;
+  }
+}
+
+// 政策法规
+.policyRule {
+  padding: 0 20px;
+  :deep(.van-swipe-item) {
+    width: 335px;
+    height: 179px;
+    position: relative;
+    .van-image {
+      width: 100%;
+      height: 100%;
+      .van-image__img {
+        border-radius: 20px;
+      }
+    }
+    .swipe_title {
+      position: absolute;
+      bottom: 8px;
+      left: 5px;
+      line-height: 24px;
+      padding: 8px 12px 0;
+      font-size: 16px;
+      color: #ffffff;
+    }
+  }
+}
+//
 </style>
