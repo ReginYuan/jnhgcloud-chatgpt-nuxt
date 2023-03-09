@@ -1,10 +1,9 @@
 <template>
-  <div class="body bg-gray-100 flex flex-col min-h-screen">
-    <HeaderBar></HeaderBar>
+  <div class="body flex flex-col">
+    <!-- <HeaderBar></HeaderBar> -->
     <main class="main">
       <slot />
     </main>
-    <TabBar></TabBar>
     <!-- 开启底部安全区适配 -->
     <van-number-keyboard safe-area-inset-bottom />
   </div>
