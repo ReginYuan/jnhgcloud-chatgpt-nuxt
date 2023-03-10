@@ -1,5 +1,11 @@
 <template>
   <div>
+    <!-- 头部区域 -->
+    <div class="header">
+      <van-icon name="arrow-left" @click="goBack" />
+      <span>企业加入邀请</span>
+      <span></span>
+    </div>
     <div class="top">
       <div class="name">山东诺来房地产开发有限公司</div>
       <div class="title">公司同事都在使用筑数合宝，优质商机等你发现</div>
@@ -13,7 +19,7 @@
             name="手机号"
             label="手机号"
             placeholder="请输入您的手机号"
-            required="true"
+            required
             :rules="[{ required: true, message: '请填写手机号' }]"
           />
           <van-field
@@ -21,7 +27,7 @@
             v-model="form.code"
             name="验证码"
             label="验证码"
-            required="true"
+            required
             placeholder="请输入验证码"
             :rules="[{ required: true, message: '请填写验证码' }]"
           >
@@ -40,7 +46,7 @@
             name="真实姓名"
             label="真实姓名"
             placeholder="请输入真实姓名"
-            required="true"
+            required
             :rules="[{ required: true, message: '请填写真实姓名' }]"
           />
           <van-field
@@ -63,8 +69,10 @@
   </div>
 </template>
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
 import { ref, reactive, readonly } from 'vue'
 definePageMeta({ layout: false })
+const router = useRouter()
 const form = reactive({
   phone: undefined,
   code: undefined,
@@ -107,45 +115,68 @@ const sendCode = () => {
     showFailToast('请填写手机号')
   }
 }
+//返回上一级
+const goBack = () => {
+  router.go(-1)
+}
 </script>
-<style scoped>
+<style scoped lang="scss">
+.header {
+  width: 83%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 21px;
+  font-size: 18px;
+  font-family: Source Han Sans CN-Regular, Source Han Sans CN;
+  font-weight: 400;
+  color: #141419;
+  line-height: 26px;
+  span {
+    margin-left: 12px;
+  }
+  .van-icon-arrow-left {
+    font-size: 26px;
+  }
+}
 .top {
   margin-left: 30px;
-  margin-top: 30px;
+  margin-top: 40px;
+  .name {
+    width: 286px;
+    height: 30px;
+    font-size: 22px;
+    font-family: Source Han Sans CN-Regular, Source Han Sans CN;
+    font-weight: 400;
+    color: #222229;
+    line-height: 30px;
+  }
+  .title {
+    width: 252px;
+    height: 16px;
+    font-size: 12px;
+    font-family: Source Han Sans CN-Regular, Source Han Sans CN;
+    font-weight: 400;
+    color: #888889;
+    line-height: 16px;
+    margin-top: 10px;
+  }
 }
-.name {
-  width: 286px;
-  height: 30px;
-  font-size: 22px;
-  font-family: Source Han Sans CN-Regular, Source Han Sans CN;
-  font-weight: 400;
-  color: #222229;
-  line-height: 30px;
-}
-.title {
-  width: 252px;
-  height: 16px;
-  font-size: 12px;
-  font-family: Source Han Sans CN-Regular, Source Han Sans CN;
-  font-weight: 400;
-  color: #888889;
-  line-height: 16px;
-  margin-top: 10px;
-}
+
 .content {
   margin-top: 15px;
-}
-.van-button--primary {
-  background-color: #1f46b6;
-}
-.van-button {
-  margin-top: 50px;
-}
-.click-disable {
-  pointer-events: none;
-  color: #ccc;
-}
-.click {
-  color: #1f46b6;
+  .van-button--primary {
+    background-color: #1f46b6;
+  }
+  .van-button {
+    margin-top: 50px;
+  }
+  .click-disable {
+    pointer-events: none;
+    color: #ccc;
+  }
+  .click {
+    color: #1f46b6;
+  }
 }
 </style>
