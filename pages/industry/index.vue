@@ -2,32 +2,31 @@
   <!-- 头部搜索区域 -->
   <div class="fixd">
     <div class="header">
-      <div class="title">
-        <van-icon name="arrow-left" />
-        <span>产业头条</span>
-      </div>
-      <div class="input">
-        <van-search
-          v-model="value"
-          placeholder="搜索资讯"
-          background="transparent"
-          shape="round"
-        />
-      </div>
+      <van-nav-bar left-text="产业头条" left-arrow :clickable="false">
+        <template #right>
+          <van-search
+            v-model="value"
+            placeholder="搜索资讯"
+            background="transparent"
+            shape="round"
+          >
+            <template #right-icon>
+              <img src="~/assets/img/icon-search.png" alt="" />
+            </template>
+          </van-search>
+        </template>
+      </van-nav-bar>
     </div>
     <van-tabs v-model:active="active" line-height="0">
-      <van-tab
-        :title="item"
-        v-for="(item, index) in tabList"
-        :key="index"
-      ></van-tab>
+      <van-tab :title="item" v-for="(item, index) in tabList" :key="index">
+        <ItemList :itemList="itemLists" :type="`industry`"></ItemList>
+      </van-tab>
     </van-tabs>
   </div>
-  <ItemList :itemList="itemLists" :type="`industry`"></ItemList>
 </template>
 <script lang="ts" setup>
 import { ItemListType } from '~/types/itemList'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 const active = ref(0)
 let tabList = ref([''])
 
@@ -92,18 +91,35 @@ itemLists.value = [
 .header {
   background: url('~/assets/img/bg-hand-red.png') no-repeat;
   background-size: 100% 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-left: 21px;
-  .title {
+  :deep(.van-nav-bar) {
+    background-color: transparent;
     font-size: 20px;
-    color: #ffffff;
-    span {
-      margin-left: 12px;
+    .van-nav-bar__right {
+      width: 199px;
+      margin-left: 31px;
+      .van-search {
+        padding: 0;
+        .van-field__right-icon {
+          display: flex;
+          align-items: center;
+        }
+      }
+    }
+    .van-nav-bar__arrow {
+      font-size: 20px;
+      color: #ffffff;
+    }
+    .van-nav-bar__text {
+      font-size: 20px;
+      color: #ffffff;
+      margin-left: 10px;
+    }
+    .van-field__left-icon {
+      display: none;
     }
   }
 }
+
 :deep(.van-tab__text) {
   color: #888888;
   font-size: 16px;
@@ -127,6 +143,5 @@ itemLists.value = [
 .content {
   height: calc(100vh - 100px);
   overflow: auto;
-  // margin-top: 105px;
 }
 </style>

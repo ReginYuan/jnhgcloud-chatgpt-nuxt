@@ -1,7 +1,7 @@
 <template>
   <div class="content">
-    <!-- 老板智库推荐 -->
-    <div class="industry_recommend" v-if="false">
+    <!-- 产业头条 -->
+    <div class="industry_recommend" v-if="props.type === 'industry'">
       <div class="hot_header">
         <img src="~/assets/img/icon-hot.png" alt="" />
       </div>
@@ -23,11 +23,13 @@
           <span>华为0d与浙江大华，选哪个，感觉都是坑</span>
         </div>
       </div>
-      <div class="hot_pic"></div>
+      <div class="hot_pic">
+        <swiper-side></swiper-side>
+      </div>
     </div>
     <!-- 政策法规 -->
     <div class="policyRule" v-if="props.type === 'policyRule'">
-      <van-swipe class="my-swipe" :show-indicators="false">
+      <van-swipe class="my-swipe" :show-indicators="false" lazy-render>
         <van-swipe-item v-for="(item, index) in 5" :key="index">
           <van-image
             src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg"
@@ -37,6 +39,25 @@
           </div>
         </van-swipe-item>
       </van-swipe>
+    </div>
+    <!-- 老板智库 -->
+    <div class="bossBank" v-if="props.type === 'bossBank'">
+      <swiper></swiper>
+      <!-- <van-swipe
+        class="my-swipe"
+        :show-indicators="false"
+        lazy-render
+        :loop="false"
+      >
+        <van-swipe-item v-for="(item, index) in 5" :key="index">
+          <van-image
+            src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg"
+          />
+          <div class="swipe_title">
+            俄乌谈判乌方代表：乌方不再致力于申请加入北约
+          </div>
+        </van-swipe-item>
+      </van-swipe> -->
     </div>
     <div v-for="(item, index) in list" :key="index">
       <!-- 一张图片 -->
@@ -154,8 +175,7 @@ const list = props.itemList
     }
   }
   .hot_pic {
-    height: 188px;
-    background-color: pink;
+    // height: 188px;
   }
 }
 
@@ -163,14 +183,16 @@ const list = props.itemList
 .policyRule {
   padding: 0 20px;
   :deep(.van-swipe-item) {
+    box-sizing: border-box;
     width: 335px;
     height: 179px;
+    padding: 0 5px;
     position: relative;
     .van-image {
       width: 100%;
       height: 100%;
       .van-image__img {
-        border-radius: 20px;
+        border-radius: 10px;
       }
     }
     .swipe_title {
@@ -184,5 +206,30 @@ const list = props.itemList
     }
   }
 }
-//
+// 老板智库
+.bossBank {
+  padding: 0 20px;
+  // :deep(.van-swipe-item) {
+  //   width: 60vw !important;
+  //   height: 125px;
+  //   margin-right: 15px;
+  //   position: relative;
+  //   .van-image {
+  //     width: 100%;
+  //     height: 100%;
+  //     .van-image__img {
+  //       border-radius: 10px;
+  //     }
+  //   }
+  //   .swipe_title {
+  //     position: absolute;
+  //     bottom: 8px;
+  //     left: 5px;
+  //     line-height: 24px;
+  //     padding: 8px 12px 0;
+  //     font-size: 16px;
+  //     color: #ffffff;
+  //   }
+  // }
+}
 </style>
