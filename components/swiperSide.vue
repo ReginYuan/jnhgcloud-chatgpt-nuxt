@@ -1,4 +1,27 @@
 <template>
+  <div class="industry_recommend">
+    <div class="hot_header">
+      <img src="~/assets/img/icon-hot.png" alt="" />
+    </div>
+    <div class="hot_titile">
+      <div class="hot_titile-item">
+        <img src="~/assets/img/icon-one.png" alt="" />
+        <span
+          >英国副首相承认已经为乌克兰培训了约2.2英国副首相承认已经为乌克兰培训了约2.2英国副首相承认已经为乌克兰培训了约2.2</span
+        >
+      </div>
+      <div class="hot_titile-item">
+        <img src="~/assets/img/icon-two.png" alt="" />
+        <span
+          >腾讯校招三年，已润，知无不言英国副首相承认已经为乌克兰培训了约2.2</span
+        >
+      </div>
+      <div class="hot_titile-item">
+        <img src="~/assets/img/icon-three.png" alt="" />
+        <span>华为0d与浙江大华，选哪个，感觉都是坑</span>
+      </div>
+    </div>
+  </div>
   <swiper
     :autoplay="swiper_options.autoplay"
     :loop="swiper_options.loop"
@@ -44,6 +67,7 @@ const imgs = reactive([
     url: 'https://www.hao528.com/uploads/allimg/220605/9-220605160242.jpg'
   }
 ])
+
 let swiper_options = reactive({
   autoplay: {
     disableOnInteraction: true, // 鼠标滑动后继续自动播放
@@ -65,13 +89,36 @@ let swiper_options = reactive({
 </script>
 
 <style scoped lang="scss">
-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 5px;
+.industry_recommend {
+  .hot_header {
+    padding: 10px 16px 5px;
+  }
+  .hot_titile {
+    font-size: 16px;
+    color: #222222;
+    padding: 0px 16px;
+    .hot_titile-item {
+      line-height: 36px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      img {
+        vertical-align: middle;
+        margin-right: 5px;
+        margin-bottom: 2px;
+      }
+    }
+  }
 }
 :deep(.swiper-3d .swiper-slide) {
   border-radius: 8px !important;
+}
+.swiper {
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+  }
 }
 </style>
