@@ -178,5 +178,19 @@ const goBack = () => {
   .click {
     color: #1f46b6;
   }
+  ::v-deep .van-field__label {
+    font-size: 18px;
+    font-family: Source Han Sans CN-Regular, Source Han Sans CN;
+    font-weight: 400;
+  }
+  ::v-deep .van-field__body {
+    font-size: 16px;
+    font-family: Source Han Sans CN-Normal, Source Han Sans CN;
+    font-weight: 400;
+    color: #b2bac6;
+  }
+  ::v-deep .van-field__body {
+    margin-top: 10px;
+  }
 }
 </style>
