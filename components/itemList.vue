@@ -23,7 +23,7 @@
     </div>
     <div v-for="(item, index) in list" :key="index">
       <!-- 一张图片 -->
-      <div class="content-item">
+      <div class="content-item" v-if="item.imgUrl">
         <div class="text">
           <div class="title">{{ item.title }}</div>
           <div class="info">
@@ -42,7 +42,7 @@
         />
       </div>
       <!-- 无图片 -->
-      <div class="content-item2">
+      <div class="content-item2" v-else>
         <div class="text">
           <div class="title">{{ item.title }}</div>
           <div class="info">
