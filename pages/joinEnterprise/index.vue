@@ -21,7 +21,6 @@
             placeholder="请输入您的手机号"
             required
             :rules="[{ required: true, message: '请填写手机号' }]"
-            style="font-size: 18px"
           />
           <van-field
             label-align="top"
