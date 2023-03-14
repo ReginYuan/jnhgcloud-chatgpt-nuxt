@@ -84,7 +84,8 @@ list.value = [
 ]
 const router = useRouter()
 function toDetail(item: any) {
-  router.push(`/IndustryReport/detail/${item.title}`)
+  const id = 123456
+  router.push(`/IndustryReport/detail/${id}`)
 }
 </script>
 
