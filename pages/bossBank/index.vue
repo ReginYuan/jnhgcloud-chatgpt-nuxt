@@ -17,7 +17,7 @@
         </template>
       </van-nav-bar>
     </div>
-    <van-tabs v-model:active="active" line-height="0">
+    <van-tabs v-model:active="active" line-height="0" :ellipsis="false">
       <van-tab :title="item" v-for="(item, index) in tabList" :key="index">
         <ItemList :itemList="itemLists" :type="`bossBank`"></ItemList>
       </van-tab>
@@ -34,28 +34,7 @@ let value = ref('')
 
 let itemLists = ref<ItemListType[]>([])
 
-tabList.value = [
-  '推荐',
-  '资本投资',
-  '建设单位',
-  '设计院',
-  '材料设计院',
-  '推荐',
-  '资本投资',
-  '建设单位',
-  '设计院',
-  '材料设计院',
-  '推荐',
-  '资本投资',
-  '建设单位',
-  '设计院',
-  '材料设计院',
-  '推荐',
-  '资本投资',
-  '建设单位',
-  '设计院',
-  '材料设计院'
-]
+tabList.value = ['推荐', '资本投资', '建设单位', '设计院', '材料设计院']
 
 itemLists.value = [
   {
