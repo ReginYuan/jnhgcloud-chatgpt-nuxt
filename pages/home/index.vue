@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { getInfo } from '~/server/api/user'
+import { geTokenAll } from '~/composables/utils/validate'
+import { getToken } from '~/composables/utils/auth'
+import { showToast } from 'vant'
 // 获取组件的实例
 const listData = ref()
 const lsitAll = async () => {
-   // const params = { pageNum: 80, page: 10 }
-   const list = await getInfo({})
+   const params = { parentId: 0 }
+   const list = await getInfo(params)
    listData.value = list
 }
 // 获取组件的实例
@@ -13,7 +16,10 @@ const imageList = ref([
    'https://img1.baidu.com/it/u=1670045137,1956860080&fm=253&fmt=auto&app=120&f=JPEG?w=1024&h=576',
    'https://img1.baidu.com/it/u=1670045137,1956860080&fm=253&fmt=auto&app=120&f=JPEG?w=1024&h=576',
 ])
+
+
 onMounted(() => {
+   geTokenAll()
    lsitAll()
 })
 </script>
