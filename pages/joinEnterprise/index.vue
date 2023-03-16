@@ -7,7 +7,9 @@
       <span></span>
     </div>
     <div class="top">
-      <div class="name">山东诺来房地产开发有限公司</div>
+      <div class="name">
+        {{ companyName }}
+      </div>
       <div class="title">公司同事都在使用筑数合宝，优质商机等你发现</div>
     </div>
     <div class="content">
@@ -58,11 +60,9 @@
           />
         </van-cell-group>
         <div style="margin: 16px">
-          <NuxtLink to="/joinEnterprise/succeed">
-            <van-button block type="primary" native-type="submit">
-              提交申请
-            </van-button></NuxtLink
-          >
+          <van-button block type="primary" native-type="submit">
+            提交申请
+          </van-button>
         </div>
       </van-form>
     </div>
@@ -70,22 +70,41 @@
 </template>
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import { ref, reactive, readonly } from 'vue'
+import { ref, reactive, readonly,onMounted } from 'vue'
+import {
+  h5joinCompanyCheck,
+  code,
+  h5applyToJoinCompanySubmission
+} from '~/server/api/joinEnterprise.ts'
 definePageMeta({ layout: false })
 const router = useRouter()
 const form = reactive({
   phone: undefined,
   code: undefined,
   name: undefined,
-  reason: undefined
+  reason: undefined,
+  companyNo: undefined,
+  source: undefined
 })
 const disabled = ref(false)
 const codeMsg = ref('获取验证码')
-const codeNum = ref(5)
+const codeNum = ref(60)
+const companyName = ref()
 //提交申请
-const onSubmit = values => {
-  console.log('submit', values)
+const onSubmit =  values => {
   console.log(form, 'form')
+  const data = {
+    phone: form.phone,
+    smsCode: form.code,
+    realName: form.name,
+    reason: form.reason,
+    companyNo: form.companyNo,
+    source: form.source
+  }
+  h5applyToJoinCompanySubmission(data).then(res => {
+    console.log(res, 'res')
+    // router.push('/joinEnterprise/succeed')
+  })
 }
 //发送验证码
 const sendCode = () => {
@@ -93,21 +112,28 @@ const sendCode = () => {
   var Reg = /^[1][34578][0-9]{9}$/
   if (form.phone) {
     if (Reg.test(form.phone)) {
-      showSuccessToast('验证码发送成功')
-      // 禁用按钮
-      disabled.value = true
-      // 倒计时
-      let timer = setInterval(() => {
-        --codeNum.value
-        codeMsg.value = `重新发送(${codeNum.value})`
-      }, 1000)
-      // 判断什么时候停止定时器
-      setInterval(() => {
-        clearInterval(timer)
-        codeNum.value = 5
-        disabled.value = false
-        codeMsg.value = '获取验证码'
-      }, 5000)
+      const params = {
+        phonenumber: form.phone
+      }
+      code(params).then(res => {
+        if (res.code == 200) {
+          showSuccessToast('验证码发送成功')
+          // 禁用按钮
+          disabled.value = true
+          // 倒计时
+          let timer = setInterval(() => {
+            --codeNum.value
+            codeMsg.value = `重新发送(${codeNum.value})`
+          }, 1000)
+          // 判断什么时候停止定时器
+          setInterval(() => {
+            clearInterval(timer)
+            codeNum.value = 60
+            disabled.value = false
+            codeMsg.value = '获取验证码'
+          }, 60000)
+        }
+      })
     } else {
       showFailToast('手机号格式错误')
     }
@@ -119,6 +145,15 @@ const sendCode = () => {
 const goBack = () => {
   router.go(-1)
 }
+const getList = async () => {
+  const params = { companyNo: 'ZSHB29277452' }
+  const list = await h5joinCompanyCheck(params)
+  companyName.value = list.data.companyName
+  form.companyNo = list.data.companyNo
+}
+onMounted(() => {
+  getList()
+})
 </script>
 <style scoped lang="scss">
 .header {
