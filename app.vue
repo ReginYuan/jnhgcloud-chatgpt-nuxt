@@ -1,7 +1,9 @@
 <template>
-  <NuxtLayout>
-    <NuxtPage />
-  </NuxtLayout>
+  <client-only>
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
+  </client-only>
 </template>
 <script setup>
 import { onMounted } from 'vue'
