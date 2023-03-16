@@ -85,7 +85,7 @@ const form = reactive({
   name: undefined,
   reason: undefined,
   companyNo: undefined,
-  source: undefined
+  source: 3
 })
 const disabled = ref(false)
 const codeMsg = ref('获取验证码')
