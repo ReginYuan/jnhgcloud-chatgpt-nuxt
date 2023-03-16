@@ -85,7 +85,8 @@ export const geTokenAll = () => {
   // 判断是ios环境还是安卓的环境
   let us = navigator.userAgent
   let isAndroid = us.indexOf('Android') > -1 || us.indexOf('Linux') > -1
-  let isIOS = us.indexOf('ios_app') > -1 || !!us.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
+  let isIOS =
+    us.indexOf('ios_app') > -1 || !!us.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
 
   // window.androidInterface
   if (isAndroid) {
@@ -96,7 +97,10 @@ export const geTokenAll = () => {
     var token = us.slice(index + 1)
     const user = userStrore()
     user.setToken(token)
-
+    showToast({
+      message: '' + token
+    })
+    
     return
   }
   // 如果是在ios环境下就调用对应返回ios登录界面的方法
