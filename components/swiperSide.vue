@@ -29,7 +29,7 @@
     :spaceBetween="swiper_options.spaceBetween"
     :coverflowEffect="swiper_options.coverflowEffect"
     :centeredSlides="swiper_options.centeredSlides"
-    :slidesPerView="swiper_options.slidesPerView"
+    slidesPerView="auto"
     effect="coverflow"
   >
     <swiper-slide
@@ -71,11 +71,11 @@ const imgs = reactive([
 let swiper_options = reactive({
   autoplay: {
     disableOnInteraction: true, // 鼠标滑动后继续自动播放
-    delay: 4000 // 4秒切换一次
+    delay: 40000 // 4秒切换一次
   },
   speed: 500, //切换过渡速度
   loop: true,
-  slidesPerView: 'auto', //解决最后一张切换到第一张中间的空白
+  // slidesPerView: 'auto', //解决最后一张切换到第一张中间的空白
   centeredSlides: true, //设置slide居中
   spaceBetween: 0,
   coverflowEffect: {
