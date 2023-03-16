@@ -123,7 +123,6 @@ export function fetchTMDB(
   params: Record<string, string | number | undefined> = {},
   body: Record<string, string | number | undefined> = {}
 ): Promise<any> {
-  debugger
   const hash = ohash([url, config, params, body])
   if (!cache.has(hash)) {
     cache.set(
