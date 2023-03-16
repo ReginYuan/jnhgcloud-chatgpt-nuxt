@@ -31,6 +31,7 @@
             label="验证码"
             required
             placeholder="请输入验证码"
+            maxlength="4"
             :rules="[{ required: true, message: '请填写验证码' }]"
           >
             <template #button>
@@ -70,7 +71,7 @@
 </template>
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import { ref, reactive, readonly,onMounted } from 'vue'
+import { ref, reactive, readonly, onMounted } from 'vue'
 import {
   h5joinCompanyCheck,
   code,
@@ -91,7 +92,7 @@ const codeMsg = ref('获取验证码')
 const codeNum = ref(60)
 const companyName = ref()
 //提交申请
-const onSubmit =  values => {
+const onSubmit = values => {
   console.log(form, 'form')
   const data = {
     phone: form.phone,
