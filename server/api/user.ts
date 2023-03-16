@@ -8,13 +8,13 @@ export function getInfo(params: any) {
    *传递数据 object
    */
   return fetchTMDB(
-    'system/information/list',
+    `/zshb/informationType/typeList/${params.parentId}`,
     {
       method: 'get',
       headers: {
-        isToken: false
+        isToken: true
       }
     },
-    params
+    {}
   )
 }
