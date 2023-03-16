@@ -102,6 +102,7 @@ const onSubmit = values => {
     companyNo: form.companyNo,
     source: form.source
   }
+  console.log(data,'data')
   h5applyToJoinCompanySubmission(data).then(res => {
     console.log(res, 'res')
     // router.push('/joinEnterprise/succeed')
@@ -151,6 +152,7 @@ const getList = async () => {
   const list = await h5joinCompanyCheck(params)
   companyName.value = list.data.companyName
   form.companyNo = list.data.companyNo
+  form.source = list.data.companyId
 }
 onMounted(() => {
   getList()
