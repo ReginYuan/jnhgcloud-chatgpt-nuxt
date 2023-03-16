@@ -41,6 +41,7 @@ export function h5applyToJoinCompanySubmission(data: any) {
         isToken: false
       }
     },
+    {},
     data
   )
 }

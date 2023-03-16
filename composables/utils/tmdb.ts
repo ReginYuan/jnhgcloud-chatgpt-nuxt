@@ -5,7 +5,6 @@ import { showFailToast } from 'vant'
 import errorCode from '~/composables/utils/errorCode'
 import { getToken } from '~/composables/utils/auth'
 
-
 const apiBaseUrl = import.meta.env.VITE_APP_BASE_API
 
 const cache = new LRU({
@@ -34,13 +33,15 @@ function _fetchTMDB(
     string,
     string | number | Object | undefined | configType | any
   >,
-  params: Record<string, string | number | Object | undefined | any> = {}
+  params: Record<string, string | number | Object | undefined | any> = {},
+  body: Record<string, string | number | Object | undefined | any> = {}
 ) {
   return $fetch(url, {
     headers: config.headers,
     method: config.method,
     baseURL: `${apiBaseUrl}`,
     params,
+    body,
     // 请求拦截器
     onRequest({ request, options }) {
       // 是否需要设置 token
@@ -68,7 +69,9 @@ function _fetchTMDB(
         // 判断是ios环境还是安卓的环境
         let us = navigator.userAgent
         let isAndroid = us.indexOf('Android') > -1 || us.indexOf('Linux') > -1
-        let isIOS = us.indexOf('ios_app') > -1 || !!us.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
+        let isIOS =
+          us.indexOf('ios_app') > -1 ||
+          !!us.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
         if (window) {
           // reload 是刷新的方法
           // 如果是在安卓环境下就调用对应返回安卓登录界面的方法
@@ -107,10 +110,9 @@ function _fetchTMDB(
           message: msg
         })
         return Promise.reject('error')
-      }else{
+      } else {
         return Promise.resolve(data)
       }
-
     }
   })
 }
@@ -118,13 +120,15 @@ function _fetchTMDB(
 export function fetchTMDB(
   url: string,
   config: Record<string, string | number | Object | undefined | any>,
-  params: Record<string, string | number | undefined> = {}
+  params: Record<string, string | number | undefined> = {},
+  body: Record<string, string | number | undefined> = {}
 ): Promise<any> {
-  const hash = ohash([url, config, params])
+  debugger
+  const hash = ohash([url, config, params, body])
   if (!cache.has(hash)) {
     cache.set(
       hash,
-      _fetchTMDB(url, config, params).catch(e => {
+      _fetchTMDB(url, config, params, body).catch(e => {
         cache.delete(hash)
         throw e
       })

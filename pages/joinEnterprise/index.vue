@@ -76,7 +76,7 @@ import {
   h5joinCompanyCheck,
   code,
   h5applyToJoinCompanySubmission
-} from '~/server/api/joinEnterprise.ts'
+} from '~/server/api/joinEnterprise'
 definePageMeta({ layout: false })
 const router = useRouter()
 const form = reactive({
