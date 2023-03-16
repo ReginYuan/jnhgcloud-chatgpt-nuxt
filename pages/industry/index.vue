@@ -17,7 +17,7 @@
         </template>
       </van-nav-bar>
     </div>
-    <van-tabs v-model:active="active" line-height="0">
+    <van-tabs v-model:active="active" line-height="0" :ellipsis="false">
       <van-tab :title="item" v-for="(item, index) in tabList" :key="index">
         <ItemList :itemList="itemLists" :type="`industry`"></ItemList>
       </van-tab>

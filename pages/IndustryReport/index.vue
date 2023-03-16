@@ -16,7 +16,15 @@
         </template>
       </van-nav-bar>
     </div>
-    <van-tabs v-model:active="active" line-height="0">
+    <van-tabs
+      v-model:active="active"
+      :line-width="10"
+      :line-height="5"
+      title-active-color="#000000"
+      title-inactive-color="#888888"
+      color="#2ac670"
+      :ellipsis="false"
+    >
       <van-tab :title="item" v-for="(item, index) in tabList" :key="index">
         <div class="content">
           <div
@@ -130,24 +138,11 @@ function toDetail(item: any) {
 }
 
 :deep(.van-tab__text) {
-  color: #888888;
   font-size: 16px;
 }
-:deep(.van-tab--active) {
-  .van-tab__text {
-    position: relative;
-    color: #000000;
-    &::after {
-      content: '';
-      width: 10px;
-      height: 4px;
-      border-radius: 4px 4px 0 0;
-      background-color: #2ac670;
-      position: absolute;
-      bottom: -8px;
-      left: 38%;
-    }
-  }
+:deep(.van-tabs__line) {
+  bottom: 20px !important;
+  border-radius: 4px 4px 0 0 !important;
 }
 .content {
   height: calc(100vh - 90px);

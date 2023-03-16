@@ -4,6 +4,8 @@ import { hash as ohash } from 'ohash'
 import { showFailToast } from 'vant'
 import errorCode from '~/composables/utils/errorCode'
 import { getToken } from '~/composables/utils/auth'
+
+
 const apiBaseUrl = import.meta.env.VITE_APP_BASE_API
 
 const cache = new LRU({
@@ -41,10 +43,9 @@ function _fetchTMDB(
     params,
     // 请求拦截器
     onRequest({ request, options }) {
-      console.log('request', request)
       // 是否需要设置 token
-      const isToken = options.headers?.isToken === false
-      if (getToken() && !isToken) {
+      const isToken = options.headers?.isToken || false
+      if (getToken() && isToken) {
         // 让每个请求携带自定义token 请根据实际情况自行修改
         config.headers.Authorization = 'Bearer ' + getToken()
       }
@@ -53,7 +54,8 @@ function _fetchTMDB(
     // 响应拦截
     onResponse({ response }) {
       // 未设置状态码则默认成功状态
-      let data = JSON.parse(response._data)
+      // let data = JSON.parse(response._data)
+      let data = response._data
       // let data = response._data
       const code = data.code || data.statusCode || 200
       // 获取错误信息
@@ -66,17 +68,19 @@ function _fetchTMDB(
         // 判断是ios环境还是安卓的环境
         let us = navigator.userAgent
         let isAndroid = us.indexOf('Android') > -1 || us.indexOf('Linux') > -1
-        let isIOS = !!us.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
-
+        let isIOS = us.indexOf('ios_app') > -1 || !!us.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
         if (window) {
           // reload 是刷新的方法
           // 如果是在安卓环境下就调用对应返回安卓登录界面的方法
           if ((window as any).androidInterface && isAndroid) {
-            // ;(window as any).androidInterface.reload()
+            const token = (window as any).androidInterface.getToken()
+            showFailToast({
+              message: token
+            })
             return
           }
 
-          // 如果是在安卓环境下就调用对应返回安卓登录界面的方法
+          // 如果是在ios环境下就调用对应返回ios登录界面的方法
           if (
             (window as any).webkit &&
             (window as any).webkit.messageHandlers.reload &&
@@ -103,9 +107,10 @@ function _fetchTMDB(
           message: msg
         })
         return Promise.reject('error')
-      } else {
+      }else{
         return Promise.resolve(data)
       }
+
     }
   })
 }

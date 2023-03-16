@@ -1,6 +1,8 @@
 import Cookies from 'js-cookie'
 
-const TokenKey = 'Admin-Token'
+
+// const TokenKey = 'Admin-Token'
+const TokenKey = 'token'
 
 const ExpiresInKey = 'Admin-Expires-In'
 
