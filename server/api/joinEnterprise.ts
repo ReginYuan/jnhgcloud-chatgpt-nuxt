@@ -15,7 +15,8 @@ export function h5joinCompanyCheck(params: any) {
         isToken: false
       }
     },
-    params
+    params,
+    {}
   )
 }
 // 获取验证码
@@ -28,7 +29,8 @@ export function code(params: any) {
         isToken: false
       }
     },
-    params
+    params,
+    {}
   )
 }
 // 提交申请
