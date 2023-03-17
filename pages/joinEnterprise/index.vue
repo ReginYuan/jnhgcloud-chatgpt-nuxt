@@ -84,8 +84,7 @@ const form = reactive({
   code: undefined,
   name: undefined,
   reason: undefined,
-  companyNo: undefined,
-  source: 3
+  companyNo: undefined
 })
 const disabled = ref(false)
 const codeMsg = ref('获取验证码')
@@ -100,12 +99,14 @@ const onSubmit = values => {
     realName: form.name,
     reason: form.reason,
     companyNo: form.companyNo,
-    source: form.source
+    source: '3'
   }
-  console.log(data,'data')
+  console.log(data, 'data')
   h5applyToJoinCompanySubmission(data).then(res => {
     console.log(res, 'res')
-    // router.push('/joinEnterprise/succeed')
+    if (res.code == 200) {
+      router.push('/joinEnterprise/succeed')
+    }
   })
 }
 //发送验证码
@@ -152,7 +153,6 @@ const getList = async () => {
   const list = await h5joinCompanyCheck(params)
   companyName.value = list.data.companyName
   form.companyNo = list.data.companyNo
-  form.source = list.data.companyId
 }
 onMounted(() => {
   getList()
