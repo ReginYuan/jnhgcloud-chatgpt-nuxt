@@ -18,3 +18,56 @@ export function getInfo(params: any) {
     {}
   )
 }
+
+export function bannerInfo(params: any) {
+  return fetchTMDB(
+    '/zshb/information/bannerInfo',
+    {
+      method: 'get',
+      headers: {
+        isToken: true
+      }
+    },
+    params
+  )
+}
+
+export function informationList(params: any) {
+  return fetchTMDB(
+    '/zshb/information/list',
+    {
+      method: 'get',
+      headers: {
+        isToken: true
+      }
+    },
+    params
+  )
+}
+
+export function getDetail(params: any) {
+  return fetchTMDB(
+    `/zshb/information/details/${params.inforId}`,
+    {
+      method: 'get',
+      headers: {
+        isToken: true
+      }
+    },
+    {},
+    {}
+  )
+}
+
+export function relatedArticles(params: any) {
+  return fetchTMDB(
+    '/zshb/information/relatedArticles',
+    {
+      method: 'get',
+      headers: {
+        isToken: true
+      }
+    },
+    params
+  )
+}

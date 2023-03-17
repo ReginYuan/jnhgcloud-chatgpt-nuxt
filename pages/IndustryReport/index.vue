@@ -1,60 +1,40 @@
 <template>
-  <div class="fixd">
-    <div class="header">
-      <van-nav-bar left-text="行业报告" left-arrow :clickable="false">
-        <template #right>
-          <van-search
-            v-model="value"
-            placeholder="搜索资讯"
-            background="transparent"
-            shape="round"
-          >
-            <template #right-icon>
-              <img src="~/assets/img/icon-search.png" alt="" />
-            </template>
-          </van-search>
-        </template>
-      </van-nav-bar>
-    </div>
-    <van-tabs
-      v-model:active="active"
-      :line-width="10"
-      :line-height="5"
-      title-active-color="#000000"
-      title-inactive-color="#888888"
-      color="#2ac670"
-      :ellipsis="false"
-    >
-      <van-tab :title="item" v-for="(item, index) in tabList" :key="index">
-        <div class="content">
-          <div
-            v-for="(item, index) in list"
-            :key="index"
-            @click="toDetail(item)"
-          >
-            <div class="title">
-              <div class="pic">
-                <img src="~/assets/img/icon-pdf.png" alt="" />
-              </div>
-              <div class="text">{{ item.title }}</div>
+  <HeaderBar title="行业报告"></HeaderBar>
+  <van-tabs
+    v-model:active="active"
+    :line-width="10"
+    :line-height="5"
+    title-active-color="#000000"
+    title-inactive-color="#888888"
+    color="#2ac670"
+    :ellipsis="false"
+  >
+    <van-tab :title="item" v-for="(item, index) in tabList" :key="index">
+      <div class="content">
+        <div v-for="(item, index) in list" :key="index" @click="toDetail(item)">
+          <div class="title">
+            <div class="pic">
+              <img src="~/assets/img/icon-pdf.png" alt="" />
             </div>
-            <div class="info">
-              <div class="tag">
-                <span class="come">{{ item.tag }}</span>
-                <span class="page">{{ item.page }}</span>
-              </div>
-              <div class="time">{{ item.time }}</div>
+            <div class="text">{{ item.title }}</div>
+          </div>
+          <div class="info">
+            <div class="tag">
+              <span class="come">{{ item.tag }}</span>
+              <span class="page">{{ item.page }}</span>
             </div>
+            <div class="time">{{ item.time }}</div>
           </div>
         </div>
-      </van-tab>
-    </van-tabs>
-  </div>
+      </div>
+    </van-tab>
+  </van-tabs>
 </template>
 <script lang="ts" setup>
 import { ItemListType } from '~/types/itemList'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+
 const active = ref(0)
 let value = ref('')
 let tabList = ref([''])
@@ -104,37 +84,6 @@ function toDetail(item: any) {
   left: 0;
   right: 0;
   z-index: 99;
-}
-.header {
-  background: url('~/assets/img/hand-bg-green.png') no-repeat;
-  background-size: 100% 100%;
-  :deep(.van-nav-bar) {
-    background-color: transparent;
-    font-size: 20px;
-    .van-nav-bar__right {
-      width: 199px;
-      margin-left: 31px;
-      .van-search {
-        padding: 0;
-        .van-field__right-icon {
-          display: flex;
-          align-items: center;
-        }
-      }
-    }
-    .van-nav-bar__arrow {
-      font-size: 20px;
-      color: #ffffff;
-    }
-    .van-nav-bar__text {
-      font-size: 20px;
-      color: #ffffff;
-      margin-left: 10px;
-    }
-    .van-field__left-icon {
-      display: none;
-    }
-  }
 }
 
 :deep(.van-tab__text) {

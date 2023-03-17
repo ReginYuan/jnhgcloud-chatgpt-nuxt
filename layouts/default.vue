@@ -1,6 +1,5 @@
 <template>
   <div class="body flex flex-col">
-    <!-- <HeaderBar></HeaderBar> -->
     <main class="main">
       <slot />
     </main>

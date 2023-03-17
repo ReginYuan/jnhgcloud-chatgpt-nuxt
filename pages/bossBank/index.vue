@@ -1,85 +1,51 @@
 <template>
-  <!-- 头部搜索区域 -->
-  <div class="fixd">
-    <div class="header">
-      <van-nav-bar left-text="老板智库" left-arrow :clickable="false">
-        <template #right>
-          <van-search
-            v-model="value"
-            placeholder="搜索资讯"
-            background="transparent"
-            shape="round"
-          >
-            <template #right-icon>
-              <img src="~/assets/img/icon-search.png" alt="" />
-            </template>
-          </van-search>
-        </template>
-      </van-nav-bar>
-    </div>
-    <van-tabs v-model:active="active" line-height="0" :ellipsis="false">
-      <van-tab :title="item" v-for="(item, index) in tabList" :key="index">
-        <ItemList :itemList="itemLists" :type="`bossBank`"></ItemList>
-      </van-tab>
-    </van-tabs>
-  </div>
+  <HeaderBar title="老板智库"></HeaderBar>
+  <van-tabs
+    v-model:active="active"
+    line-height="0"
+    :ellipsis="false"
+    @click-tab="onClickTab"
+  >
+    <van-tab :title="item.name" v-for="(item, index) in tabList" :key="index">
+      <ItemList :tabItem="tabItem.data"></ItemList>
+    </van-tab>
+  </van-tabs>
 </template>
 <script lang="ts" setup>
-import { ItemListType } from '~/types/itemList'
-import { ref } from 'vue'
+import { getInfo } from '~/server/api/user'
+import { ref, reactive, onMounted } from 'vue'
+import { Tabtype } from '~/types/itemList'
 const active = ref(0)
-let tabList = ref([''])
-
-let value = ref('')
-
-let itemLists = ref<ItemListType[]>([])
-
-tabList.value = ['推荐', '资本投资', '建设单位', '设计院', '材料设计院']
-
-itemLists.value = [
-  {
-    title:
-      '英国副首相承认已经为乌克兰培训了约2.2万人的武装力量英国副首相承认已经为乌克兰培训了约2.2万人的武装力量英国副首相承认已经为乌克兰培训了约2.2万人的武装力量',
-    time: '10分钟前',
-    tag: '标签'
-  },
-  {
-    title: '英国副首相承认已经为乌克兰培训了约2.2万人的武装力量',
-    time: '10分钟前',
-    tag: '标签',
-    imgUrl: 'xxxxxxx'
-  },
-  {
-    title: '英国副首相承认已经为乌克兰培训了约2.2万人的武装力量',
-    time: '10分钟前',
-    tag: '标签',
-    imgUrl: 'xxxxxxx'
-  },
-  {
-    title:
-      '英国副首相承认已经为乌克兰培训了约2.2万人的武装力量英国副首相承认已经为乌克兰培训了约2.2万人的武装力量英国副首相承认已经为乌克兰培训了约2.2万人的武装力量',
-    time: '10分钟前',
-    tag: '标签'
-  },
-  {
-    title:
-      '英国副首相承认已经为乌克兰培训了约2.2万人的武装力量英国副首相承认已经为乌克兰培训了约2.2万人的武装力量英国副首相承认已经为乌克兰培训了约2.2万人的武装力量',
-    time: '10分钟前',
-    tag: '标签'
-  },
-  {
-    title: '英国副首相承认已经为乌克兰培训了约2.2万人的武装力量',
-    time: '10分钟前',
-    tag: '标签',
-    imgUrl: 'xxxxxxx'
-  },
-  {
-    title:
-      '英国副首相承认已经为乌克兰培训了约2.2万人的武装力量英国副首相承认已经为乌克兰培训了约2.2万人的武装力量英国副首相承认已经为乌克兰培训了约2.2万人的武装力量',
-    time: '10分钟前',
-    tag: '标签'
+let tabList = ref<Tabtype[]>([])
+let tabItem = reactive<{ data: Tabtype }>({
+  data: {
+    inforTypeId: '',
+    parentId: '',
+    name: '',
+    level: -1,
+    sortBy: -1
   }
-]
+})
+
+const getTypeList = async () => {
+  const parentId = '1636282537209352194'
+  const { data } = await getInfo({ parentId })
+  data.unshift({
+    inforTypeId: '',
+    parentId: '',
+    name: '推荐',
+    level: 1,
+    sortBy: 0
+  })
+  tabList.value = data
+}
+
+const onClickTab = (info: any) => {
+  tabItem.data = tabList.value.find(item => item.name === info.title) as Tabtype
+}
+onMounted(() => {
+  getTypeList()
+})
 </script>
 
 <style scoped lang="scss">

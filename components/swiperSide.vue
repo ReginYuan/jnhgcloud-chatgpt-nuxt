@@ -6,19 +6,15 @@
     <div class="hot_titile">
       <div class="hot_titile-item">
         <img src="~/assets/img/icon-one.png" alt="" />
-        <span
-          >英国副首相承认已经为乌克兰培训了约2.2英国副首相承认已经为乌克兰培训了约2.2英国副首相承认已经为乌克兰培训了约2.2</span
-        >
+        <span>{{ props.bannerList && props.bannerList[0]?.title }}</span>
       </div>
       <div class="hot_titile-item">
         <img src="~/assets/img/icon-two.png" alt="" />
-        <span
-          >腾讯校招三年，已润，知无不言英国副首相承认已经为乌克兰培训了约2.2</span
-        >
+        <span>{{ props.bannerList && props.bannerList[1]?.title }}</span>
       </div>
       <div class="hot_titile-item">
         <img src="~/assets/img/icon-three.png" alt="" />
-        <span>华为0d与浙江大华，选哪个，感觉都是坑</span>
+        <span>{{ props.bannerList && props.bannerList[2]?.title }}</span>
       </div>
     </div>
   </div>
@@ -42,13 +38,18 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { reactive, watch } from 'vue'
 import SwiperCore, { Autoplay, EffectCoverflow } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/vue' // swiper所需组件
+import { ItemListType } from '~/types/itemList'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 SwiperCore.use([Autoplay, EffectCoverflow])
+
+const props = defineProps<{ bannerList: Array<ItemListType> }>()
+
+watch(props, (newValue, oldValue) => {}, { immediate: true, deep: true })
 const imgs = reactive([
   {
     id: 0,

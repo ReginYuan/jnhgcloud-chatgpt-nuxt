@@ -1,32 +1,45 @@
 <template>
-  <div class="header-bar">
-    <div>
-      <img src="~/assets/img/bg-hand-blue.png" alt="" />
-    </div>
+  <div class="header">
+    <van-nav-bar :left-text="props.title" left-arrow :clickable="false">
+      <template #right>
+        <van-button to="/search" round>
+          <span>搜索资讯</span>
+          <img src="~/assets/img/icon-search.png" alt="" />
+        </van-button>
+      </template>
+    </van-nav-bar>
   </div>
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-  // 是否返回
-  back: { type: [Boolean, String], default: true },
-  // 标题
-  title: { type: String, default: '' },
-  // 标题颜色
-  color: { type: String, default: '#fff' },
-  // 背景颜色
-  bgcolor: { type: String, default: '#22d59c' },
-  // 标题是否居中
-  center: { type: [Boolean, String], default: false },
-  // 搜索框
-  search: { type: [Boolean, String], default: false },
-  // 是否固定
-  fixed: { type: [Boolean, String], default: false },
-  // 背景透明
-  transparent: { type: [Boolean, String], default: false },
-  // 设置层级
-  zIndex: { type: [Number, String], default: '2021' }
-})
+const props = defineProps<{ title: string }>()
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+.header {
+  background: url('~/assets/img/bg-hand-red.png') no-repeat;
+  background-size: 100% 100%;
+  :deep(.van-nav-bar) {
+    background-color: transparent;
+    font-size: 20px;
+    .van-nav-bar__right {
+      width: 199px;
+      .van-button {
+        width: 100%;
+        height: 32px;
+        .van-button__text {
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+      }
+    }
+    .van-nav-bar__arrow,
+    .van-nav-bar__text {
+      font-size: 20px;
+      color: #ffffff;
+    }
+  }
+}
+</style>

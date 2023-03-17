@@ -1,0 +1,160 @@
+<template>
+  <van-nav-bar left-arrow @click-left="onClickLeft">
+    <template #right>
+      <van-icon name="star-o" />
+      <img src="~/assets/img/icon-send.png" alt="" />
+    </template>
+  </van-nav-bar>
+  <div style="background-color: #f7f7f7; height: 2px"></div>
+  <div class="content">
+    <div class="title">{{ content.data.title }}</div>
+    <div class="infos">
+      <div class="info_tag">
+        <span v-for="(item, index) in content.data.lables" :key="index">{{
+          item.lableName
+        }}</span>
+      </div>
+      <div class="time">
+        {{ content.data.infoSources }}·{{
+          content.data.createTime.split(' ')[0]
+        }}
+      </div>
+    </div>
+    <!-- v-html="content.data.content" -->
+    <div class="text">
+      pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp
+      mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+      pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp
+      mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+    </div>
+    <div class="pic">
+      <img src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg" alt="" />
+    </div>
+  </div>
+  <!-- 标签 -->
+  <div class="tag">
+    <div v-for="(item, index) in tag" :key="index">
+      <span>{{ item }}</span>
+    </div>
+  </div>
+  <!-- 相关文章 -->
+  <div style="background-color: #f7f7f7; height: 8px"></div>
+  <div class="about">
+    <div class="title">相关文章</div>
+    <ItemList :Id="content.data.inforId"></ItemList>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, reactive, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import { ItemListType } from '~/types/itemList'
+import { getDetail } from '~/server/api/user'
+const route = useRoute()
+let content = reactive<{ data: ItemListType }>({
+  data: {
+    inforId: '',
+    title: '',
+    content: '',
+    coverLink: '',
+    createTime: '',
+    infoSources: '',
+    lables: []
+  }
+})
+const getDetails = async () => {
+  const { data } = await getDetail({ inforId: route.params.id })
+  content.data = data
+}
+const onClickLeft = () => history.back()
+const tag = ref([
+  '未来的家是怎么样的家',
+  '未来的家',
+  '未来的家是怎样',
+  '未来的家',
+  '未来的世界'
+])
+
+const type = ref('相关推荐')
+
+onMounted(() => {
+  getDetails()
+})
+</script>
+
+<style lang="scss" scoped>
+:deep(.van-nav-bar) {
+  .van-icon-star-o:before {
+    color: #222229;
+    font-size: 22px;
+  }
+}
+:deep(.van-icon-star-o:before) {
+  color: #222229;
+  font-size: 22px;
+  margin-right: 20px;
+}
+:deep(.van-icon-arrow-left) {
+  color: #222229;
+  font-size: 22px;
+}
+
+.content {
+  .title {
+    padding: 12px 16px 0;
+    font-size: 18px;
+    color: #222222;
+  }
+  .infos {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    margin: 16px;
+    .info_tag {
+      span {
+        color: #fa5151;
+        background-color: rgba($color: #fa5151, $alpha: 0.1);
+      }
+    }
+    .time {
+      color: rgba($color: #222222, $alpha: 0.5);
+    }
+  }
+  .text {
+    width: 375px;
+    padding: 0 16px;
+  }
+}
+.pic {
+  padding: 12px 16px 0;
+  width: 90%;
+  height: 173px;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+.tag {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 12px;
+  margin: 16px 0;
+  span {
+    display: inline-block;
+    height: 26px;
+    line-height: 26px;
+    margin: 4px 8px;
+    padding: 0 12px;
+    color: #1f46b6;
+    border: 1px solid #1f46b6;
+    border-radius: 36px;
+  }
+}
+.about {
+  .title {
+    font-size: 18px;
+    color: #222222;
+    padding: 16px;
+  }
+}
+</style>
