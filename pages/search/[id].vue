@@ -21,7 +21,12 @@
     </van-nav-bar>
   </div>
   <!-- tab栏 -->
-  <van-tabs v-model:active="active" :ellipsis="false" @click-tab="onClickTab">
+  <van-tabs
+    v-model:active="active"
+    :ellipsis="false"
+    @click-tab="onClickTab"
+    inactive-color="#222229"
+  >
     <van-tab
       v-model:active="active"
       :title="item.name"
@@ -29,7 +34,11 @@
       :key="index"
     >
       <!-- 搜索结果 -->
-      <ItemList v-if="isShow" :itemList="itemList"></ItemList>
+      <ItemList
+        v-if="isShow"
+        :itemList="itemList"
+        @goNextpage="goNextpage"
+      ></ItemList>
       <!-- 历史记录 -->
       <div v-else>
         <div class="history">
@@ -55,6 +64,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import { historyStrore } from '~/composables/store/model/history'
 import { getInfo, informationList } from '~/server/api/user'
 import { Tabtype, ItemListType } from '~/types/itemList'
@@ -66,10 +76,18 @@ let tabList = ref<Tabtype[]>([])
 let itemList = ref<ItemListType[]>([])
 let inforTypeId = ref('')
 const taglist = ref<string[]>([])
+let page = ref({
+  pageSize: 5,
+  pageNum: 2
+})
 
 const getTypeList = async () => {
   const { data } = await getInfo({ parentId: 0 })
   tabList.value = data
+  const index = tabList.value.findIndex(
+    item => item.inforTypeId === route.params.id
+  )
+  active.value = index
 }
 
 const onClickTab = async (info: any) => {
@@ -81,14 +99,16 @@ const onClickTab = async (info: any) => {
 const store = historyStrore()
 const searchBtn = async () => {
   isShow.value = true
-  taglist.value.unshift(title.value)
-  taglist.value = [...new Set(taglist.value)].slice(0, 10)
-  store.setHistory(taglist.value)
+  if (title.value != '') {
+    taglist.value.unshift(title.value)
+    taglist.value = [...new Set(taglist.value)].slice(0, 10)
+    taglist.value && store.setHistory(taglist.value)
+  }
   const { data } = await informationList({
     levelOne: inforTypeId.value,
     title: title.value,
-    pageSize: 5,
-    pageNum: 1
+    pageSize: page.value.pageSize,
+    pageNum: page.value.pageNum
   })
   itemList.value = data.records
 }
@@ -102,6 +122,11 @@ const goHistory = (item: any) => {
   searchBtn()
 }
 const onClickLeft = () => history.back()
+const goNextpage = (info: number) => {
+  page.value.pageNum = info
+  console.log('触底加载下一页数据')
+  searchBtn()
+}
 
 let value = ref('')
 onMounted(() => {
@@ -139,10 +164,26 @@ onMounted(() => {
     color: #222229;
   }
 }
+:deep(.van-tab__text) {
+  font-size: 16px;
+  color: #222229;
+}
+:deep(.van-tab--active) {
+  .van-tab__text {
+    color: #1f46b6;
+  }
+}
+:deep(.van-tabs__line) {
+  width: 60px;
+  height: 2px;
+  background-color: #1f46b6;
+  bottom: 20px;
+}
 .history {
   display: flex;
   justify-content: space-between;
   padding: 0 24px 0 16px;
+  margin-top: 16px;
   .history_title {
     font-size: 16px;
     color: #222222;

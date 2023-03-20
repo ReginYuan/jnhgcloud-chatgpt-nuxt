@@ -1,22 +1,29 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { PdfOperateInfoType } from '@pzy915/pdf-preview'
-import { baseUrl, loadPdfDocOperateInfo } from '@/composables/utils/PdfUtil'
+import { loadPdfDocOperateInfo } from '@/composables/utils/PdfUtil'
+import axios from 'axios'
+import { useRoute } from 'vue-router'
+import { Base64 } from 'js-base64'
 
 const pdfPreviewRef = ref<HTMLDivElement>()
 const goPageNum = ref<string>('1')
-const pdfUrl = `${baseUrl}tushu.pdf`
 const pdfOperator = ref<PdfOperateInfoType>()
 const widthoff = ref<number>(200)
 let avtive = ref(0)
 if (process.client) {
   widthoff.value = (document as any).body.offsetWidth - 40
 }
-
+const route = useRoute()
+const url: string = Base64.decode(route.params.id as string)
 async function pdfOperatorInit() {
   if (!pdfPreviewRef.value) return
+  const res = await axios.get(url, { responseType: 'blob' })
+  const flowData = res.data
+  let blob = new Blob([flowData], { type: 'application/pdf' }) //文件流转为blob
+  const buffer = await blob.arrayBuffer()
   pdfOperator.value = await loadPdfDocOperateInfo({
-    pdfUrl,
+    data: new Uint8Array(buffer),
     width: widthoff.value,
     pdfRenderContainerDom: pdfPreviewRef.value
   })

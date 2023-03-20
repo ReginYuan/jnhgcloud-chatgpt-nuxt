@@ -12,9 +12,6 @@
 </template>
 
 <script setup lang="ts">
-const route = useRoute()
-console.log(route.params.value)
-
 const onClickLeft = () => history.back()
 </script>
 

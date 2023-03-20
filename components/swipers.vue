@@ -11,18 +11,20 @@
       class="mySwiper"
       :modules="modules"
     >
-      <swiper-slide v-for="(item, index) in imgs" :key="index">
+      <swiper-slide v-for="(item, index) in props.swiperList" :key="index">
         <div class="content">
-          <img :src="item.url" alt="" />
-          <div class="title">俄乌谈判乌方代表：乌方不再致力于申请加入北约</div>
-          <div class="tagInfo">央视新间客户端·10分钟前</div>
+          <img :src="item.coverLink" alt="" />
+          <div class="title">{{ item.title }}</div>
+          <div class="tagInfo">
+            {{ item.authorBy }}·{{ item.createTime.split(' ')[0] }}
+          </div>
         </div>
       </swiper-slide>
     </swiper>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { Swiper, SwiperSlide } from 'swiper/vue' // swiper所需组件
 // 这是分页器和对应方法，swiper好像在6的时候就已经分离了分页器和一些其他工具
 import { Autoplay, Navigation, Pagination, A11y } from 'swiper'
@@ -30,23 +32,9 @@ import { Autoplay, Navigation, Pagination, A11y } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
-//默认滑动效果（这里面注释掉的可以不要）
-// const onSwiper = swiper => {
-// 	console.log(swiper);
-// };
-// const onSlideChange = e => {
-// 	// swiper切换的时候执行的方法
-// 	console.log('slide change', e.activeIndex);
-// };
-// setup语法糖只需要这样创建一个变量就可以正常使用分页器和对应功能，如果没有这个数组则无法使用对应功能
+import { ItemListType } from '~/types/itemList'
 const modules = [Autoplay, Pagination, Navigation, A11y]
-
-const imgs = ref([
-  { url: 'https://www.hao528.com/uploads/allimg/220605/9-220605160242.jpg' },
-  { url: 'https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg' },
-  { url: 'https://www.hao528.com/uploads/allimg/220605/9-220605160242.jpg' },
-  { url: 'https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg' }
-])
+const props = defineProps<{ swiperList: ItemListType[] }>()
 </script>
 
 <style scoped lang="scss">

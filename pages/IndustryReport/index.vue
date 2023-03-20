@@ -1,5 +1,5 @@
 <template>
-  <HeaderBar title="行业报告"></HeaderBar>
+  <HeaderBar title="行业报告" :parentId="Id"></HeaderBar>
   <van-tabs
     v-model:active="active"
     :line-width="10"
@@ -8,10 +8,15 @@
     title-inactive-color="#888888"
     color="#2ac670"
     :ellipsis="false"
+    @click-tab="onClickTab"
   >
-    <van-tab :title="item" v-for="(item, index) in tabList" :key="index">
+    <van-tab :title="item.name" v-for="(item, index) in tabList" :key="index">
       <div class="content">
-        <div v-for="(item, index) in list" :key="index" @click="toDetail(item)">
+        <div
+          v-for="(item, index) in itemList"
+          :key="index"
+          @click="toDetail(item)"
+        >
           <div class="title">
             <div class="pic">
               <img src="~/assets/img/icon-pdf.png" alt="" />
@@ -20,10 +25,10 @@
           </div>
           <div class="info">
             <div class="tag">
-              <span class="come">{{ item.tag }}</span>
-              <span class="page">{{ item.page }}</span>
+              <span class="come">来源：{{ item.infoSources }}</span>
+              <!-- <span class="page">{{ item.page }}</span> -->
             </div>
-            <div class="time">{{ item.time }}</div>
+            <div class="time">{{ item.createTime.split(' ')[0] }}</div>
           </div>
         </div>
       </div>
@@ -31,59 +36,85 @@
   </van-tabs>
 </template>
 <script lang="ts" setup>
-import { ItemListType } from '~/types/itemList'
+import { Tabtype, ItemListType } from '~/types/itemList'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { getInfo, informationList, bannerInfo } from '~/server/api/user'
+import { Base64 } from 'js-base64'
+
+let Id = ref('1636282673046081537')
 
 const active = ref(0)
-let value = ref('')
-let tabList = ref([''])
-tabList.value = ['推荐', '资本投资', '建设单位', '设计院', '材料设计院']
-
-interface type {
-  title: string
-  time: string
-  tag: string
-  page: string
-}
-let list = ref<type[]>([])
-list.value = [
-  {
-    title:
-      '近日，《新建北京至雄安新区至商丘高速铁路环境影响评价第一次信息公告》在沿线各市（区）人民政府网站正式发布',
-    time: '2023 - 2 - 1',
-    tag: '来源：老板智库',
-    page: '12页'
-  },
-  {
-    title:
-      '近日，《新建北京至雄安新区至商丘高速铁路环境影响评价第一次信息公告》在沿线各市（区）人民政府网站正式发布',
-    time: '2023 - 2 - 1',
-    tag: '来源：老板智库',
-    page: '12页'
-  },
-  {
-    title:
-      '近日，《新建北京至雄安新区至商丘高速铁路环境影响评价第一次信息公告》在沿线各市（区）人民政府网站正式发布',
-    time: '2023 - 2 - 1',
-    tag: '来源：老板智库',
-    page: '12页'
+let tabList = ref<Tabtype[]>([])
+let itemList = ref<ItemListType[]>([])
+let tabItem = reactive<{ data: Tabtype }>({
+  data: {
+    inforTypeId: '',
+    parentId: '',
+    name: '',
+    level: -1,
+    sortBy: -1
   }
-]
+})
+const getTypeList = async () => {
+  tabList.value = []
+  const parentId = '1636282673046081537'
+  const { data } = await getInfo({ parentId })
+  tabList.value = [...data]
+  tabList.value.unshift({
+    inforTypeId: '',
+    parentId: '',
+    name: '推荐',
+    level: 1,
+    sortBy: 0
+  })
+}
+
+const onClickTab = async (info: any) => {
+  tabItem.data = tabList.value.find(item => item.name === info.title) as Tabtype
+  if (tabItem.data?.parentId === '') {
+    // 是否推荐
+    const { data } = await bannerInfo({
+      levelOne: tabItem.data.parentId,
+      levelTwo: tabItem.data.inforTypeId,
+      recommend: 'Y',
+      pageSize: 5,
+      pageNum: 1
+    })
+    itemList.value = data
+  } else {
+    const { data } = await informationList({
+      levelOne: tabItem.data.parentId,
+      levelTwo: tabItem.data.inforTypeId,
+      pageSize: 5,
+      pageNum: 1
+    })
+    itemList.value = data.records
+  }
+}
+
 const router = useRouter()
 function toDetail(item: any) {
-  const id = 123456
-  router.push(`/IndustryReport/detail/${id}`)
+  const url = Base64.encode(item.files)
+  router.push(`/IndustryReport/detail/${url}`)
 }
+onMounted(async () => {
+  getTypeList()
+  const { data } = await bannerInfo({
+    levelOne: '',
+    levelTwo: '',
+    recommend: 'Y',
+    pageSize: 5,
+    pageNum: 1
+  })
+  itemList.value = data
+})
 </script>
 
 <style scoped lang="scss">
-.fixd {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 99;
+.header {
+  background: url('~/assets/img/hand-bg-green.png') no-repeat;
+  background-size: 100% 100%;
 }
 
 :deep(.van-tab__text) {

@@ -1,5 +1,5 @@
 <template>
-  <HeaderBar title="产业头条"></HeaderBar>
+  <HeaderBar title="产业头条" :parentId="Id"></HeaderBar>
   <van-tabs v-model:active="active" :ellipsis="false" @click-tab="onClickTab">
     <van-tab :title="item.name" v-for="(item, index) in tabList" :key="index">
       <ItemList
@@ -11,10 +11,10 @@
   </van-tabs>
 </template>
 <script lang="ts" setup>
-import { getInfo } from '~/server/api/user'
 import { ref, reactive, onMounted } from 'vue'
 import { Tabtype, ItemListType } from '~/types/itemList'
-import { informationList, bannerInfo } from '~/server/api/user'
+import { getInfo, informationList, bannerInfo } from '~/server/api/user'
+let Id = ref('1636282443407937538')
 const active = ref(0)
 let tabList = ref<Tabtype[]>([])
 let tabItem = reactive<{ data: Tabtype }>({
@@ -50,6 +50,7 @@ const onClickTab = async (info: any) => {
     const { data } = await bannerInfo({
       levelOne: tabItem.data.parentId,
       levelTwo: tabItem.data.inforTypeId,
+      recommend: 'Y',
       pageSize: 5,
       pageNum: 1
     })
@@ -72,6 +73,7 @@ onMounted(async () => {
   const { data } = await bannerInfo({
     levelOne: tabItem.data.parentId,
     levelTwo: tabItem.data.inforTypeId,
+    recommend: 'Y',
     pageSize: 5,
     pageNum: 1
   })
@@ -82,6 +84,10 @@ onMounted(async () => {
 </script>
 
 <style scoped lang="scss">
+.header {
+  background: url('~/assets/img//bg-hand-red.png') no-repeat;
+  background-size: 100% 100%;
+}
 :deep(.van-tab__text) {
   color: #888888;
   font-size: 16px;

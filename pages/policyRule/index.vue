@@ -1,5 +1,5 @@
 <template>
-  <HeaderBar title="政策法规"></HeaderBar>
+  <HeaderBar title="政策法规" :parentId="Id"></HeaderBar>
   <van-tabs
     v-model:active="active"
     line-height="0"
@@ -20,6 +20,7 @@ import { getInfo } from '~/server/api/user'
 import { ref, reactive, onMounted } from 'vue'
 import { Tabtype, ItemListType } from '~/types/itemList'
 import { informationList, bannerInfo, relatedArticles } from '~/server/api/user'
+let Id = ref('1636282617106649089')
 const active = ref(0)
 let tabList = ref<Tabtype[]>([])
 let tabItem = reactive<{ data: Tabtype }>({
@@ -38,14 +39,14 @@ let showSwiper = ref(false)
 const getTypeList = async () => {
   const parentId = '1636282617106649089'
   const { data } = await getInfo({ parentId })
-  data.unshift({
+  tabList.value = [...data]
+  tabList.value.unshift({
     inforTypeId: '',
     parentId: '',
     name: '推荐',
     level: 1,
     sortBy: 0
   })
-  tabList.value = data
 }
 
 const onClickTab = async (info: any) => {
@@ -54,6 +55,7 @@ const onClickTab = async (info: any) => {
     const { data } = await bannerInfo({
       levelOne: tabItem.data.parentId,
       levelTwo: tabItem.data.inforTypeId,
+      recommend: 'Y',
       pageSize: 5,
       pageNum: 1
     })
@@ -71,12 +73,26 @@ const onClickTab = async (info: any) => {
     itemList.value = data.records
   }
 }
-onMounted(() => {
+onMounted(async () => {
   getTypeList()
+  const { data } = await bannerInfo({
+    levelOne: tabItem.data.parentId,
+    levelTwo: tabItem.data.inforTypeId,
+    recommend: 'Y',
+    pageSize: 5,
+    pageNum: 1
+  })
+  bannerList.value = data.slice(0, 3)
+  showSwiper.value = true
+  itemList.value = data
 })
 </script>
 
 <style scoped lang="scss">
+.header {
+  background: url('~/assets/img/bg-hand-blue.png') no-repeat;
+  background-size: 100% 100%;
+}
 :deep(.van-tab__text) {
   color: #888888;
   font-size: 16px;

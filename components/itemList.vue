@@ -6,26 +6,22 @@
   <!-- 政策法规 -->
   <div class="policyRule" v-if="props.showRuleSwiper">
     <van-swipe class="my-swipe" :show-indicators="false" lazy-render>
-      <van-swipe-item v-for="(item, index) in 5" :key="index">
-        <van-image
-          src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg"
-        />
-        <div class="swipe_title">
-          俄乌谈判乌方代表：乌方不再致力于申请加入北约
-        </div>
+      <van-swipe-item v-for="(item, index) in props.bannerList" :key="index">
+        <van-image :src="item.coverLink" />
+        <div class="swipe_title">{{ item.title }}</div>
       </van-swipe-item>
     </van-swipe>
   </div>
   <!-- 老板智库 -->
   <div class="bossBank" v-if="props.showBossSwiper">
-    <swiper></swiper>
+    <swipers :swiperList="props.bannerList"></swipers>
   </div>
-
   <van-list
     v-model:loading="loading"
     :finished="finished"
     finished-text="没有更多了"
     @load="onLoad"
+    v-show="props.itemList?.length > 0"
   >
     <van-cell
       v-for="(item, index) in props.itemList"
@@ -39,12 +35,11 @@
             <div class="title">{{ item.title }}</div>
             <div class="info">
               <div class="tag">
-                <span v-for="(ele, ind) in item.lables">{{
-                  ele.lableName
-                }}</span>
+                {{ item.infoSources }}
               </div>
               <div class="time">
-                {{ item.infoSources }}·{{ item.createTime.split(' ')[0] }}
+                {{ item.authorBy }}<i class="point"></i
+                >{{ item.createTime.split(' ')[0] }}
               </div>
             </div>
           </div>
@@ -61,14 +56,8 @@
           <div class="text">
             <div class="title">{{ item.title }}</div>
             <div class="info">
-              <div class="tag">
-                <span v-for="(ele, ind) in item.lables">{{
-                  ele.lableName
-                }}</span>
-              </div>
-              <div class="time">
-                {{ item.infoSources }}·{{ item.createTime }}
-              </div>
+              <div class="tag">{{ item.infoSources }}</div>
+              <div class="time">{{ item.authorBy }}·{{ item.createTime }}</div>
             </div>
           </div>
         </div>
@@ -79,10 +68,11 @@
 
 <script setup lang="ts">
 import { onMounted, watch } from 'vue'
-import { Tabtype, ItemListType } from '~/types/itemList'
-import { informationList, bannerInfo, relatedArticles } from '~/server/api/user'
+import { ItemListType } from '~/types/itemList'
 import { useRouter } from 'vue-router'
+import { defineEmits } from 'vue'
 
+const emit = defineEmits(['goNextpage'])
 const props = defineProps<{
   itemList: ItemListType[]
   bannerList?: ItemListType[]
@@ -90,44 +80,49 @@ const props = defineProps<{
   showBossSwiper?: boolean
   showRuleSwiper?: boolean
 }>()
-const show = ref(true)
 const loading = ref(false)
 const finished = ref(false)
 const router = useRouter()
-const parentId = ref('1636282443407937538')
+let color = ref('')
+let backgroundColor = ref('')
+let page = ref(1)
 watch(
-  () => props.itemList,
+  () => props,
   (newValue, oldValue) => {
-    // show.value = newValue?.inforTypeId === '' ? true : false
-    // onLoad(newValue.tabItem)
+    if (newValue.showBossSwiper) {
+      color.value = '#FDAD15'
+      backgroundColor.value = '#fff3dc'
+    } else if (props.showSwiper === true) {
+      color.value = '#FA5151'
+      backgroundColor.value = '#ffeeee'
+    } else if (props.showRuleSwiper === true) {
+      color.value = '#007AFF'
+      backgroundColor.value = '#e6f2ff'
+    }
   },
   { immediate: true, deep: true }
 )
 const onLoad = async () => {
-  loading.value = false
-  finished.value = true
-  // console.log('触底了')
+  console.log('触底了')
+
+  // finished.value = true
+  console.log(props.itemList)
+
+  if (props.itemList?.length === 0) {
+    console.log('无数据', '触底了')
+    loading.value = false
+    finished.value = true
+  } else {
+    page.value++
+    emit('goNextpage', page.value)
+  }
 }
 
 const toDetail = (item: ItemListType) => {
   router.push(`/details/${item.inforId}`)
 }
 
-let color = ref('')
-let backgroundColor = ref('')
-// if (props.type === 'bossBank') {
-//   color.value = '#FDAD15'
-//   backgroundColor.value = '#fff3dc'
-// } else if (props.type === 'industry') {
-//   color.value = '#FA5151'
-//   backgroundColor.value = '#ffeeee'
-// } else if (props.type === 'policyRule') {
-//   color.value = '#007AFF'
-//   backgroundColor.value = '#e6f2ff'
-// }
-// onMounted(() => {
-//   getList()
-// })
+onMounted(() => {})
 </script>
 
 <style scoped lang="scss">
@@ -165,19 +160,21 @@ let backgroundColor = ref('')
       .tag {
         font-size: 12px;
         color: v-bind('color');
-        span {
-          background-color: v-bind('backgroundColor');
-          padding: 2px 10px;
-          margin: 0 20px;
-          border-radius: 2px;
-          &:first-child {
-            margin-left: 0;
-          }
-        }
+        background-color: v-bind('backgroundColor');
+        padding: 0px 8px;
+        border-radius: 2px;
       }
       .time {
         font-size: 12px;
         color: rgba($color: #222222, $alpha: 0.5);
+        .point {
+          display: inline-block;
+          width: 5px;
+          height: 5px;
+          border-radius: 5px;
+          margin: 0 3px 2px;
+          background-color: #c4c4c4;
+        }
       }
     }
   }

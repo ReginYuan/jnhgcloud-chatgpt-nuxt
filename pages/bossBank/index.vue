@@ -1,5 +1,5 @@
 <template>
-  <HeaderBar title="老板智库"></HeaderBar>
+  <HeaderBar title="老板智库" :parentId="Id"></HeaderBar>
   <van-tabs
     v-model:active="active"
     line-height="0"
@@ -19,6 +19,8 @@
 import { getInfo, informationList, bannerInfo } from '~/server/api/user'
 import { ref, reactive, onMounted } from 'vue'
 import { Tabtype, ItemListType } from '~/types/itemList'
+let Id = ref('1636282537209352194')
+
 const active = ref(0)
 let tabList = ref<Tabtype[]>([])
 let tabItem = reactive<{ data: Tabtype }>({
@@ -37,14 +39,14 @@ let showSwiper = ref(false)
 const getTypeList = async () => {
   const parentId = '1636282537209352194'
   const { data } = await getInfo({ parentId })
-  data.unshift({
+  tabList.value = [...data]
+  tabList.value.unshift({
     inforTypeId: '',
     parentId: '',
     name: '推荐',
     level: 1,
     sortBy: 0
   })
-  tabList.value = data
 }
 
 const onClickTab = async (info: any) => {
@@ -53,10 +55,11 @@ const onClickTab = async (info: any) => {
     const { data } = await bannerInfo({
       levelOne: tabItem.data.parentId,
       levelTwo: tabItem.data.inforTypeId,
+      recommend: 'Y',
       pageSize: 5,
       pageNum: 1
     })
-    bannerList.value = data.slice(0, 3)
+    bannerList.value = data?.slice(0, 3)
     showSwiper.value = true
     itemList.value = data
   } else {
@@ -70,48 +73,25 @@ const onClickTab = async (info: any) => {
     itemList.value = data.records
   }
 }
-onMounted(() => {
+onMounted(async () => {
   getTypeList()
+  const { data } = await bannerInfo({
+    levelOne: tabItem.data.parentId,
+    levelTwo: tabItem.data.inforTypeId,
+    recommend: 'Y',
+    pageSize: 5,
+    pageNum: 1
+  })
+  bannerList.value = data.slice(0, 3)
+  showSwiper.value = true
+  itemList.value = data
 })
 </script>
 
 <style scoped lang="scss">
-.fixd {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-}
 .header {
   background: url('~/assets/img/bg-hand-yellow.png') no-repeat;
   background-size: 100% 100%;
-  :deep(.van-nav-bar) {
-    background-color: transparent;
-    font-size: 20px;
-    .van-nav-bar__right {
-      width: 199px;
-      margin-left: 31px;
-      .van-search {
-        padding: 0;
-        .van-field__right-icon {
-          display: flex;
-          align-items: center;
-        }
-      }
-    }
-    .van-nav-bar__arrow {
-      font-size: 20px;
-      color: #ffffff;
-    }
-    .van-nav-bar__text {
-      font-size: 20px;
-      color: #ffffff;
-      margin-left: 5px;
-    }
-    .van-field__left-icon {
-      display: none;
-    }
-  }
 }
 :deep(.van-tab__text) {
   color: #888888;

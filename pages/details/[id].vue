@@ -10,14 +10,10 @@
     <div class="title">{{ content.data.title }}</div>
     <div class="infos">
       <div class="info_tag">
-        <span v-for="(item, index) in content.data.lables" :key="index">{{
-          item.lableName
-        }}</span>
+        <span>{{ content.data.infoSources }}</span>
       </div>
       <div class="time">
-        {{ content.data.infoSources }}·{{
-          content.data.createTime.split(' ')[0]
-        }}
+        {{ content.data.authorBy }}·{{ content.data.createTime.split(' ')[0] }}
       </div>
     </div>
     <div class="text" v-html="content.data.content"></div>
@@ -27,8 +23,8 @@
   </div>
   <!-- 标签 -->
   <div class="tag">
-    <div v-for="(item, index) in tag" :key="index">
-      <span>{{ item }}</span>
+    <div v-for="(ele, ind) in content.data.lables">
+      <span>{{ ele.lableName }}</span>
     </div>
   </div>
   <!-- 相关文章 -->
@@ -72,15 +68,6 @@ const getDetails = async () => {
   itemList.value = res.data
 }
 const onClickLeft = () => history.back()
-const tag = ref([
-  '未来的家是怎么样的家',
-  '未来的家',
-  '未来的家是怎样',
-  '未来的家',
-  '未来的世界'
-])
-
-const type = ref('相关推荐')
 
 onMounted(() => {
   getDetails()

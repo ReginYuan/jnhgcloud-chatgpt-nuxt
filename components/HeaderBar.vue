@@ -2,7 +2,7 @@
   <div class="header">
     <van-nav-bar :left-text="props.title" left-arrow :clickable="false">
       <template #right>
-        <van-button to="/search" round>
+        <van-button to="" round @click="goSearch">
           <span>搜索资讯</span>
           <img src="~/assets/img/icon-search.png" alt="" />
         </van-button>
@@ -12,13 +12,16 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{ title: string }>()
+import { useRouter } from 'vue-router'
+const props = defineProps<{ title: string; parentId: string }>()
+const router = useRouter()
+const goSearch = () => {
+  router.push(`/search/${props.parentId}`)
+}
 </script>
 
 <style scoped lang="scss">
 .header {
-  background: url('~/assets/img/bg-hand-red.png') no-repeat;
-  background-size: 100% 100%;
   :deep(.van-nav-bar) {
     background-color: transparent;
     font-size: 20px;
@@ -32,6 +35,7 @@ const props = defineProps<{ title: string }>()
           display: flex;
           justify-content: space-between;
           align-items: center;
+          color: #a6a6a6;
         }
       }
     }

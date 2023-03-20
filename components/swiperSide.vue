@@ -30,9 +30,9 @@
   >
     <swiper-slide
       :style="{ width: '330px', height: '188px' }"
-      v-for="item in imgs"
-      :key="item.id"
-      ><img :src="item.url" alt=""
+      v-for="(item, index) in props.swiperList"
+      :key="index"
+      ><img :src="item.coverLink" alt=""
     /></swiper-slide>
   </swiper>
 </template>
@@ -50,24 +50,6 @@ SwiperCore.use([Autoplay, EffectCoverflow])
 const props = defineProps<{ swiperList: ItemListType[] }>()
 
 watch(props, (newValue, oldValue) => {}, { immediate: true, deep: true })
-const imgs = reactive([
-  {
-    id: 0,
-    url: 'https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg'
-  },
-  {
-    id: 1,
-    url: 'https://www.hao528.com/uploads/allimg/220605/9-220605160242.jpg'
-  },
-  {
-    id: 2,
-    url: 'https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg'
-  },
-  {
-    id: 1,
-    url: 'https://www.hao528.com/uploads/allimg/220605/9-220605160242.jpg'
-  }
-])
 
 let swiper_options = reactive({
   autoplay: {
