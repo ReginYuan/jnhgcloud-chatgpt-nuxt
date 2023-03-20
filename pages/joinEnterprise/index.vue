@@ -26,7 +26,7 @@
           />
           <van-field
             label-align="top"
-            v-model="form.code"
+            v-model="form.code" 
             name="验证码"
             label="验证码"
             required
@@ -174,7 +174,7 @@ onMounted(() => {
     margin-left: 12px;
   }
   .van-icon-arrow-left {
-    font-size: 26px;
+    font-size: 20px;
   }
 }
 .top {
