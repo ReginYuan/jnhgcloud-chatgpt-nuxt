@@ -1,10 +1,10 @@
 <template>
   <!-- 产业头条 -->
-  <div class="industry_recommend" v-if="show === true">
-    <swiper-side :bannerList="bannerList"></swiper-side>
+  <div class="industry_recommend" v-if="props.showSwiper">
+    <swiper-side :swiperList="props.bannerList"></swiper-side>
   </div>
   <!-- 政策法规 -->
-  <div class="policyRule" v-if="false">
+  <div class="policyRule" v-if="props.showRuleSwiper">
     <van-swipe class="my-swipe" :show-indicators="false" lazy-render>
       <van-swipe-item v-for="(item, index) in 5" :key="index">
         <van-image
@@ -17,7 +17,7 @@
     </van-swipe>
   </div>
   <!-- 老板智库 -->
-  <div class="bossBank" v-if="false">
+  <div class="bossBank" v-if="props.showBossSwiper">
     <swiper></swiper>
   </div>
 
@@ -28,13 +28,13 @@
     @load="onLoad"
   >
     <van-cell
-      v-for="(item, index) in itemList"
+      v-for="(item, index) in props.itemList"
       :key="index"
       @click="toDetail(item)"
     >
       <div class="content">
         <!-- 一张图片 -->
-        <div class="content-item" v-if="item.coverLink">
+        <div class="content-item" v-if="item?.coverLink">
           <div class="text">
             <div class="title">{{ item.title }}</div>
             <div class="info">
@@ -84,56 +84,26 @@ import { informationList, bannerInfo, relatedArticles } from '~/server/api/user'
 import { useRouter } from 'vue-router'
 
 const props = defineProps<{
-  tabItem?: Tabtype
-  type?: string
-  Id?: string
+  itemList: ItemListType[]
+  bannerList?: ItemListType[]
+  showSwiper?: boolean
+  showBossSwiper?: boolean
+  showRuleSwiper?: boolean
 }>()
 const show = ref(true)
 const loading = ref(false)
 const finished = ref(false)
-let itemList = ref<ItemListType[]>([])
-let bannerList = ref<ItemListType[]>([])
 const router = useRouter()
+const parentId = ref('1636282443407937538')
 watch(
-  () => props.tabItem,
+  () => props.itemList,
   (newValue, oldValue) => {
-    show.value = newValue?.inforTypeId === '' ? true : false
+    // show.value = newValue?.inforTypeId === '' ? true : false
     // onLoad(newValue.tabItem)
   },
   { immediate: true, deep: true }
 )
 const onLoad = async () => {
-  if (props.tabItem?.inforTypeId === '') {
-    // 推荐首页
-    const { data } = await bannerInfo({
-      levelOne: props.tabItem.parentId,
-      levelTwo: props.tabItem.inforTypeId,
-      pageSize: 5,
-      pageNum: 1
-    })
-    bannerList.value = data.slice(0, 3)
-    itemList.value = data
-  } else if (props.tabItem?.inforTypeId) {
-    // 其他
-    const { data } = await informationList({
-      levelOne: props.tabItem?.parentId,
-      levelTwo: props.tabItem?.inforTypeId,
-      pageSize: 5,
-      pageNum: 1
-    })
-    itemList.value = data.records
-    console.log('其他', itemList.value)
-  } else {
-    // 相关文章
-    const { data } = await relatedArticles({
-      inforId: props.Id,
-      pageSize: 5,
-      pageNum: 1
-    })
-    itemList.value = data.records
-    console.log('相关文章', itemList.value)
-  }
-
   loading.value = false
   finished.value = true
   // console.log('触底了')

@@ -7,14 +7,18 @@
     @click-tab="onClickTab"
   >
     <van-tab :title="item.name" v-for="(item, index) in tabList" :key="index">
-      <ItemList :tabItem="tabItem.data"></ItemList>
+      <ItemList
+        :itemList="itemList"
+        :bannerList="bannerList"
+        :showBossSwiper="showSwiper"
+      ></ItemList>
     </van-tab>
   </van-tabs>
 </template>
 <script lang="ts" setup>
-import { getInfo } from '~/server/api/user'
+import { getInfo, informationList, bannerInfo } from '~/server/api/user'
 import { ref, reactive, onMounted } from 'vue'
-import { Tabtype } from '~/types/itemList'
+import { Tabtype, ItemListType } from '~/types/itemList'
 const active = ref(0)
 let tabList = ref<Tabtype[]>([])
 let tabItem = reactive<{ data: Tabtype }>({
@@ -26,6 +30,9 @@ let tabItem = reactive<{ data: Tabtype }>({
     sortBy: -1
   }
 })
+let itemList = ref<ItemListType[]>([])
+let bannerList = ref<ItemListType[]>([])
+let showSwiper = ref(false)
 
 const getTypeList = async () => {
   const parentId = '1636282537209352194'
@@ -40,8 +47,28 @@ const getTypeList = async () => {
   tabList.value = data
 }
 
-const onClickTab = (info: any) => {
+const onClickTab = async (info: any) => {
   tabItem.data = tabList.value.find(item => item.name === info.title) as Tabtype
+  if (tabItem.data?.parentId === '') {
+    const { data } = await bannerInfo({
+      levelOne: tabItem.data.parentId,
+      levelTwo: tabItem.data.inforTypeId,
+      pageSize: 5,
+      pageNum: 1
+    })
+    bannerList.value = data.slice(0, 3)
+    showSwiper.value = true
+    itemList.value = data
+  } else {
+    const { data } = await informationList({
+      levelOne: tabItem.data.parentId,
+      levelTwo: tabItem.data.inforTypeId,
+      pageSize: 5,
+      pageNum: 1
+    })
+    showSwiper.value = false
+    itemList.value = data.records
+  }
 }
 onMounted(() => {
   getTypeList()

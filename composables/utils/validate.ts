@@ -100,7 +100,7 @@ export const geTokenAll = () => {
     showToast({
       message: '' + token
     })
-    
+
     return
   }
   // 如果是在ios环境下就调用对应返回ios登录界面的方法
@@ -111,7 +111,7 @@ export const geTokenAll = () => {
     var index = us.indexOf('=')
     var token = us.slice(index + 1)
     const user = userStrore()
-    user.setToken(token)
+    // user.setToken(token)
     return
   }
 }

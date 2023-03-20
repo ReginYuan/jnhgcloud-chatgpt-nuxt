@@ -2,14 +2,19 @@
   <HeaderBar title="产业头条"></HeaderBar>
   <van-tabs v-model:active="active" :ellipsis="false" @click-tab="onClickTab">
     <van-tab :title="item.name" v-for="(item, index) in tabList" :key="index">
-      <ItemList :tabItem="tabItem.data"></ItemList>
+      <ItemList
+        :itemList="itemList"
+        :bannerList="bannerList"
+        :showSwiper="showSwiper"
+      ></ItemList>
     </van-tab>
   </van-tabs>
 </template>
 <script lang="ts" setup>
 import { getInfo } from '~/server/api/user'
 import { ref, reactive, onMounted } from 'vue'
-import { Tabtype } from '~/types/itemList'
+import { Tabtype, ItemListType } from '~/types/itemList'
+import { informationList, bannerInfo } from '~/server/api/user'
 const active = ref(0)
 let tabList = ref<Tabtype[]>([])
 let tabItem = reactive<{ data: Tabtype }>({
@@ -21,25 +26,58 @@ let tabItem = reactive<{ data: Tabtype }>({
     sortBy: -1
   }
 })
+let itemList = ref<ItemListType[]>([])
+let bannerList = ref<ItemListType[]>([])
+let showSwiper = ref(false)
 
 const getTypeList = async () => {
+  tabList.value = []
   const parentId = '1636282443407937538'
   const { data } = await getInfo({ parentId })
-  data.unshift({
+  tabList.value = [...data]
+  tabList.value.unshift({
     inforTypeId: '',
     parentId: '',
     name: '推荐',
     level: 1,
     sortBy: 0
   })
-  tabList.value = data
 }
 
-const onClickTab = (info: any) => {
+const onClickTab = async (info: any) => {
   tabItem.data = tabList.value.find(item => item.name === info.title) as Tabtype
+  if (tabItem.data?.parentId === '') {
+    const { data } = await bannerInfo({
+      levelOne: tabItem.data.parentId,
+      levelTwo: tabItem.data.inforTypeId,
+      pageSize: 5,
+      pageNum: 1
+    })
+    bannerList.value = data.slice(0, 3)
+    showSwiper.value = true
+    itemList.value = data
+  } else {
+    const { data } = await informationList({
+      levelOne: tabItem.data.parentId,
+      levelTwo: tabItem.data.inforTypeId,
+      pageSize: 5,
+      pageNum: 1
+    })
+    showSwiper.value = false
+    itemList.value = data.records
+  }
 }
-onMounted(() => {
+onMounted(async () => {
   getTypeList()
+  const { data } = await bannerInfo({
+    levelOne: tabItem.data.parentId,
+    levelTwo: tabItem.data.inforTypeId,
+    pageSize: 5,
+    pageNum: 1
+  })
+  bannerList.value = data.slice(0, 3)
+  showSwiper.value = true
+  itemList.value = data
 })
 </script>
 

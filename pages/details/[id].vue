@@ -20,13 +20,7 @@
         }}
       </div>
     </div>
-    <!-- v-html="content.data.content" -->
-    <div class="text">
-      pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp
-      mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
-      pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp
-      mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
-    </div>
+    <div class="text" v-html="content.data.content"></div>
     <div class="pic">
       <img src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg" alt="" />
     </div>
@@ -41,7 +35,7 @@
   <div style="background-color: #f7f7f7; height: 8px"></div>
   <div class="about">
     <div class="title">相关文章</div>
-    <ItemList :Id="content.data.inforId"></ItemList>
+    <ItemList :itemList="itemList"></ItemList>
   </div>
 </template>
 
@@ -49,12 +43,14 @@
 import { ref, reactive, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { ItemListType } from '~/types/itemList'
-import { getDetail } from '~/server/api/user'
+import { getDetail, relatedArticles } from '~/server/api/user'
 const route = useRoute()
 let content = reactive<{ data: ItemListType }>({
   data: {
     inforId: '',
     title: '',
+    levelOne: '',
+    levelTwo: '',
     content: '',
     coverLink: '',
     createTime: '',
@@ -62,9 +58,18 @@ let content = reactive<{ data: ItemListType }>({
     lables: []
   }
 })
+let itemList = ref<ItemListType[]>([])
 const getDetails = async () => {
   const { data } = await getDetail({ inforId: route.params.id })
   content.data = data
+  const res = await relatedArticles({
+    inforId: content.data.inforId,
+    levelOne: content.data.levelOne,
+    levelTwo: content.data.levelTwo,
+    pageSize: 5,
+    pageNum: 1
+  })
+  itemList.value = res.data
 }
 const onClickLeft = () => history.back()
 const tag = ref([
@@ -121,8 +126,9 @@ onMounted(() => {
     }
   }
   .text {
-    width: 375px;
+    box-sizing: border-box;
     padding: 0 16px;
+    word-wrap: break-word;
   }
 }
 .pic {

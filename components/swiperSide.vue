@@ -6,15 +6,15 @@
     <div class="hot_titile">
       <div class="hot_titile-item">
         <img src="~/assets/img/icon-one.png" alt="" />
-        <span>{{ props.bannerList && props.bannerList[0]?.title }}</span>
+        <span>{{ props.swiperList && props.swiperList[0]?.title }}</span>
       </div>
       <div class="hot_titile-item">
         <img src="~/assets/img/icon-two.png" alt="" />
-        <span>{{ props.bannerList && props.bannerList[1]?.title }}</span>
+        <span>{{ props.swiperList && props.swiperList[1]?.title }}</span>
       </div>
       <div class="hot_titile-item">
         <img src="~/assets/img/icon-three.png" alt="" />
-        <span>{{ props.bannerList && props.bannerList[2]?.title }}</span>
+        <span>{{ props.swiperList && props.swiperList[2]?.title }}</span>
       </div>
     </div>
   </div>
@@ -47,7 +47,7 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 SwiperCore.use([Autoplay, EffectCoverflow])
 
-const props = defineProps<{ bannerList: Array<ItemListType> }>()
+const props = defineProps<{ swiperList: ItemListType[] }>()
 
 watch(props, (newValue, oldValue) => {}, { immediate: true, deep: true })
 const imgs = reactive([
