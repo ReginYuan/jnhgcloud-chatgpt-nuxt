@@ -78,7 +78,7 @@ let inforTypeId = ref('')
 const taglist = ref<string[]>([])
 let page = ref({
   pageSize: 5,
-  pageNum: 2
+  pageNum: 1
 })
 
 const getTypeList = async () => {
@@ -93,6 +93,7 @@ const getTypeList = async () => {
 const onClickTab = async (info: any) => {
   const value = tabList.value.find(item => item.name === info.title) as Tabtype
   inforTypeId.value = value.inforTypeId
+  page.value.pageNum = 1
   searchBtn()
 }
 
@@ -104,6 +105,7 @@ const searchBtn = async () => {
     taglist.value = [...new Set(taglist.value)].slice(0, 10)
     taglist.value && store.setHistory(taglist.value)
   }
+  itemList.value = []
   const { data } = await informationList({
     levelOne: inforTypeId.value,
     title: title.value,
@@ -124,11 +126,9 @@ const goHistory = (item: any) => {
 const onClickLeft = () => history.back()
 const goNextpage = (info: number) => {
   page.value.pageNum = info
-  console.log('触底加载下一页数据')
+  console.log('触底加载下一页数据', info)
   searchBtn()
 }
-
-let value = ref('')
 onMounted(() => {
   const history = window.localStorage.getItem('History')
   taglist.value = history ? JSON.parse(history) : []

@@ -23,14 +23,14 @@
     @load="onLoad"
     v-show="props.itemList?.length > 0"
   >
-    <van-cell
-      v-for="(item, index) in props.itemList"
-      :key="index"
-      @click="toDetail(item)"
-    >
+    <van-cell v-for="(item, index) in itemLists" :key="index">
       <div class="content">
         <!-- 一张图片 -->
-        <div class="content-item" v-if="item?.coverLink">
+        <div
+          class="content-item"
+          v-if="item?.coverLink"
+          @click="toDetail(item)"
+        >
           <div class="text">
             <div class="title">{{ item.title }}</div>
             <div class="info">
@@ -82,6 +82,7 @@ const props = defineProps<{
 }>()
 const loading = ref(false)
 const finished = ref(false)
+const itemLists = ref<ItemListType[]>([])
 const router = useRouter()
 let color = ref('')
 let backgroundColor = ref('')
@@ -99,22 +100,20 @@ watch(
       color.value = '#007AFF'
       backgroundColor.value = '#e6f2ff'
     }
+    console.log(newValue)
+    itemLists.value = newValue.itemList
+    // itemLists.value = itemLists.value.concat(newValue.itemList)
   },
   { immediate: true, deep: true }
 )
+
 const onLoad = async () => {
-  console.log('触底了')
-
-  // finished.value = true
-  console.log(props.itemList)
-
-  if (props.itemList?.length === 0) {
-    console.log('无数据', '触底了')
-    loading.value = false
+  if (props.itemList.length < 5) {
     finished.value = true
   } else {
     page.value++
     emit('goNextpage', page.value)
+    loading.value = false
   }
 }
 
