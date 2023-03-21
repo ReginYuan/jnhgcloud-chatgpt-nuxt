@@ -1,121 +1,75 @@
 <template>
-  <!-- 产业头条 -->
-  <div class="industry_recommend" v-if="props.showSwiper">
-    <swiper-side :swiperList="props.bannerList"></swiper-side>
-  </div>
-  <!-- 政策法规 -->
-  <div class="policyRule" v-if="props.showRuleSwiper">
-    <van-swipe class="my-swipe" :show-indicators="false" lazy-render>
-      <van-swipe-item v-for="(item, index) in props.bannerList" :key="index">
-        <van-image :src="item.coverLink" />
-        <div class="swipe_title">{{ item.title }}</div>
-      </van-swipe-item>
-    </van-swipe>
-  </div>
-  <!-- 老板智库 -->
-  <div class="bossBank" v-if="props.showBossSwiper">
-    <swipers :swiperList="props.bannerList"></swipers>
-  </div>
-  <van-list
-    v-model:loading="loading"
-    :finished="finished"
-    finished-text="没有更多了"
-    @load="onLoad"
-    v-show="props.itemList?.length > 0"
-  >
-    <van-cell v-for="(item, index) in itemLists" :key="index">
-      <div class="content">
-        <!-- 一张图片 -->
-        <div
-          class="content-item"
-          v-if="item?.coverLink"
-          @click="toDetail(item)"
-        >
-          <div class="text">
-            <div class="title">{{ item.title }}</div>
-            <div class="info">
-              <div class="tag">
-                {{ item.infoSources }}
-              </div>
-              <div class="time">
-                {{ item.authorBy }}<i class="point"></i
-                >{{ item.createTime.split(' ')[0] }}
-              </div>
-            </div>
+  <!-- <div class="industry_recommend"></div> -->
+  <div class="content">
+    <!-- 一张图片 -->
+    <div class="content-item" v-if="list?.coverLink" @click="toDetail(list)">
+      <div class="text">
+        <div class="title">{{ list.title }}</div>
+        <div class="info">
+          <div class="tag">
+            {{ list.infoSources }}
           </div>
-          <van-image
-            width="80"
-            height="80"
-            fit="contain"
-            radius="10"
-            src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg"
-          />
-        </div>
-        <!-- 无图片 -->
-        <div class="content-item2" v-else>
-          <div class="text">
-            <div class="title">{{ item.title }}</div>
-            <div class="info">
-              <div class="tag">{{ item.infoSources }}</div>
-              <div class="time">{{ item.authorBy }}·{{ item.createTime }}</div>
-            </div>
+          <div class="time">
+            {{ list.authorBy }}<i class="point" v-show="list.authorBy"></i
+            >{{ list.createTime.split(' ')[0] }}
           </div>
         </div>
       </div>
-    </van-cell>
-  </van-list>
+      <van-image
+        width="80"
+        height="80"
+        fit="contain"
+        radius="10"
+        :src="list.coverLink"
+      />
+    </div>
+    <!-- 无图片 -->
+    <div class="content-item2" v-else>
+      <div class="text">
+        <div class="title">{{ list.title }}</div>
+        <div class="info">
+          <div class="tag">{{ list.infoSources }}</div>
+          <div class="time">{{ list.authorBy }}·{{ list.createTime }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, watch } from 'vue'
 import { ItemListType } from '~/types/itemList'
 import { useRouter } from 'vue-router'
-import { defineEmits } from 'vue'
-
-const emit = defineEmits(['goNextpage'])
 const props = defineProps<{
-  itemList: ItemListType[]
+  list: ItemListType
+  itemList?: ItemListType[]
   bannerList?: ItemListType[]
   showSwiper?: boolean
   showBossSwiper?: boolean
   showRuleSwiper?: boolean
+  type?: string
 }>()
-const loading = ref(false)
-const finished = ref(false)
-const itemLists = ref<ItemListType[]>([])
+
 const router = useRouter()
 let color = ref('')
 let backgroundColor = ref('')
-let page = ref(1)
 watch(
   () => props,
   (newValue, oldValue) => {
-    if (newValue.showBossSwiper) {
+    console.log(newValue.type, newValue.type === 'bossBank')
+    if (newValue.type === 'bossBank') {
       color.value = '#FDAD15'
       backgroundColor.value = '#fff3dc'
-    } else if (props.showSwiper === true) {
+    } else if (newValue.type === 'industry') {
       color.value = '#FA5151'
       backgroundColor.value = '#ffeeee'
-    } else if (props.showRuleSwiper === true) {
+    } else if (newValue.type === 'policyRule') {
       color.value = '#007AFF'
       backgroundColor.value = '#e6f2ff'
     }
-    console.log(newValue)
-    itemLists.value = newValue.itemList
-    // itemLists.value = itemLists.value.concat(newValue.itemList)
   },
   { immediate: true, deep: true }
 )
-
-const onLoad = async () => {
-  if (props.itemList.length < 5) {
-    finished.value = true
-  } else {
-    page.value++
-    emit('goNextpage', page.value)
-    loading.value = false
-  }
-}
 
 const toDetail = (item: ItemListType) => {
   router.push(`/details/${item.inforId}`)
@@ -140,6 +94,7 @@ onMounted(() => {})
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    align-items: flex-start;
     margin-right: 16px;
     flex: 1;
     .title {
@@ -154,6 +109,7 @@ onMounted(() => {})
       padding-top: 5px;
     }
     .info {
+      width: 100%;
       display: flex;
       justify-content: space-between;
       .tag {
@@ -175,37 +131,6 @@ onMounted(() => {})
           background-color: #c4c4c4;
         }
       }
-    }
-  }
-}
-
-:deep(.van-cell__value) {
-  text-align: left;
-}
-// 政策法规
-.policyRule {
-  padding: 10px 20px;
-  :deep(.van-swipe-item) {
-    box-sizing: border-box;
-    width: 335px;
-    height: 179px;
-    padding: 0 5px;
-    position: relative;
-    .van-image {
-      width: 100%;
-      height: 100%;
-      .van-image__img {
-        border-radius: 10px;
-      }
-    }
-    .swipe_title {
-      position: absolute;
-      bottom: 8px;
-      left: 5px;
-      line-height: 24px;
-      padding: 8px 12px 0;
-      font-size: 16px;
-      color: #ffffff;
     }
   }
 }

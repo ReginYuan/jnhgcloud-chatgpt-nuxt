@@ -7,16 +7,23 @@
     @click-tab="onClickTab"
   >
     <van-tab :title="item.name" v-for="(item, index) in tabList" :key="index">
-      <ItemList
-        :itemList="itemList"
-        :bannerList="bannerList"
-        :showBossSwiper="showSwiper"
-      ></ItemList>
+      <!-- <swipers v-if="showSwiper"></swipers> -->
+      <van-list
+        v-model:loading="loading"
+        :finished="finished"
+        finished-text="没有更多了"
+        @load="onLoad"
+        :immediate-check="false"
+      >
+        <van-cell v-for="(item, index) in itemList" :key="index">
+          <ItemList :list="item" type="bossBank"></ItemList>
+        </van-cell>
+      </van-list>
     </van-tab>
   </van-tabs>
 </template>
 <script lang="ts" setup>
-import { getInfo, informationList, bannerInfo } from '~/server/api/user'
+import { getInfo, informationList } from '~/server/api/user'
 import { ref, reactive, onMounted } from 'vue'
 import { Tabtype, ItemListType } from '~/types/itemList'
 let Id = ref('1636282537209352194')
@@ -33,12 +40,12 @@ let tabItem = reactive<{ data: Tabtype }>({
   }
 })
 let itemList = ref<ItemListType[]>([])
-let bannerList = ref<ItemListType[]>([])
-let showSwiper = ref(false)
+let showSwiper = ref(true)
+const loading = ref(false)
+const finished = ref(false)
 
 const getTypeList = async () => {
-  const parentId = '1636282537209352194'
-  const { data } = await getInfo({ parentId })
+  const { data } = await getInfo({ parentId: Id.value })
   tabList.value = [...data]
   tabList.value.unshift({
     inforTypeId: '',
@@ -49,42 +56,63 @@ const getTypeList = async () => {
   })
 }
 
-const onClickTab = async (info: any) => {
-  tabItem.data = tabList.value.find(item => item.name === info.title) as Tabtype
+// 获取列表数据
+let page = ref({
+  levelOne: Id.value,
+  levelTwo: '',
+  recommend: '',
+  min: '',
+  offset: 0,
+  count: 5
+})
+
+const getList = async () => {
   if (tabItem.data?.parentId === '') {
-    const { data } = await bannerInfo({
-      levelOne: tabItem.data.parentId,
-      levelTwo: tabItem.data.inforTypeId,
+    const { data } = await informationList({
+      levelOne: Id.value,
+      levelTwo: page.value.levelTwo,
       recommend: 'Y',
-      pageSize: 5,
-      pageNum: 1
+      count: page.value.count
     })
-    bannerList.value = data?.slice(0, 3)
     showSwiper.value = true
-    itemList.value = data
+    itemList.value = data.data
+    page.value.min = data.min
+    page.value.offset = data.offset
   } else {
     const { data } = await informationList({
-      levelOne: tabItem.data.parentId,
-      levelTwo: tabItem.data.inforTypeId,
-      pageSize: 5,
-      pageNum: 1
+      levelOne: Id.value,
+      levelTwo: page.value.levelTwo,
+      count: page.value.count
     })
     showSwiper.value = false
-    itemList.value = data.records
+    itemList.value = data.data
+    page.value.min = data.min
+    page.value.offset = data.offset
+  }
+}
+
+const onClickTab = async (info: any) => {
+  tabItem.data = tabList.value.find(item => item.name === info.title) as Tabtype
+  page.value.levelOne = tabItem.data.parentId
+  page.value.levelTwo = tabItem.data.inforTypeId
+  getList()
+}
+const onLoad = async () => {
+  if (itemList.value.length >= page.value.count) {
+    const { data } = await informationList({ ...page.value })
+    itemList.value.push(...data.data)
+    page.value.min = data.min
+    page.value.offset = data.offset
+    loading.value = false
+    if (data.data.length < page.value.count) finished.value = true
+  } else {
+    loading.value = false
+    finished.value = true
   }
 }
 onMounted(async () => {
   getTypeList()
-  const { data } = await bannerInfo({
-    levelOne: tabItem.data.parentId,
-    levelTwo: tabItem.data.inforTypeId,
-    recommend: 'Y',
-    pageSize: 5,
-    pageNum: 1
-  })
-  bannerList.value = data.slice(0, 3)
-  showSwiper.value = true
-  itemList.value = data
+  getList()
 })
 </script>
 
@@ -117,8 +145,14 @@ onMounted(async () => {
     }
   }
 }
+.tag {
+  color: pink;
+}
 .content {
   height: calc(100vh - 100px);
   overflow: auto;
+}
+:deep(.van-cell) {
+  padding: 0;
 }
 </style>

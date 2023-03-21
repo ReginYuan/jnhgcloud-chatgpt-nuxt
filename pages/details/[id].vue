@@ -31,7 +31,9 @@
   <div style="background-color: #f7f7f7; height: 8px"></div>
   <div class="about">
     <div class="title">相关文章</div>
-    <ItemList :itemList="itemList"></ItemList>
+    <div v-for="(item, index) in itemList" :key="index">
+      <ItemList :list="item"></ItemList>
+    </div>
   </div>
 </template>
 
