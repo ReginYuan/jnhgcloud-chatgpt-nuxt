@@ -1,13 +1,8 @@
 <template>
   <HeaderBar title="产业头条" :parentId="Id"></HeaderBar>
-  <van-tabs
-    v-model:active="active"
-    line-height="0"
-    :ellipsis="false"
-    @click-tab="onClickTab"
-  >
+  <van-tabs v-model:active="active" :ellipsis="false" @click-tab="onClickTab">
     <van-tab :title="item.name" v-for="(item, index) in tabList" :key="index">
-      <!-- <SwiperSide v-show="showSwiper"></SwiperSide> -->
+      <SwiperSide v-if="showSwiper"></SwiperSide>
       <van-list
         v-model:loading="loading"
         :finished="finished"
@@ -148,12 +143,17 @@ onMounted(() => {
     }
   }
 }
-
 :deep(.van-cell) {
   padding: 0;
 }
-.content {
-  height: calc(100vh - 100px);
-  overflow: auto;
+:deep(.van-tabs__line) {
+  display: none;
 }
+:deep(.van-tabs) {
+  margin-top: 50px !important;
+}
+// .content {
+//   height: calc(100vh - 100px);
+//   overflow: auto;
+// }
 </style>

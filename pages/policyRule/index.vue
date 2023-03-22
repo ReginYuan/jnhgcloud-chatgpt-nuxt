@@ -1,11 +1,6 @@
 <template>
   <HeaderBar title="政策法规" :parentId="Id"></HeaderBar>
-  <van-tabs
-    v-model:active="active"
-    line-height="0"
-    :ellipsis="false"
-    @click-tab="onClickTab"
-  >
+  <van-tabs v-model:active="active" :ellipsis="false" @click-tab="onClickTab">
     <van-tab :title="item.name" v-for="(item, index) in tabList" :key="index">
       <div class="policyRule" v-if="showSwiper">
         <van-swipe class="my-swipe" :show-indicators="false" lazy-render>
@@ -22,7 +17,11 @@
         @load="onLoad"
         :immediate-check="false"
       >
-        <van-cell v-for="(item, index) in itemList" :key="index">
+        <van-cell
+          v-for="(item, index) in itemList"
+          :key="index"
+          :border="false"
+        >
           <ItemList :list="item" type="policyRule"></ItemList>
         </van-cell>
       </van-list>
@@ -172,6 +171,9 @@ onMounted(async () => {
 }
 :deep(.van-cell) {
   padding: 0;
+}
+:deep(.van-tabs__line) {
+  display: none;
 }
 .policyRule {
   padding: 10px 20px;

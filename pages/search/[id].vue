@@ -42,7 +42,11 @@
         @load="onLoad"
         :immediate-check="false"
       >
-        <van-cell v-for="(item, index) in itemList" :key="index">
+        <van-cell
+          v-for="(item, index) in itemList"
+          :key="index"
+          :border="false"
+        >
           <ItemList :list="item"></ItemList>
         </van-cell>
       </van-list>

@@ -1,13 +1,8 @@
 <template>
   <HeaderBar title="老板智库" :parentId="Id"></HeaderBar>
-  <van-tabs
-    v-model:active="active"
-    line-height="0"
-    :ellipsis="false"
-    @click-tab="onClickTab"
-  >
+  <van-tabs v-model:active="active" :ellipsis="false" @click-tab="onClickTab">
     <van-tab :title="item.name" v-for="(item, index) in tabList" :key="index">
-      <!-- <swipers v-if="showSwiper"></swipers> -->
+      <swipers v-if="showSwiper"></swipers>
       <van-list
         v-model:loading="loading"
         :finished="finished"
@@ -15,7 +10,11 @@
         @load="onLoad"
         :immediate-check="false"
       >
-        <van-cell v-for="(item, index) in itemList" :key="index">
+        <van-cell
+          v-for="(item, index) in itemList"
+          :key="index"
+          :border="false"
+        >
           <ItemList :list="item" type="bossBank"></ItemList>
         </van-cell>
       </van-list>
@@ -145,14 +144,14 @@ onMounted(async () => {
     }
   }
 }
-.tag {
-  color: pink;
-}
 .content {
   height: calc(100vh - 100px);
   overflow: auto;
 }
 :deep(.van-cell) {
   padding: 0;
+}
+:deep(.van-tabs__line) {
+  display: none;
 }
 </style>

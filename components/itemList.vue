@@ -1,36 +1,33 @@
 <template>
-  <!-- <div class="industry_recommend"></div> -->
-  <div class="content">
-    <!-- 一张图片 -->
-    <div class="content-item" v-if="list?.coverLink" @click="toDetail(list)">
-      <div class="text">
-        <div class="title">{{ list.title }}</div>
-        <div class="info">
-          <div class="tag">
-            {{ list.infoSources }}
-          </div>
-          <div class="time">
-            {{ list.authorBy }}<i class="point" v-show="list.authorBy"></i
-            >{{ list.createTime.split(' ')[0] }}
-          </div>
+  <!-- 一张图片 -->
+  <div class="content-item" v-if="list?.coverLink" @click="toDetail(list)">
+    <div class="text">
+      <div class="title">{{ list.title }}</div>
+      <div class="info">
+        <div class="tag">
+          {{ list.infoSources }}
+        </div>
+        <div class="time">
+          {{ list.authorBy }}<i class="point" v-show="list.authorBy"></i
+          >{{ list.createTime.split(' ')[0] }}
         </div>
       </div>
-      <van-image
-        width="80"
-        height="80"
-        fit="contain"
-        radius="10"
-        :src="list.coverLink"
-      />
     </div>
-    <!-- 无图片 -->
-    <div class="content-item2" v-else>
-      <div class="text">
-        <div class="title">{{ list.title }}</div>
-        <div class="info">
-          <div class="tag">{{ list.infoSources }}</div>
-          <div class="time">{{ list.authorBy }}·{{ list.createTime }}</div>
-        </div>
+    <van-image
+      width="80"
+      height="80"
+      fit="cover"
+      radius="10"
+      :src="list.coverLink"
+    />
+  </div>
+  <!-- 无图片 -->
+  <div class="content-item2" v-else>
+    <div class="text">
+      <div class="title">{{ list.title }}</div>
+      <div class="info">
+        <div class="tag">{{ list.infoSources }}</div>
+        <div class="time">{{ list.authorBy }}·{{ list.createTime }}</div>
       </div>
     </div>
   </div>
@@ -56,7 +53,6 @@ let backgroundColor = ref('')
 watch(
   () => props,
   (newValue, oldValue) => {
-    console.log(newValue.type, newValue.type === 'bossBank')
     if (newValue.type === 'bossBank') {
       color.value = '#FDAD15'
       backgroundColor.value = '#fff3dc'
@@ -79,57 +75,55 @@ onMounted(() => {})
 </script>
 
 <style scoped lang="scss">
-.content {
-  .content-item {
+.content-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+}
+.content-item2 {
+  padding: 12px 16px;
+}
+.text {
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-right: 16px;
+  flex: 1;
+  .title {
+    font-size: 16px;
+    line-height: 20px;
+    color: #222222;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    padding-top: 5px;
+  }
+  .info {
+    width: 100%;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 12px 16px;
-  }
-  .content-item2 {
-    padding: 12px 16px;
-  }
-  .text {
-    height: 80px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-right: 16px;
-    flex: 1;
-    .title {
-      font-size: 16px;
-      line-height: 20px;
-      color: #222222;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      padding-top: 5px;
+    .tag {
+      font-size: 12px;
+      color: v-bind('color');
+      background-color: v-bind('backgroundColor');
+      padding: 0px 8px;
+      border-radius: 2px;
     }
-    .info {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      .tag {
-        font-size: 12px;
-        color: v-bind('color');
-        background-color: v-bind('backgroundColor');
-        padding: 0px 8px;
-        border-radius: 2px;
-      }
-      .time {
-        font-size: 12px;
-        color: rgba($color: #222222, $alpha: 0.5);
-        .point {
-          display: inline-block;
-          width: 5px;
-          height: 5px;
-          border-radius: 5px;
-          margin: 0 3px 2px;
-          background-color: #c4c4c4;
-        }
+    .time {
+      font-size: 12px;
+      color: rgba($color: #222222, $alpha: 0.5);
+      .point {
+        display: inline-block;
+        width: 5px;
+        height: 5px;
+        border-radius: 5px;
+        margin: 0 3px 2px;
+        background-color: #c4c4c4;
       }
     }
   }
