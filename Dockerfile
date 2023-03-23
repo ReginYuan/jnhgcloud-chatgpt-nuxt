@@ -1,4 +1,4 @@
-FROM gitlab.jnhgsz.com/jenkins/node-ubuntu:latest
+FROM harbor.jnhgsz.com/jenkins/jenkins-agent:jdk11-2.3
 
 WORKDIR /jnhgcloud-info
 
