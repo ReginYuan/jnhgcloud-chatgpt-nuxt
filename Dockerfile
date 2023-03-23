@@ -8,6 +8,6 @@ RUN rm -rf /usr/share/nginx/html/*
 
 COPY .output/public/ /usr/share/nginx/html
 
-EXPOSE 80
+EXPOSE 61080
 
 CMD ["nginx","-g","daemon off;"]
