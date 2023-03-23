@@ -7,8 +7,9 @@ WORKDIR /jnhgcloud
 ENV TimeZone=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TimeZone /etc/localtime && echo $TimeZone > /etc/timezone
 
+COPY package.json ./package.json
 COPY .output/ ./output
 
 EXPOSE 3000
 
-CMD ["pnpm","run","dev"]
+CMD pnpm run dev ./output
