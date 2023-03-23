@@ -1,12 +1,14 @@
-FROM harbor.jnhgsz.com/jenkins/jenkins-agent:jdk11-2.3
+FROM harbor.jnhgsz.com/nginx/nginx:stable
 
-WORKDIR /jnhgcloud-info
+WORKDIR /usr/share/nginx/html
 
-ENV TimeZone=Asia/Shanghai
+ENV TimeZone=Asia/Shanghai  
 RUN ln -snf /usr/share/zoneinfo/$TimeZone /etc/localtime && echo $TimeZone > /etc/timezone
+RUN rm -rf /usr/share/nginx/html/*
 
-COPY ./ ./
+COPY .output/public/ /usr/share/nginx/html
 
 EXPOSE 3000
+EXPOSE 80
 
-CMD node ./output/server/index.mjs
+CMD ["nginx","-g","daemon off;"]
