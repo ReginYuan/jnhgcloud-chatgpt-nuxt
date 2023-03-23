@@ -26,15 +26,15 @@ pipeline {
                 url: "${url}"]]])
             }
         }
-        stage('Build-Package') {
-            steps {
-                sh '''
-                npm cache clean -f
-                pnpm install
-                pnpm run build
-                '''
-            }
-        }
+        //stage('Build-Package') {
+        //    steps {
+        //        sh '''
+        //        npm cache clean -f
+        //        pnpm install
+        //        pnpm run build
+        //        '''
+        //    }
+        //}
 		stage('Docker Build') {
             steps {
                 sh '''
