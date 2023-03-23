@@ -6,8 +6,7 @@ ENV TimeZone=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TimeZone /etc/localtime && echo $TimeZone > /etc/timezone
 
 COPY ./ ./
-RUN npm cache clean -f && pnpm install
 
 EXPOSE 3000
 
-CMD pnpm run dev
+CMD node ./output/server/index.mjs
