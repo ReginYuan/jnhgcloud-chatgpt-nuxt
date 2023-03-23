@@ -1,4 +1,4 @@
-FROM harbor.jnhgsz.com/nginx/nginx:stable
+FROM harbor.jnhgsz.com/nginx/nginx:stable-new
 
 WORKDIR /usr/share/nginx/html
 
