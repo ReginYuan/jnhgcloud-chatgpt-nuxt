@@ -1,13 +1,11 @@
-FROM harbor.jnhgsz.com/nginx/nginx:stable-new
+FROM gitlab.jnhgsz.com/jenkins/node-ubuntu:latest
 
-WORKDIR /usr/share/nginx/html
+WORKDIR /jnhgcloud-info
 
-ENV TimeZone=Asia/Shanghai  
+ENV TimeZone=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TimeZone /etc/localtime && echo $TimeZone > /etc/timezone
-RUN rm -rf /usr/share/nginx/html/*
 
-COPY ./dist/ /usr/share/nginx/html
-
+COPY .output ./output
 EXPOSE 80
 
-CMD ["nginx","-g","daemon off;"]
+CMD node ./output/server/index.mjs
