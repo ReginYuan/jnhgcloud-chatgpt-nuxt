@@ -31,7 +31,6 @@ pipeline {
                 sh '''
                 npm cache clean -f
                 pnpm install
-                //pnpm run build
                 '''
             }
         }
