@@ -1,21 +1,19 @@
 <template>
   <HeaderBar title="老板智库" :parentId="Id"></HeaderBar>
-  <van-tabs
-    v-model:active="active"
-    line-height="0"
-    :ellipsis="false"
-    @click-tab="onClickTab"
-  >
+  <van-tabs v-model:active="active" :ellipsis="false" @click-tab="onClickTab">
     <van-tab :title="item.name" v-for="(item, index) in tabList" :key="index">
-      <!-- <swipers v-if="showSwiper"></swipers> -->
+      <swipers v-if="showSwiper"></swipers>
       <van-list
         v-model:loading="loading"
         :finished="finished"
         finished-text="没有更多了"
         @load="onLoad"
-        :immediate-check="false"
       >
-        <van-cell v-for="(item, index) in itemList" :key="index">
+        <van-cell
+          v-for="(item, index) in itemList"
+          :key="index"
+          :border="false"
+        >
           <ItemList :list="item" type="bossBank"></ItemList>
         </van-cell>
       </van-list>
@@ -44,9 +42,22 @@ let showSwiper = ref(true)
 const loading = ref(false)
 const finished = ref(false)
 
+interface pageType {
+  offset?: number
+  min?: string
+}
+let idInfo = ref({
+  levelOne: '',
+  levelTwo: '',
+  recommend: '',
+  count: 4
+})
+let page = ref<pageType>({})
+let lastPage = ref(false)
+
 const getTypeList = async () => {
   const { data } = await getInfo({ parentId: Id.value })
-  tabList.value = [...data]
+  tabList.value = JSON.parse(JSON.stringify(data))
   tabList.value.unshift({
     inforTypeId: '',
     parentId: '',
@@ -56,63 +67,39 @@ const getTypeList = async () => {
   })
 }
 
-// 获取列表数据
-let page = ref({
-  levelOne: Id.value,
-  levelTwo: '',
-  recommend: '',
-  min: '',
-  offset: 0,
-  count: 5
-})
-
 const getList = async () => {
   if (tabItem.data?.parentId === '') {
-    const { data } = await informationList({
-      levelOne: Id.value,
-      levelTwo: page.value.levelTwo,
-      recommend: 'Y',
-      count: page.value.count
-    })
+    idInfo.value.recommend = 'Y'
     showSwiper.value = true
-    itemList.value = data.data
-    page.value.min = data.min
-    page.value.offset = data.offset
   } else {
-    const { data } = await informationList({
-      levelOne: Id.value,
-      levelTwo: page.value.levelTwo,
-      count: page.value.count
-    })
+    idInfo.value.recommend = ''
     showSwiper.value = false
-    itemList.value = data.data
-    page.value.min = data.min
-    page.value.offset = data.offset
   }
+  const { data } = await informationList({
+    ...idInfo.value,
+    ...page.value
+  })
+  itemList.value.push(...data.data)
+  page.value.min = data.min
+  page.value.offset = data.offset
+  if (data.data.length <= idInfo.value.count) lastPage.value = true
 }
 
 const onClickTab = async (info: any) => {
   tabItem.data = tabList.value.find(item => item.name === info.title) as Tabtype
-  page.value.levelOne = tabItem.data.parentId
-  page.value.levelTwo = tabItem.data.inforTypeId
+  idInfo.value.levelOne = tabItem.data.parentId
+  idInfo.value.levelTwo = tabItem.data.inforTypeId
+  itemList.value = []
+  page.value = {}
   getList()
 }
 const onLoad = async () => {
-  if (itemList.value.length >= page.value.count) {
-    const { data } = await informationList({ ...page.value })
-    itemList.value.push(...data.data)
-    page.value.min = data.min
-    page.value.offset = data.offset
-    loading.value = false
-    if (data.data.length < page.value.count) finished.value = true
-  } else {
-    loading.value = false
-    finished.value = true
-  }
+  getList()
+  loading.value = false
+  if (lastPage) finished.value = true
 }
 onMounted(async () => {
   getTypeList()
-  getList()
 })
 </script>
 
@@ -145,14 +132,14 @@ onMounted(async () => {
     }
   }
 }
-.tag {
-  color: pink;
-}
 .content {
   height: calc(100vh - 100px);
   overflow: auto;
 }
 :deep(.van-cell) {
   padding: 0;
+}
+:deep(.van-tabs__line) {
+  display: none;
 }
 </style>

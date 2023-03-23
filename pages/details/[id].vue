@@ -18,7 +18,7 @@
     </div>
     <div class="text" v-html="content.data.content"></div>
     <div class="pic">
-      <img src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg" alt="" />
+      <img :src="content.data.coverLink" alt="" />
     </div>
   </div>
   <!-- 标签 -->
@@ -39,10 +39,11 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { ItemListType } from '~/types/itemList'
 import { getDetail, relatedArticles } from '~/server/api/user'
 const route = useRoute()
+const router = useRouter()
 let content = reactive<{ data: ItemListType }>({
   data: {
     inforId: '',
@@ -69,7 +70,16 @@ const getDetails = async () => {
   })
   itemList.value = res.data
 }
-const onClickLeft = () => history.back()
+const onClickLeft = () => {
+  console.log(content.data.levelOne)
+  if (content.data.levelOne === '1636282443407937538') {
+    router.push('/industry')
+  } else if (content.data.levelOne === '1636282537209352194') {
+    router.push('/bossBank')
+  } else if (content.data.levelOne === '1636282673046081537') {
+    router.push('/bossBank')
+  }
+}
 
 onMounted(() => {
   getDetails()

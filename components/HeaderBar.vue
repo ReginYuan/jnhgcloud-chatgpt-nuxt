@@ -22,6 +22,7 @@ const goSearch = () => {
 
 <style scoped lang="scss">
 .header {
+  width: 100%;
   :deep(.van-nav-bar) {
     background-color: transparent;
     font-size: 20px;

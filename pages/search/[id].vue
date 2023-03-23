@@ -3,7 +3,7 @@
     <van-nav-bar left-arrow :clickable="false" @click-left="onClickLeft">
       <template #title>
         <van-search
-          v-model="page.title"
+          v-model="idInfo.title"
           placeholder="搜索资讯"
           background="transparent"
           shape="round"
@@ -27,12 +27,7 @@
     @click-tab="onClickTab"
     inactive-color="#222229"
   >
-    <van-tab
-      v-model:active="active"
-      :title="item.name"
-      v-for="(item, index) in tabList"
-      :key="index"
-    >
+    <van-tab :title="item.name" v-for="(item, index) in tabList" :key="index">
       <!-- 搜索结果 -->
       <van-list
         v-if="isShow"
@@ -40,9 +35,12 @@
         :finished="finished"
         finished-text="没有更多了"
         @load="onLoad"
-        :immediate-check="false"
       >
-        <van-cell v-for="(item, index) in itemList" :key="index">
+        <van-cell
+          v-for="(item, index) in itemList"
+          :key="index"
+          :border="false"
+        >
           <ItemList :list="item"></ItemList>
         </van-cell>
       </van-list>
@@ -77,19 +75,24 @@ import { getInfo, informationList } from '~/server/api/user'
 import { Tabtype, ItemListType } from '~/types/itemList'
 const route = useRoute()
 const active = ref(0)
-let isShow = ref(false)
+let isShow = ref(true)
 let tabList = ref<Tabtype[]>([])
 let itemList = ref<ItemListType[]>([])
 const loading = ref(false)
 const finished = ref(false)
 const taglist = ref<string[]>([])
-let page = ref({
+
+let idInfo = ref({
   title: '',
   levelOne: '',
-  min: '',
-  offset: 0,
-  count: 20
+  count: 4
 })
+interface pageType {
+  offset?: number
+  min?: string
+}
+let page = ref<pageType>({})
+let lastPage = ref(false)
 
 const getTypeList = async () => {
   const { data } = await getInfo({ parentId: 0 })
@@ -97,46 +100,36 @@ const getTypeList = async () => {
   const index = tabList.value.findIndex(
     item => item.inforTypeId === route.params.id
   )
-  const item = tabList.value.find(item => item.inforTypeId === route.params.id)
-  page.value.levelOne = item?.inforTypeId as string
   active.value = index
+  const item = tabList.value.find(item => item.inforTypeId === route.params.id)
+  idInfo.value.levelOne = item?.inforTypeId as string
 }
 
 const onClickTab = async (info: any) => {
   const value = tabList.value.find(item => item.name === info.title) as Tabtype
-  page.value.levelOne = value.inforTypeId
+  idInfo.value.levelOne = value.inforTypeId
+  itemList.value = []
+  page.value = {}
   searchBtn()
 }
 
 const onLoad = async () => {
-  if (itemList.value.length >= page.value.count) {
-    const { data } = await informationList({ ...page.value })
-    itemList.value.push(...data.data)
-    page.value.min = data.min
-    page.value.offset = data.offset
-    loading.value = false
-    if (data.data.length < page.value.count) finished.value = true
-  } else {
-    loading.value = false
-    finished.value = true
-  }
+  searchBtn()
+  loading.value = false
+  if (lastPage) finished.value = true
 }
 
 const store = historyStrore()
 const searchBtn = async () => {
   isShow.value = true
-  const { data } = await informationList({
-    levelOne: page.value.levelOne,
-    title: page.value.title,
-    count: page.value.count
-  })
-  itemList.value = data.data
+  const { data } = await informationList({ ...idInfo.value, ...page.value })
+  itemList.value.push(...data.data)
   page.value.min = data.min
   page.value.offset = data.offset
 
   // 存储输入框历史记录
-  if (page.value.title != '') {
-    taglist.value.unshift(page.value.title)
+  if (idInfo.value.title != '') {
+    taglist.value.unshift(idInfo.value.title)
     taglist.value = [...new Set(taglist.value)].slice(0, 10)
     taglist.value && store.setHistory(taglist.value)
   }
@@ -147,7 +140,7 @@ const clearBtn = () => {
 }
 const onFocus = () => (isShow.value = false)
 const goHistory = (item: any) => {
-  page.value.title = item
+  idInfo.value.title = item
   searchBtn()
 }
 const onClickLeft = () => history.back()

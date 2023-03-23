@@ -1,28 +1,25 @@
 <template>
-  <div class="swiperbox">
-    <swiper
-      :width="230"
-      slidesPerView="auto"
-      :centeredSlides="true"
-      :spaceBetween="15"
-      :slidesOffsetBefore="0"
-      :loop="true"
-      :loopAdditionalSlides="3"
-      class="mySwiper"
-      :modules="modules"
-    >
-      <swiper-slide v-for="(item, index) in swiperList" :key="index">
-        <div class="content">
-          <img :src="item.coverLink" alt="" />
-          <div class="title">{{ item.title }}</div>
-          <div class="tagInfo">
-            {{ item.authorBy }}<i class="point" v-show="item.authorBy"></i
-            >{{ item.createTime.split(' ')[0] }}
-          </div>
+  <swiper
+    :width="230"
+    :centeredSlides="true"
+    :spaceBetween="15"
+    :slidesOffsetBefore="0"
+    :loop="true"
+    :loopAdditionalSlides="3"
+    :modules="modules"
+  >
+    <swiper-slide v-for="(item, index) in swiperList" :key="index">
+      <div class="content">
+        <img :src="item.coverLink" alt="" />
+        <div class="title">{{ item.title }}</div>
+        <div class="tagInfo">
+          {{ item.authorBy }}<i class="point" v-show="item.authorBy"></i
+          >{{ item.createTime.split(' ')[0] }}
         </div>
-      </swiper-slide>
-    </swiper>
-  </div>
+      </div>
+    </swiper-slide>
+  </swiper>
+  <!-- slidesPerView="auto" -->
 </template>
 
 <script setup lang="ts">
