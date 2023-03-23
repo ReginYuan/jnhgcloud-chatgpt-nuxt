@@ -5,7 +5,9 @@ WORKDIR /jnhgcloud-info
 ENV TimeZone=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TimeZone /etc/localtime && echo $TimeZone > /etc/timezone
 
-COPY .output ./output
+COPY ./* ./
+RUN npm cache clean -f && pnpm install
+
 EXPOSE 3000
 
-CMD node ./output/server/index.mjs
+CMD pnpm run dev
