@@ -1,14 +1,14 @@
 #FROM harbor.jnhgsz.com/nginx/nginx:stable-new
-FROM harbor.jnhgsz.com/nginx/nginx:stable-jnhgcloud-info
+#FROM harbor.jnhgsz.com/nginx/nginx:stable-jnhgcloud-info
+FROM harbor.jnhgsz.com/jenkins/node-ubuntu:latest
 
-WORKDIR /usr/share/nginx/html
+WORKDIR /jnhgcloud
 
-ENV TimeZone=Asia/Shanghai  
+ENV TimeZone=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TimeZone /etc/localtime && echo $TimeZone > /etc/timezone
-RUN rm -rf /usr/share/nginx/html/*
 
-COPY .output/public/ /usr/share/nginx/html
+COPY .output/ ./output
 
-EXPOSE 61080
+EXPOSE 3000
 
-CMD ["nginx","-g","daemon off;"]
+CMD ["pnpm","run","dev"]
