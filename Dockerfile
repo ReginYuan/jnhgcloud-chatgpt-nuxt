@@ -11,4 +11,4 @@ COPY ./ ./
 
 EXPOSE 3000
 
-CMD pnpm run dev .output
+CMD cd .output && pnpm run dev
