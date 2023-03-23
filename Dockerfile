@@ -6,6 +6,6 @@ ENV TimeZone=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TimeZone /etc/localtime && echo $TimeZone > /etc/timezone
 
 COPY .output ./output
-EXPOSE 80
+EXPOSE 3000
 
 CMD node ./output/server/index.mjs
