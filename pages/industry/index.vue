@@ -53,7 +53,7 @@ let lastPage = ref(false)
 let tabList = ref<Tabtype[]>([])
 const getTypeList = async () => {
   const { data } = await getInfo({ parentId: Id.value })
-  tabList.value = [...data]
+  tabList.value = JSON.parse(JSON.stringify(data))
   tabList.value.unshift({
     inforTypeId: '',
     parentId: '',

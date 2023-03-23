@@ -65,7 +65,7 @@ let lastPage = ref(false)
 const getTypeList = async () => {
   const parentId = '1636282617106649089'
   const { data } = await getInfo({ parentId })
-  tabList.value = [...data]
+  tabList.value = JSON.parse(JSON.stringify(data))
   tabList.value.unshift({
     inforTypeId: '',
     parentId: '',
