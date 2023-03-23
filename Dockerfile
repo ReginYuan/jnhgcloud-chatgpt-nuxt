@@ -5,7 +5,7 @@ WORKDIR /jnhgcloud-info
 ENV TimeZone=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TimeZone /etc/localtime && echo $TimeZone > /etc/timezone
 
-COPY ./* ./
+COPY ./ ./
 #RUN npm cache clean -f && pnpm install
 
 EXPOSE 3000
