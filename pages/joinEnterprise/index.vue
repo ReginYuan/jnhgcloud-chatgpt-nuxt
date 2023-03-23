@@ -26,7 +26,7 @@
           />
           <van-field
             label-align="top"
-            v-model="form.code" 
+            v-model="form.code"
             name="验证码"
             label="验证码"
             required
@@ -149,7 +149,14 @@ const goBack = () => {
   router.go(-1)
 }
 const getList = async () => {
-  const params = { companyNo: 'ZSHB29277452' }
+  const us = navigator.userAgent.split('/').join('')
+  var index = us.indexOf('webview')
+  var newUs = us.slice(index + 7)
+  let a = newUs.indexOf('webdebugger ')
+  let str = newUs.substring(0, a)
+  const companyNo = str.split(' ').join('')
+  console.log(companyNo, 'companyNo')
+  const params = { companyNo: companyNo }
   const list = await h5joinCompanyCheck(params)
   companyName.value = list.data.companyName
   form.companyNo = list.data.companyNo
@@ -216,18 +223,18 @@ onMounted(() => {
   .click {
     color: #1f46b6;
   }
-  ::v-deep .van-field__label {
+  :v-deep(.van-field__label) {
     font-size: 18px;
     font-family: Source Han Sans CN-Regular, Source Han Sans CN;
     font-weight: 400;
   }
-  ::v-deep .van-field__body {
+  :v-deep(.van-field__body) {
     font-size: 16px;
     font-family: Source Han Sans CN-Normal, Source Han Sans CN;
     font-weight: 400;
     color: #b2bac6;
   }
-  ::v-deep .van-field__body {
+  :v-deep(.van-field__body) {
     margin-top: 10px;
   }
 }
