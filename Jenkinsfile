@@ -26,11 +26,12 @@ pipeline {
                 url: "${url}"]]])
             }
         }
-        stage('Build Package') {
+        stage('Build-Package') {
             steps {
                 sh '''
-                npm install --registry=https://registry.npmmirror.com
-                npm run build:test
+                npm config set PUPPETEER_DOWNLOAD_HOST=https://npm.taobao.org/mirrors/
+                npm i --legacy-peer-deps
+                npm run build
                 '''
             }
         }
@@ -50,9 +51,6 @@ pipeline {
             }
         }
 		stage('Sed Deployment') {
-		    when {
-		        expression { env.BRANCH_NAME == "dev" }
-		    }
             steps {
                 sh """
                 sed -i -e "s/PROJECT_NAME/${PROJECT_NAME}/g" \
