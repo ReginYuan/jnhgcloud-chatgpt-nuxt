@@ -29,9 +29,9 @@ pipeline {
         stage('Build-Package') {
             steps {
                 sh '''
-                npm config set PUPPETEER_DOWNLOAD_HOST=https://npm.taobao.org/mirrors/
-                npm i --legacy-peer-deps
-                npm run build
+                npm cache clean -f
+                pnpm install
+                pnpm run build
                 '''
             }
         }
