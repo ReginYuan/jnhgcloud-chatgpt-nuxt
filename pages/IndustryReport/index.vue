@@ -11,27 +11,34 @@
     @click-tab="onClickTab"
   >
     <van-tab :title="item.name" v-for="(item, index) in tabList" :key="index">
-      <div class="content">
-        <div
+      <van-list
+        v-model:loading="loading"
+        :finished="finished"
+        finished-text="没有更多了"
+        @load="onLoad"
+      >
+        <van-cell
           v-for="(item, index) in itemList"
           :key="index"
           @click="toDetail(item)"
         >
-          <div class="title">
-            <div class="pic">
-              <img src="~/assets/img/icon-pdf.png" alt="" />
+          <div class="content">
+            <div class="title">
+              <div class="pic">
+                <img src="~/assets/img/icon-pdf.png" alt="" />
+              </div>
+              <div class="text">{{ item.title }}</div>
             </div>
-            <div class="text">{{ item.title }}</div>
-          </div>
-          <div class="info">
-            <div class="tag">
-              <span class="come">来源：{{ item.infoSources }}</span>
-              <!-- <span class="page">{{ item.page }}</span> -->
+            <div class="info">
+              <div class="tag">
+                <span class="come">来源：{{ item.infoSources }}</span>
+                <!-- <span class="page">{{ item.page }}</span> -->
+              </div>
+              <div class="time">{{ item.createTime?.split(' ')[0] }}</div>
             </div>
-            <div class="time">{{ item.createTime.split(' ')[0] }}</div>
           </div>
-        </div>
-      </div>
+        </van-cell>
+      </van-list>
     </van-tab>
   </van-tabs>
 </template>
@@ -39,7 +46,7 @@
 import { Tabtype, ItemListType } from '~/types/itemList'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { getInfo, informationList, bannerInfo } from '~/server/api/user'
+import { getInfo, informationList } from '~/server/api/user'
 import { Base64 } from 'js-base64'
 
 let Id = ref('1636282673046081537')
@@ -56,6 +63,22 @@ let tabItem = reactive<{ data: Tabtype }>({
     sortBy: -1
   }
 })
+
+let idInfo = ref({
+  levelOne: '',
+  levelTwo: '',
+  recommend: '',
+  count: 4
+})
+const loading = ref(false)
+const finished = ref(false)
+interface pageType {
+  offset?: number
+  min?: string
+}
+let page = ref<pageType>({})
+let lastPage = ref(false)
+
 const getTypeList = async () => {
   tabList.value = []
   const parentId = '1636282673046081537'
@@ -70,27 +93,35 @@ const getTypeList = async () => {
   })
 }
 
+const getList = async () => {
+  if (tabItem.data?.parentId === '') {
+    idInfo.value.levelOne = Id.value
+    idInfo.value.recommend = 'Y'
+  } else {
+    idInfo.value.recommend = ''
+  }
+  const { data } = await informationList({ ...idInfo.value, ...page.value })
+  console.log(itemList.value, data.data)
+
+  itemList.value.push(...data.data)
+  page.value.min = data.min
+  page.value.offset = data.offset
+  if (data.data.length <= idInfo.value.count) lastPage.value = true
+  console.log(itemList.value)
+}
+
 const onClickTab = async (info: any) => {
   tabItem.data = tabList.value.find(item => item.name === info.title) as Tabtype
-  if (tabItem.data?.parentId === '') {
-    // 是否推荐
-    const { data } = await bannerInfo({
-      levelOne: tabItem.data.parentId,
-      levelTwo: tabItem.data.inforTypeId,
-      recommend: 'Y',
-      pageSize: 5,
-      pageNum: 1
-    })
-    itemList.value = data
-  } else {
-    const { data } = await informationList({
-      levelOne: tabItem.data.parentId,
-      levelTwo: tabItem.data.inforTypeId,
-      pageSize: 5,
-      pageNum: 1
-    })
-    itemList.value = data.records
-  }
+  idInfo.value.levelOne = tabItem.data.parentId
+  idInfo.value.levelTwo = tabItem.data.inforTypeId
+  itemList.value = []
+  page.value = {}
+  getList()
+}
+const onLoad = async () => {
+  getList()
+  loading.value = false
+  if (lastPage) finished.value = true
 }
 
 const router = useRouter()
@@ -100,14 +131,6 @@ function toDetail(item: any) {
 }
 onMounted(async () => {
   getTypeList()
-  const { data } = await bannerInfo({
-    levelOne: '',
-    levelTwo: '',
-    recommend: 'Y',
-    pageSize: 5,
-    pageNum: 1
-  })
-  itemList.value = data
 })
 </script>
 
@@ -125,8 +148,6 @@ onMounted(async () => {
   border-radius: 4px 4px 0 0 !important;
 }
 .content {
-  height: calc(100vh - 90px);
-  overflow: auto;
   padding: 10px 16px 0;
   .title {
     font-size: 18px;

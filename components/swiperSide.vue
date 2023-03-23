@@ -27,7 +27,6 @@
     :centeredSlides="swiper_options.centeredSlides"
     effect="coverflow"
     :loopAdditionalSlides="3"
-    :slidesPerView="1"
   >
     <swiper-slide
       :style="{ width: '330px', height: '188px' }"
