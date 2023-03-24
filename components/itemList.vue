@@ -68,7 +68,10 @@ watch(
 )
 
 const toDetail = (item: ItemListType) => {
-  router.push(`/details/${item.inforId}`)
+  router.push({
+    name: 'details-id',
+    params: { id: item.inforId }
+  })
 }
 
 onMounted(() => {})

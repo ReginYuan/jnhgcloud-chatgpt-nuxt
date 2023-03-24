@@ -83,7 +83,7 @@ const getTypeList = async () => {
   tabList.value = []
   const parentId = '1636282673046081537'
   const { data } = await getInfo({ parentId })
-  tabList.value = [...data]
+  tabList.value = JSON.parse(JSON.stringify(data))
   tabList.value.unshift({
     inforTypeId: '',
     parentId: '',

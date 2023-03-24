@@ -4,15 +4,15 @@
       <img src="~/assets/img/icon-hot.png" alt="" />
     </div>
     <div class="hot_titile">
-      <div class="hot_titile-item">
+      <div class="hot_titile-item" @click="toDetail(swiperList[0]?.inforId)">
         <img src="~/assets/img/icon-one.png" alt="" />
         <span>{{ swiperList && swiperList[0]?.title }}</span>
       </div>
-      <div class="hot_titile-item">
+      <div class="hot_titile-item" @click="toDetail(swiperList[1]?.inforId)">
         <img src="~/assets/img/icon-two.png" alt="" />
         <span>{{ swiperList && swiperList[1]?.title }}</span>
       </div>
-      <div class="hot_titile-item">
+      <div class="hot_titile-item" @click="toDetail(swiperList[2]?.inforId)">
         <img src="~/assets/img/icon-three.png" alt="" />
         <span>{{ swiperList && swiperList[2]?.title }}</span>
       </div>
@@ -39,6 +39,7 @@
 
 <script setup lang="ts">
 import { reactive, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import SwiperCore, { Autoplay, EffectCoverflow } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/vue' // swiper所需组件
 import { bannerInfo } from '~/server/api/user'
@@ -46,6 +47,7 @@ import { ItemListType } from '~/types/itemList'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
+
 SwiperCore.use([Autoplay, EffectCoverflow])
 let swiper_options = reactive({
   autoplay: {
@@ -67,9 +69,17 @@ let swiper_options = reactive({
 })
 let swiperList = ref<ItemListType[]>([])
 onMounted(async () => {
-  const { data } = await bannerInfo({ parentId: '1636282443407937538' })
+  const { data } = await bannerInfo({ levelOne: '1636282443407937538' })
   swiperList.value = data?.slice(0, 3)
 })
+
+const router = useRouter()
+const toDetail = (inforId: string) => {
+  router.push({
+    name: 'details-id',
+    params: { id: inforId }
+  })
+}
 </script>
 
 <style scoped lang="scss">
