@@ -88,30 +88,32 @@ export const geTokenAll = () => {
   let isIOS =
     us.indexOf('ios_app') > -1 || !!us.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
 
-  // window.androidInterface
-  if (isAndroid) {
-    // window.window.androidInterface.back()
-    // ;(window as any).android.back()
+  if (process.client) {
+    // window.androidInterface
+    if (isAndroid) {
+      // window.window.androidInterface.back()
+      ;(window as any).android.back()
 
-    var index = us.indexOf('=')
-    var token = us.slice(index + 1)
-    const user = userStrore()
-    user.setToken(token)
-    showToast({
-      message: '' + token
-    })
+      var index = us.indexOf('=')
+      var token = us.slice(index + 1)
+      const user = userStrore()
+      user.setToken(token)
+      showToast({
+        message: '' + token
+      })
 
-    return
-  }
-  // 如果是在ios环境下就调用对应返回ios登录界面的方法
-  if (isIOS) {
-    // ;(window as any).webkit.messageHandlers.hideNav()
-    // ;(window as any).webkit.messageHandlers.login()
+      return
+    }
+    // 如果是在ios环境下就调用对应返回ios登录界面的方法
+    if (isIOS) {
+      // ;(window as any).webkit.messageHandlers.hideNav()
+      ;(window as any).webkit.messageHandlers.login()
 
-    var index = us.indexOf('=')
-    var token = us.slice(index + 1)
-    const user = userStrore()
-    // user.setToken(token)
-    return
+      var index = us.indexOf('=')
+      var token = us.slice(index + 1)
+      const user = userStrore()
+      // user.setToken(token)
+      return
+    }
   }
 }
