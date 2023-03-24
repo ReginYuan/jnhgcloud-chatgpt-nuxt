@@ -107,7 +107,7 @@ export const geTokenAll = () => {
     // 如果是在ios环境下就调用对应返回ios登录界面的方法
     if (isIOS) {
       // ;(window as any).webkit.messageHandlers.hideNav()
-      ;(window as any).webkit.messageHandlers.login()
+      // ;(window as any).webkit.messageHandlers.login()
 
       var index = us.indexOf('=')
       var token = us.slice(index + 1)
