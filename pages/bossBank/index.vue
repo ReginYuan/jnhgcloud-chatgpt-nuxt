@@ -50,10 +50,9 @@ let idInfo = ref({
   levelOne: '',
   levelTwo: '',
   recommend: '',
-  count: 4
+  count: 20
 })
 let page = ref<pageType>({})
-let lastPage = ref(false)
 
 const getTypeList = async () => {
   const { data } = await getInfo({ parentId: Id.value })
@@ -67,7 +66,15 @@ const getTypeList = async () => {
   })
 }
 
-const getList = async () => {
+const onClickTab = async (info: any) => {
+  tabItem.data = tabList.value.find(item => item.name === info.title) as Tabtype
+  idInfo.value.levelOne = tabItem.data.parentId
+  idInfo.value.levelTwo = tabItem.data.inforTypeId
+  itemList.value = []
+  page.value = {}
+  finished.value = false
+}
+const onLoad = async () => {
   if (tabItem.data?.parentId === '') {
     idInfo.value.recommend = 'Y'
     showSwiper.value = true
@@ -82,21 +89,8 @@ const getList = async () => {
   itemList.value.push(...data.data)
   page.value.min = data.min
   page.value.offset = data.offset
-  if (data.data.length <= idInfo.value.count) lastPage.value = true
-}
-
-const onClickTab = async (info: any) => {
-  tabItem.data = tabList.value.find(item => item.name === info.title) as Tabtype
-  idInfo.value.levelOne = tabItem.data.parentId
-  idInfo.value.levelTwo = tabItem.data.inforTypeId
-  itemList.value = []
-  page.value = {}
-  getList()
-}
-const onLoad = async () => {
-  getList()
   loading.value = false
-  if (lastPage) finished.value = true
+  if (data.data.length <= idInfo.value.count) finished.value = true
 }
 onMounted(async () => {
   getTypeList()

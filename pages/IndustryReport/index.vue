@@ -48,7 +48,7 @@ let idInfo = ref({
   levelOne: '',
   levelTwo: '',
   recommend: '',
-  count: 4
+  count: 20
 })
 const loading = ref(false)
 const finished = ref(false)
@@ -57,7 +57,6 @@ interface pageType {
   min?: string
 }
 let page = ref<pageType>({})
-let lastPage = ref(false)
 
 const getTypeList = async () => {
   tabList.value = []
@@ -73,7 +72,15 @@ const getTypeList = async () => {
   })
 }
 
-const getList = async () => {
+const onClickTab = async (info: any) => {
+  tabItem.data = tabList.value.find(item => item.name === info.title) as Tabtype
+  idInfo.value.levelOne = tabItem.data.parentId
+  idInfo.value.levelTwo = tabItem.data.inforTypeId
+  itemList.value = []
+  page.value = {}
+  finished.value = false
+}
+const onLoad = async () => {
   if (tabItem.data?.parentId === '') {
     idInfo.value.levelOne = Id.value
     idInfo.value.recommend = 'Y'
@@ -81,27 +88,11 @@ const getList = async () => {
     idInfo.value.recommend = ''
   }
   const { data } = await informationList({ ...idInfo.value, ...page.value })
-  console.log(itemList.value, data.data)
-
   itemList.value.push(...data.data)
   page.value.min = data.min
   page.value.offset = data.offset
-  if (data.data.length <= idInfo.value.count) lastPage.value = true
-  console.log(itemList.value)
-}
-
-const onClickTab = async (info: any) => {
-  tabItem.data = tabList.value.find(item => item.name === info.title) as Tabtype
-  idInfo.value.levelOne = tabItem.data.parentId
-  idInfo.value.levelTwo = tabItem.data.inforTypeId
-  itemList.value = []
-  page.value = {}
-  getList()
-}
-const onLoad = async () => {
-  getList()
   loading.value = false
-  if (lastPage) finished.value = true
+  if (data.data.length <= idInfo.value.count) finished.value = true
 }
 
 onMounted(async () => {

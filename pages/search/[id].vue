@@ -76,7 +76,7 @@ import { getInfo, informationList } from '~/server/api/user'
 import { Tabtype, ItemListType } from '~/types/itemList'
 const route = useRoute()
 const active = ref(0)
-let isShow = ref(true)
+let isShow = ref(false)
 let tabList = ref<Tabtype[]>([])
 let itemList = ref<ItemListType[]>([])
 const loading = ref(false)
@@ -87,15 +87,15 @@ let type = ref('')
 let idInfo = ref({
   title: '',
   levelOne: '',
-  count: 4
+  count: 20
 })
 interface pageType {
   offset?: number
   min?: string
 }
 let page = ref<pageType>({})
-let lastPage = ref(false)
 
+// 获取tab栏数据
 const getTypeList = async () => {
   const { data } = await getInfo({ parentId: 0 })
   tabList.value = data
@@ -116,27 +116,18 @@ const onClickTab = async (info: any) => {
   } else if (value.inforTypeId === '1636282617106649089') {
     type.value = 'policyRule'
   }
-
   idInfo.value.levelOne = value.inforTypeId
   itemList.value = []
   page.value = {}
-  searchBtn()
-}
-
-const onLoad = async () => {
-  searchBtn()
-  loading.value = false
-  if (lastPage) finished.value = true
+  finished.value = false
 }
 
 const store = historyStrore()
 const searchBtn = async () => {
+  page.value = {}
+  itemList.value = []
   isShow.value = true
-  const { data } = await informationList({ ...idInfo.value, ...page.value })
-  itemList.value.push(...data.data)
-  page.value.min = data.min
-  page.value.offset = data.offset
-
+  finished.value = false
   // 存储输入框历史记录
   if (idInfo.value.title != '') {
     taglist.value.unshift(idInfo.value.title)
@@ -144,14 +135,28 @@ const searchBtn = async () => {
     taglist.value && store.setHistory(taglist.value)
   }
 }
+const goHistory = (item: any) => {
+  idInfo.value.title = item
+  page.value = {}
+  itemList.value = []
+  isShow.value = true
+  finished.value = false
+}
+
 const clearBtn = () => {
   store.setHistory([])
   taglist.value = []
 }
 const onFocus = () => (isShow.value = false)
-const goHistory = (item: any) => {
-  idInfo.value.title = item
-  searchBtn()
+
+const onLoad = async () => {
+  console.log('触底了', itemList.value)
+  const { data } = await informationList({ ...idInfo.value, ...page.value })
+  itemList.value.push(...data.data)
+  page.value.min = data.min
+  page.value.offset = data.offset
+  loading.value = false
+  if (data.data.length < idInfo.value.count) finished.value = true
 }
 const onClickLeft = () => history.back()
 
