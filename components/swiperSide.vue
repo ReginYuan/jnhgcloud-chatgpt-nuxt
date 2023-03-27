@@ -20,7 +20,6 @@
   </div>
   <swiper
     v-if="swiperList?.length > 0"
-    :modules="modules"
     :loop="swiper_options.loop"
     :speed="swiper_options.speed"
     :spaceBetween="swiper_options.spaceBetween"
@@ -30,6 +29,8 @@
     :loopAdditionalSlides="3"
     :loopedSlides="1"
     slidesPerView="auto"
+    :options="swiperOptions"
+    :pagination="{ clickable: true }"
   >
     <swiper-slide
       :style="{ width: '330px', height: '188px' }"
@@ -37,7 +38,6 @@
       :key="index"
       ><img :src="item.coverLink" alt=""
     /></swiper-slide>
-    <div class="swiper-pagination"></div>
   </swiper>
 </template>
 
@@ -73,6 +73,12 @@ let swiper_options = reactive({
     depth: 50, //slide的位置深度。值越大z轴距离越远，看起来越小。 默认100。
     modifier: 2.5, //depth和rotate和stretch的倍率，相当于            depth*modifier、rotate*modifier、stretch*modifier，值越大这三个参数的效果越明显。默认1。
     slideShadows: false //开启slide阴影。默认 true。
+  }
+})
+let swiperOptions = reactive({
+  pagination: {
+    el: '.swiper-pagination',
+    clickable: true
   }
 })
 
@@ -113,9 +119,6 @@ const toDetail = (inforId: string) => {
     }
   }
 }
-:deep(.swiper-3d .swiper-slide) {
-  border-radius: 8px !important;
-}
 .swiper {
   img {
     width: 100%;
@@ -123,5 +126,22 @@ const toDetail = (inforId: string) => {
     object-fit: cover;
     border-radius: 5px;
   }
+}
+:deep(.swiper-pagination) {
+  left: 35%;
+  bottom: 8px;
+}
+:deep(.swiper-pagination-bullet-active) {
+  width: 12px !important;
+  height: 4px;
+  border-radius: 2px;
+  background: #ffffff !important;
+}
+:deep(.swiper-pagination-bullet) {
+  width: 4px;
+  height: 4px;
+  border-radius: 4px;
+  background-color: rgba($color: #ffffff, $alpha: 0.6);
+  margin: 0 2px !important;
 }
 </style>
