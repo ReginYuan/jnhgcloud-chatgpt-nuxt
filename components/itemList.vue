@@ -44,11 +44,6 @@ import { ItemListType } from '~/types/itemList'
 import { useRouter } from 'vue-router'
 const props = defineProps<{
   list: ItemListType
-  itemList?: ItemListType[]
-  bannerList?: ItemListType[]
-  showSwiper?: boolean
-  showBossSwiper?: boolean
-  showRuleSwiper?: boolean
   type?: string
 }>()
 

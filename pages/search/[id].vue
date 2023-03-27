@@ -36,12 +36,13 @@
         finished-text="没有更多了"
         @load="onLoad"
       >
-        <van-cell
-          v-for="(item, index) in itemList"
-          :key="index"
-          :border="false"
-        >
-          <ItemList :list="item"></ItemList>
+        <van-cell v-for="(item, index) in itemList" :key="index">
+          <!-- 行业报告 -->
+          <PdfItemList
+            :list="item"
+            v-if="item.levelOne === '1636282673046081537'"
+          ></PdfItemList>
+          <ItemList :list="item" :type="type" v-else></ItemList>
         </van-cell>
       </van-list>
       <!-- 历史记录 -->
@@ -81,6 +82,7 @@ let itemList = ref<ItemListType[]>([])
 const loading = ref(false)
 const finished = ref(false)
 const taglist = ref<string[]>([])
+let type = ref('')
 
 let idInfo = ref({
   title: '',
@@ -103,10 +105,19 @@ const getTypeList = async () => {
   active.value = index
   const item = tabList.value.find(item => item.inforTypeId === route.params.id)
   idInfo.value.levelOne = item?.inforTypeId as string
+  type.value = 'industry'
 }
 
 const onClickTab = async (info: any) => {
   const value = tabList.value.find(item => item.name === info.title) as Tabtype
+  if (value.inforTypeId === '1636282443407937538') {
+    type.value = 'industry'
+  } else if (value.inforTypeId === '1636282537209352194') {
+    type.value = 'bossBank'
+  } else if (value.inforTypeId === '1636282617106649089') {
+    type.value = 'policyRule'
+  }
+
   idInfo.value.levelOne = value.inforTypeId
   itemList.value = []
   page.value = {}
@@ -228,7 +239,53 @@ onMounted(() => {
     background-color: #f8f8f9;
   }
 }
-:deep(.van-cell__value) {
-  text-align: left;
+
+// 行业报告
+.content {
+  padding: 10px 16px 0;
+  .title {
+    font-size: 18px;
+    color: #222222;
+    display: flex;
+    .pic {
+      width: 20px;
+      height: 24px;
+      margin-right: 8px;
+      img {
+        height: 100%;
+      }
+    }
+    .text {
+      letter-spacing: 1px;
+      line-height: 25px;
+    }
+  }
+  .info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    margin: 21px 0 33px;
+    .tag {
+      margin-left: 28px;
+      .come {
+        color: #2ac670;
+        background-color: rgba($color: #2ac670, $alpha: 0.1);
+        padding: 4px 8px;
+        border-radius: 2px;
+      }
+      .page {
+        margin-left: 9px;
+        color: #fdad15;
+        background-color: rgba($color: #fdad15, $alpha: 0.1);
+        padding: 4px 8px;
+        border-radius: 2px;
+      }
+    }
+    .time {
+      color: #888888;
+      margin-right: 15px;
+      padding: 4px 0;
+    }
+  }
 }
 </style>
