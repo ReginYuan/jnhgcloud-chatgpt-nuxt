@@ -19,7 +19,6 @@
       </div>
     </swiper-slide>
   </swiper>
-  <!-- slidesPerView="auto" -->
 </template>
 
 <script setup lang="ts">
@@ -27,7 +26,6 @@ import { onMounted } from 'vue'
 import { Swiper, SwiperSlide } from 'swiper/vue' // swiper所需组件
 // 这是分页器和对应方法，swiper好像在6的时候就已经分离了分页器和一些其他工具
 import { Autoplay, Navigation, Pagination, A11y } from 'swiper'
-// 引入swiper样式，对应css 如果使用less或者css只需要把scss改为对应的即可
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'

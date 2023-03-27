@@ -8,7 +8,8 @@
           {{ list.infoSources }}
         </div>
         <div class="time">
-          {{ list.authorBy }}<i class="point" v-show="list.authorBy"></i
+          {{ list.authorBy
+          }}<i class="point" v-show="list.authorBy && list.createTime"></i
           >{{ list.createTime.split(' ')[0] }}
         </div>
       </div>
@@ -27,7 +28,11 @@
       <div class="title">{{ list.title }}</div>
       <div class="info">
         <div class="tag">{{ list.infoSources }}</div>
-        <div class="time">{{ list.authorBy }}·{{ list.createTime }}</div>
+        <div class="time">
+          {{ list.authorBy
+          }}<i class="point" v-show="list.authorBy && list.createTime"></i
+          >{{ list.createTime }}
+        </div>
       </div>
     </div>
   </div>

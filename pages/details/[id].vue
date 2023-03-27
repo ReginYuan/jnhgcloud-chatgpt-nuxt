@@ -13,17 +13,19 @@
         <span>{{ content.data.infoSources }}</span>
       </div>
       <div class="time">
-        {{ content.data.authorBy }}·{{ content.data.createTime.split(' ')[0] }}
+        {{ content.data.authorBy
+        }}<i
+          class="point"
+          v-show="content.data.authorBy && content.data.createTime"
+        ></i
+        >{{ content.data.createTime.split(' ')[0] }}
       </div>
     </div>
     <div class="text" v-html="content.data.content"></div>
-    <div class="pic">
-      <img :src="content.data.coverLink" alt="" />
-    </div>
   </div>
   <!-- 标签 -->
   <div class="tag">
-    <div v-for="(ele, ind) in content.data.lables">
+    <div v-for="(ele, ind) in content.data.lables" :key="ind">
       <span>{{ ele.lableName }}</span>
     </div>
   </div>
@@ -61,11 +63,13 @@ let itemList = ref<ItemListType[]>([])
 const getDetails = async () => {
   const { data } = await getDetail({ inforId: route.params.id })
   content.data = data
+  console.log(data.content)
+
   const res = await relatedArticles({
     inforId: content.data.inforId,
     levelOne: content.data.levelOne,
     levelTwo: content.data.levelTwo,
-    pageSize: 5,
+    pageSize: 10,
     pageNum: 1
   })
   itemList.value = res.data
@@ -104,6 +108,7 @@ onMounted(() => {
 }
 
 .content {
+  margin-bottom: 16px;
   .title {
     padding: 12px 16px 0;
     font-size: 18px;
@@ -118,32 +123,39 @@ onMounted(() => {
       span {
         color: #fa5151;
         background-color: rgba($color: #fa5151, $alpha: 0.1);
+        padding: 0 8px;
       }
     }
     .time {
       color: rgba($color: #222222, $alpha: 0.5);
+      .point {
+        display: inline-block;
+        width: 5px;
+        height: 5px;
+        border-radius: 5px;
+        margin: 0 3px 2px;
+        background-color: #c4c4c4;
+      }
     }
   }
   .text {
     box-sizing: border-box;
     padding: 0 16px;
     word-wrap: break-word;
-  }
-}
-.pic {
-  padding: 12px 16px 0;
-  width: 90%;
-  height: 173px;
-  img {
     width: 100%;
-    height: 100%;
+    font-size: 16px;
+    color: #222222;
+    :deep(img) {
+      width: 100%;
+      margin: 12px 0;
+    }
   }
 }
 .tag {
   display: flex;
   flex-wrap: wrap;
   font-size: 12px;
-  margin: 16px 0;
+  margin-bottom: 16px;
   span {
     display: inline-block;
     height: 26px;
