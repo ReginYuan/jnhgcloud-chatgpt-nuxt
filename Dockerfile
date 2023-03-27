@@ -1,14 +1,24 @@
-#FROM harbor.jnhgsz.com/nginx/nginx:stable-new
-#FROM harbor.jnhgsz.com/nginx/nginx:stable-jnhgcloud-info
-FROM harbor.jnhgsz.com/jenkins/node-ubuntu:latest
+#FROM harbor.jnhgsz.com/jenkins/node-ubuntu:latest
+#
+#WORKDIR /jnhgcloud
+#
+#ENV TimeZone=Asia/Shanghai
+#RUN ln -snf /usr/share/zoneinfo/$TimeZone /etc/localtime && echo $TimeZone > /etc/timezone
+#
+#COPY ./ ./
+#
+#EXPOSE 3000
+#
+#CMD cd .output && pnpm run dev
 
-WORKDIR /jnhgcloud
+FROM gitlab.jnhgsz.com/jenkins/node-ubuntu:latest
+
+WORKDIR /arch-hgsz
 
 ENV TimeZone=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TimeZone /etc/localtime && echo $TimeZone > /etc/timezone
 
-COPY ./ ./
-
+COPY .output ./output
 EXPOSE 3000
 
-CMD cd .output && pnpm run dev
+CMD node ./output/server/index.mjs

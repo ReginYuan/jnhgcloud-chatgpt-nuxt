@@ -36,6 +36,7 @@
           >
             <template #button>
               <div
+                style="font-size: 16px"
                 @click="sendCode"
                 :class="codeMsg == '获取验证码' ? 'click' : 'click-disable'"
               >
@@ -61,7 +62,12 @@
           />
         </van-cell-group>
         <div style="margin: 16px">
-          <van-button block type="primary" native-type="submit">
+          <van-button
+            block
+            type="primary"
+            native-type="submit"
+            style="font-size: 16px"
+          >
             提交申请
           </van-button>
         </div>
@@ -79,6 +85,7 @@ import {
 } from '~/server/api/joinEnterprise'
 definePageMeta({ layout: false })
 const router = useRouter()
+
 const form = reactive({
   phone: undefined,
   code: undefined,
@@ -149,13 +156,9 @@ const goBack = () => {
   router.go(-1)
 }
 const getList = async () => {
-  const us = navigator.userAgent.split('/').join('')
-  var index = us.indexOf('webview')
-  var newUs = us.slice(index + 7)
-  let a = newUs.indexOf('webdebugger ')
-  let str = newUs.substring(0, a)
-  const companyNo = str.split(' ').join('')
-  console.log(companyNo, 'companyNo')
+  const route = useRoute()
+  const companyNo = route.query.companyNo
+  console.log(route.query, 'route')
   const params = { companyNo: companyNo }
   const list = await h5joinCompanyCheck(params)
   companyName.value = list.data.companyName
@@ -167,11 +170,11 @@ onMounted(() => {
 </script>
 <style scoped lang="scss">
 .header {
-  width: 83%;
+  height: 44px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-left: 21px;
+  padding: 0 21px;
   font-size: 18px;
   font-family: Source Han Sans CN-Regular, Source Han Sans CN;
   font-weight: 400;
@@ -186,10 +189,10 @@ onMounted(() => {
 }
 .top {
   margin-left: 30px;
-  margin-top: 40px;
+  margin-top: 30px;
   .name {
     width: 286px;
-    height: 30px;
+    /* height: 30px; */
     font-size: 22px;
     font-family: Source Han Sans CN-Regular, Source Han Sans CN;
     font-weight: 400;
@@ -214,7 +217,7 @@ onMounted(() => {
     background-color: #1f46b6;
   }
   .van-button {
-    margin-top: 50px;
+    margin-top: 40px;
   }
   .click-disable {
     pointer-events: none;
@@ -223,12 +226,12 @@ onMounted(() => {
   .click {
     color: #1f46b6;
   }
-  :v-deep(.van-field__label) {
+  ::v-deep .van-field__label {
     font-size: 18px;
     font-family: Source Han Sans CN-Regular, Source Han Sans CN;
     font-weight: 400;
   }
-  :v-deep(.van-field__body) {
+  ::v-deep .van-field__body {
     font-size: 16px;
     font-family: Source Han Sans CN-Normal, Source Han Sans CN;
     font-weight: 400;
@@ -237,5 +240,8 @@ onMounted(() => {
   :v-deep(.van-field__body) {
     margin-top: 10px;
   }
+}
+::v-deep .van-cell {
+  overflow: hidden;
 }
 </style>
