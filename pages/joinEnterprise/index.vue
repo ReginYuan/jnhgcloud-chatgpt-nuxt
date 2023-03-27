@@ -36,7 +36,6 @@
           >
             <template #button>
               <div
-                style="font-size: 16px"
                 @click="sendCode"
                 :class="codeMsg == '获取验证码' ? 'click' : 'click-disable'"
               >
@@ -175,7 +174,7 @@ onMounted(() => {
   justify-content: space-between;
   align-items: center;
   padding: 0 21px;
-  font-size: 18px;
+  font-size: 16px;
   font-family: Source Han Sans CN-Regular, Source Han Sans CN;
   font-weight: 400;
   color: #141419;
@@ -184,7 +183,7 @@ onMounted(() => {
     margin-left: 12px;
   }
   .van-icon-arrow-left {
-    font-size: 20px;
+    font-size: 18px;
   }
 }
 .top {
@@ -193,7 +192,7 @@ onMounted(() => {
   .name {
     width: 286px;
     /* height: 30px; */
-    font-size: 22px;
+    font-size: 20px;
     font-family: Source Han Sans CN-Regular, Source Han Sans CN;
     font-weight: 400;
     color: #222229;
@@ -227,18 +226,19 @@ onMounted(() => {
     color: #1f46b6;
   }
   ::v-deep .van-field__label {
-    font-size: 18px;
+    font-size: 16px;
     font-family: Source Han Sans CN-Regular, Source Han Sans CN;
     font-weight: 400;
   }
   ::v-deep .van-field__body {
-    font-size: 16px;
+    font-size: 14px;
     font-family: Source Han Sans CN-Normal, Source Han Sans CN;
     font-weight: 400;
     color: #b2bac6;
-  }
-  :v-deep(.van-field__body) {
     margin-top: 10px;
+  }
+  ::v-deep .van-cell{
+    display: block;
   }
 }
 ::v-deep .van-cell {
