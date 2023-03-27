@@ -36,7 +36,6 @@
           >
             <template #button>
               <div
-                style="font-size: 16px"
                 @click="sendCode"
                 :class="codeMsg == '获取验证码' ? 'click' : 'click-disable'"
               >
@@ -236,9 +235,10 @@ onMounted(() => {
     font-family: Source Han Sans CN-Normal, Source Han Sans CN;
     font-weight: 400;
     color: #b2bac6;
-  }
-  :v-deep(.van-field__body) {
     margin-top: 10px;
+  }
+  ::v-deep .van-cell{
+    display: block;
   }
 }
 ::v-deep .van-cell {
