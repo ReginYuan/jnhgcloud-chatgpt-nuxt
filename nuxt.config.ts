@@ -1,5 +1,4 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-
 export default defineNuxtConfig({
   // 把env放入这个里面，通过useRuntimeConfig获取
   vite: {
@@ -23,11 +22,12 @@ export default defineNuxtConfig({
   },
   // 代理转发
   nitro: {
+    preset: 'node-server',
     devProxy: {
       port: process.env.VITE_APP_PORT,
       host: true,
       open: true,
-      '/dev-api': {
+      '/api': {
         target: process.env.VITE_APP_BASE_URL,
         changeOrigin: true
       }

@@ -19,7 +19,7 @@
     </div>
   </div>
   <swiper
-    :autoplay="swiper_options.autoplay"
+    v-if="swiperList?.length > 0"
     :loop="swiper_options.loop"
     :speed="swiper_options.speed"
     :spaceBetween="swiper_options.spaceBetween"
@@ -27,6 +27,10 @@
     :centeredSlides="swiper_options.centeredSlides"
     effect="coverflow"
     :loopAdditionalSlides="3"
+    :loopedSlides="1"
+    slidesPerView="auto"
+    :options="swiperOptions"
+    :pagination="{ clickable: true }"
   >
     <swiper-slide
       :style="{ width: '330px', height: '188px' }"
@@ -40,7 +44,9 @@
 <script setup lang="ts">
 import { reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import SwiperCore, { Autoplay, EffectCoverflow } from 'swiper'
+import SwiperCore, { Autoplay, EffectCoverflow, Pagination, A11y } from 'swiper'
+// 进入分页器相关样式
+import 'swiper/css/pagination'
 import { Swiper, SwiperSlide } from 'swiper/vue' // swiper所需组件
 import { bannerInfo } from '~/server/api/user'
 import { ItemListType } from '~/types/itemList'
@@ -48,12 +54,14 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 
-SwiperCore.use([Autoplay, EffectCoverflow])
+SwiperCore.use([Autoplay, EffectCoverflow, Pagination, A11y])
+const modules = [Pagination, A11y, Autoplay]
+
 let swiper_options = reactive({
-  autoplay: {
-    disableOnInteraction: true, // 鼠标滑动后继续自动播放
-    delay: 4000 // 4秒切换一次
-  },
+  // autoplay: {
+  //   disableOnInteraction: true, // 鼠标滑动后继续自动播放
+  //   delay: 4000 // 4秒切换一次
+  // },
   speed: 500, //切换过渡速度
   loop: true,
   slidesPerView: 'auto',
@@ -67,6 +75,13 @@ let swiper_options = reactive({
     slideShadows: false //开启slide阴影。默认 true。
   }
 })
+let swiperOptions = reactive({
+  pagination: {
+    el: '.swiper-pagination',
+    clickable: true
+  }
+})
+
 let swiperList = ref<ItemListType[]>([])
 onMounted(async () => {
   const { data } = await bannerInfo({ levelOne: '1636282443407937538' })
@@ -98,14 +113,11 @@ const toDetail = (inforId: string) => {
       text-overflow: ellipsis;
       img {
         vertical-align: middle;
-        margin-right: 5px;
+        margin-right: 8px;
         margin-bottom: 2px;
       }
     }
   }
-}
-:deep(.swiper-3d .swiper-slide) {
-  border-radius: 8px !important;
 }
 .swiper {
   img {
@@ -114,5 +126,22 @@ const toDetail = (inforId: string) => {
     object-fit: cover;
     border-radius: 5px;
   }
+}
+:deep(.swiper-pagination) {
+  left: 35%;
+  bottom: 8px;
+}
+:deep(.swiper-pagination-bullet-active) {
+  width: 12px !important;
+  height: 4px;
+  border-radius: 2px;
+  background: #ffffff !important;
+}
+:deep(.swiper-pagination-bullet) {
+  width: 4px;
+  height: 4px;
+  border-radius: 4px;
+  background-color: rgba($color: #ffffff, $alpha: 0.6);
+  margin: 0 2px !important;
 }
 </style>

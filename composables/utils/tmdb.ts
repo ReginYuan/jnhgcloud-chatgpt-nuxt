@@ -5,7 +5,7 @@ import { showFailToast } from 'vant'
 import errorCode from '~/composables/utils/errorCode'
 import { getToken } from '~/composables/utils/auth'
 
-const apiBaseUrl = import.meta.env.VITE_APP_BASE_API
+const apiBaseUrl = '/api'
 
 const cache = new LRU({
   max: 500,
@@ -57,6 +57,7 @@ function _fetchTMDB(
         // 未设置状态码则默认成功状态
         // let data = JSON.parse(response._data)
         let data = response._data
+        console.log('response',response )
         // let data = response._data
         const code = data.code || data.statusCode || 200
         // 获取错误信息
@@ -72,27 +73,29 @@ function _fetchTMDB(
           let isIOS =
             us.indexOf('ios_app') > -1 ||
             !!us.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
-          if (window) {
-            // reload 是刷新的方法
-            // 如果是在安卓环境下就调用对应返回安卓登录界面的方法
-            if ((window as any).androidInterface && isAndroid) {
-              const token = (window as any).androidInterface.getToken()
-              showFailToast({
-                message: token
-              })
-              return
-            }
+          if (process.client) {
+            if (window) {
+              // reload 是刷新的方法
+              // 如果是在安卓环境下就调用对应返回安卓登录界面的方法
+              if ((window as any).androidInterface && isAndroid) {
+                const token = (window as any).androidInterface.getToken()
+                showFailToast({
+                  message: token
+                })
+                return
+              }
 
-            // 如果是在ios环境下就调用对应返回ios登录界面的方法
-            if (
-              (window as any).webkit &&
-              (window as any).webkit.messageHandlers.reload &&
-              isIOS
-            ) {
-              // ;(window as any).webkit.messageHandlers.reload.postMessage('')
-              return
+              // 如果是在ios环境下就调用对应返回ios登录界面的方法
+              if (
+                (window as any).webkit &&
+                (window as any).webkit.messageHandlers.reload &&
+                isIOS
+              ) {
+                // ;(window as any).webkit.messageHandlers.reload.postMessage('')
+                return
+              }
+              // location.reload()
             }
-            // location.reload()
           }
           return Promise.reject('无效的会话，或者会话已过期，请重新登录。')
         } else if (code === 500) {
@@ -136,6 +139,7 @@ function _fetchTMDB(
         // 未设置状态码则默认成功状态
         // let data = JSON.parse(response._data)
         let data = response._data
+        console.log('response',response )
         // let data = response._data
         const code = data.code || data.statusCode || 200
         // 获取错误信息

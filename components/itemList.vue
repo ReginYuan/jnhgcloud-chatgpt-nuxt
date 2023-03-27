@@ -108,13 +108,15 @@ onMounted(() => {})
   }
   .info {
     width: 100%;
+    height: 16px;
+    line-height: 16px;
     display: flex;
     justify-content: space-between;
     .tag {
       font-size: 12px;
       color: v-bind('color');
       background-color: v-bind('backgroundColor');
-      padding: 0px 8px;
+      padding: 1px 8px;
       border-radius: 2px;
     }
     .time {
