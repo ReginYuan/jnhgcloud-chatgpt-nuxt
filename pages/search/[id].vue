@@ -105,7 +105,6 @@ const getTypeList = async () => {
   active.value = index
   const item = tabList.value.find(item => item.inforTypeId === route.params.id)
   idInfo.value.levelOne = item?.inforTypeId as string
-  type.value = 'industry'
 }
 
 const onClickTab = async (info: any) => {
@@ -160,6 +159,13 @@ onMounted(() => {
   const history = window.localStorage.getItem('History')
   taglist.value = history ? JSON.parse(history) : []
   getTypeList()
+  if (route.params.id === '1636282443407937538') {
+    type.value = 'industry'
+  } else if (route.params.id === '1636282537209352194') {
+    type.value = 'bossBank'
+  } else if (route.params.id === '1636282617106649089') {
+    type.value = 'policyRule'
+  }
 })
 </script>
 

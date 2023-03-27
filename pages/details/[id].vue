@@ -63,8 +63,6 @@ let itemList = ref<ItemListType[]>([])
 const getDetails = async () => {
   const { data } = await getDetail({ inforId: route.params.id })
   content.data = data
-  console.log(data.content)
-
   const res = await relatedArticles({
     inforId: content.data.inforId,
     levelOne: content.data.levelOne,
