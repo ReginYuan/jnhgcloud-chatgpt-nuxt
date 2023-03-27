@@ -85,6 +85,7 @@ import {
 } from '~/server/api/joinEnterprise'
 definePageMeta({ layout: false })
 const router = useRouter()
+
 const form = reactive({
   phone: undefined,
   code: undefined,
@@ -155,15 +156,10 @@ const goBack = () => {
   router.go(-1)
 }
 const getList = async () => {
-  console.log(navigator, ' navigator.userAgent')
-  // const us = navigator.userAgent.split('/').join('')
-  // var index = us.indexOf('webview')
-  // var newUs = us.slice(index + 7)
-  // let a = newUs.indexOf('webdebugger ')
-  // let str = newUs.substring(0, a)
-  // const companyNo = str.split(' ').join('')
-  // console.log(companyNo, 'companyNo')
-  const params = { companyNo: 'ZSHB29277451' }
+  const route = useRoute()
+  const companyNo = route.query.companyNo
+  console.log(route.query, 'route')
+  const params = { companyNo: companyNo }
   const list = await h5joinCompanyCheck(params)
   companyName.value = list.data.companyName
   form.companyNo = list.data.companyNo
@@ -196,7 +192,7 @@ onMounted(() => {
   margin-top: 30px;
   .name {
     width: 286px;
-    height: 30px;
+    /* height: 30px; */
     font-size: 22px;
     font-family: Source Han Sans CN-Regular, Source Han Sans CN;
     font-weight: 400;
@@ -244,5 +240,8 @@ onMounted(() => {
   :v-deep(.van-field__body) {
     margin-top: 10px;
   }
+}
+::v-deep .van-cell {
+  overflow: hidden;
 }
 </style>
