@@ -1,10 +1,4 @@
 <template>
-  <van-nav-bar left-arrow @click-left="onClickLeft">
-    <template #right>
-      <van-icon name="star-o" />
-      <img src="~/assets/img/icon-send.png" alt="" />
-    </template>
-  </van-nav-bar>
   <div style="background-color: #f7f7f7; height: 2px"></div>
   <div class="content">
     <div class="title">{{ content.data.title }}</div>
@@ -39,7 +33,6 @@
       </van-cell>
     </van-list>
   </div>
-  <!-- 分享弹层 -->
 </template>
 
 <script setup lang="ts">
@@ -75,7 +68,16 @@ const getDetails = async () => {
   })
   itemList.value = res.data
 }
-const onClickLeft = () => history.back()
+const onClickLeft = () => {
+  console.log(content.data.levelOne)
+  if (content.data.levelOne === '1636282443407937538') {
+    router.push('/industry')
+  } else if (content.data.levelOne === '1636282537209352194') {
+    router.push('/bossBank')
+  } else if (content.data.levelOne === '1636282673046081537') {
+    router.push('/bossBank')
+  }
+}
 
 onMounted(() => {
   getDetails()
