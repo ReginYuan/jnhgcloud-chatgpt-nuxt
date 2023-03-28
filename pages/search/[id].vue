@@ -1,4 +1,5 @@
 <template>
+  <div class="top"></div>
   <div class="header">
     <van-nav-bar left-arrow :clickable="false" @click-left="onClickLeft">
       <template #title>
@@ -174,6 +175,11 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
+.top {
+  width: 100%;
+  height: 46px;
+  background-color: transparent;
+}
 :deep(.van-nav-bar) {
   font-size: 20px;
   .van-nav-bar__left {

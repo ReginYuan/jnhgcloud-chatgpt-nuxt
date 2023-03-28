@@ -1,5 +1,5 @@
 <template>
-  <div class="industry_recommend">
+  <div class="industry_recommend" v-if="props.hotList.length > 0">
     <div class="hot_header">
       <img src="~/assets/img/icon-hot.png" alt="" />
     </div>
@@ -25,6 +25,9 @@
     slidesPerView="auto"
     :options="swiperOptions"
     :pagination="{ clickable: true }"
+    :autoplay="true"
+    :delay="100"
+    :disableOnInteraction="false"
   >
     <swiper-slide
       :style="{ width: '330px', height: '188px' }"
@@ -51,11 +54,15 @@ import 'swiper/css/pagination'
 SwiperCore.use([Autoplay, EffectCoverflow, Pagination, A11y])
 const modules = [Pagination, A11y, Autoplay]
 const props = defineProps<{ hotList: ItemListType[] }>()
-
+watch(
+  () => props,
+  (newValue, oldValue) => {},
+  { immediate: true, deep: true }
+)
 let swiper_options = reactive({
   // autoplay: {
   //   disableOnInteraction: true, // 鼠标滑动后继续自动播放
-  //   delay: 4000 // 4秒切换一次
+  //   delay: 2000 // 1秒切换一次
   // },
   speed: 500, //切换过渡速度
   loop: true,

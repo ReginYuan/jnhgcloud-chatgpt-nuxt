@@ -71,3 +71,16 @@ export function relatedArticles(params: any) {
     params
   )
 }
+
+export function collectApi(params: any) {
+  return fetchTMDB(
+    '/zshb/information/collect',
+    {
+      method: 'get',
+      headers: {
+        isToken: true
+      }
+    },
+    params
+  )
+}

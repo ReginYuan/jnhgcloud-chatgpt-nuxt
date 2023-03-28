@@ -3,7 +3,12 @@
   <van-tabs v-model:active="active" :ellipsis="false" @click-tab="onClickTab">
     <van-tab :title="item.name" v-for="(item, index) in tabList" :key="index">
       <div class="policyRule" v-if="showSwiper">
-        <van-swipe class="my-swipe" :show-indicators="false" lazy-render>
+        <van-swipe
+          class="my-swipe"
+          :show-indicators="false"
+          lazy-render
+          :autoplay="3000"
+        >
           <van-swipe-item v-for="(item, index) in swiperList" :key="index">
             <van-image :src="item.coverLink" />
             <div class="swipe_title">{{ item.title }}</div>
@@ -76,11 +81,8 @@ const getTypeList = async () => {
 
 const getBannerList = async () => {
   const { data } = await bannerInfo({
-    levelOne: tabItem.data.parentId,
-    levelTwo: tabItem.data.inforTypeId,
-    recommend: 'Y',
-    pageSize: 5,
-    pageNum: 1
+    levelOne: Id.value,
+    recommend: 'Y'
   })
   swiperList.value = data
 }

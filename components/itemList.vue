@@ -8,9 +8,9 @@
           {{ list.infoSources }}
         </div>
         <div class="time">
-          {{ list.authorBy
-          }}<i class="point" v-show="list.authorBy && list.createTime"></i
-          >{{ list.createTime.split(' ')[0] }}
+          <span class="name">{{ list.authorBy }}</span
+          ><i class="point" v-show="list.authorBy && list.createTime"></i
+          ><span>{{ list.createTime.split(' ')[0] }}</span>
         </div>
       </div>
     </div>
@@ -105,6 +105,7 @@ onMounted(() => {})
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     padding-top: 5px;
+    text-align: left;
   }
   .info {
     width: 100%;
@@ -120,8 +121,19 @@ onMounted(() => {})
       border-radius: 2px;
     }
     .time {
+      width: 70%;
       font-size: 12px;
       color: rgba($color: #222222, $alpha: 0.5);
+      display: flex;
+      align-items: center;
+      .name {
+        width: 50%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+      }
       .point {
         display: inline-block;
         width: 5px;
