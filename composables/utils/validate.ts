@@ -89,6 +89,7 @@ export const geTokenAll = () => {
     us.indexOf('ios_app') > -1 || !!us.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
 
   if (process.client) {
+    console.log(window,'window')
     // window.androidInterface
     if (isAndroid) {
       // window.window.androidInterface.back()
