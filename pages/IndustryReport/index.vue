@@ -107,7 +107,7 @@ onMounted(async () => {
 }
 
 :deep(.van-tab__text) {
-  font-size: 16px;
+  font-size: 18px;
 }
 :deep(.van-tabs__line) {
   bottom: 20px !important;

@@ -104,7 +104,7 @@ onMounted(async () => {
 }
 :deep(.van-tab__text) {
   color: #888888;
-  font-size: 16px;
+  font-size: 18px;
 }
 :deep(.van-tab--active) {
   .van-tab__text {
@@ -126,10 +126,10 @@ onMounted(async () => {
     }
   }
 }
-.content {
-  height: calc(100vh - 100px);
-  overflow: auto;
-}
+// .content {
+//   height: calc(100vh - 100px);
+//   overflow: auto;
+// }
 :deep(.van-cell) {
   padding: 0;
 }

@@ -33,10 +33,13 @@
   <div style="background-color: #f7f7f7; height: 8px"></div>
   <div class="about">
     <div class="title">相关文章</div>
-    <div v-for="(item, index) in itemList" :key="index">
-      <ItemList :list="item"></ItemList>
-    </div>
+    <van-list>
+      <van-cell v-for="(item, index) in itemList" :key="index">
+        <ItemList :list="item"></ItemList>
+      </van-cell>
+    </van-list>
   </div>
+  <!-- 分享弹层 -->
 </template>
 
 <script setup lang="ts">

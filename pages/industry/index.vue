@@ -101,7 +101,7 @@ onMounted(() => {
 }
 :deep(.van-tab__text) {
   color: #888888;
-  font-size: 16px;
+  font-size: 18px;
 }
 :deep(.van-tab--active) {
   .van-tab__text {
