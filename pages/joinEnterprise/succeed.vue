@@ -25,11 +25,11 @@ const goBack = () => {
 </script>
 <style scoped lang="scss">
 .header {
-  width: 83%;
+  height: 44px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-left: 21px;
+  padding: 0 21px;
   font-size: 18px;
   font-family: Source Han Sans CN-Regular, Source Han Sans CN;
   font-weight: 400;
@@ -39,7 +39,7 @@ const goBack = () => {
     margin-left: 12px;
   }
   .van-icon-arrow-left {
-    font-size: 26px;
+    font-size: 20px;
   }
 }
 .van-icon-checked {
