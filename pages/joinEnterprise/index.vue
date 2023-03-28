@@ -174,7 +174,7 @@ onMounted(() => {
   justify-content: space-between;
   align-items: center;
   padding: 0 21px;
-  font-size: 16px;
+  font-size: 18px;
   font-family: Source Han Sans CN-Regular, Source Han Sans CN;
   font-weight: 400;
   color: #141419;
@@ -183,7 +183,7 @@ onMounted(() => {
     margin-left: 12px;
   }
   .van-icon-arrow-left {
-    font-size: 18px;
+    font-size: 20px;
   }
 }
 .top {
@@ -199,7 +199,7 @@ onMounted(() => {
     line-height: 30px;
   }
   .title {
-    width: 252px;
+    width: 80%;
     height: 16px;
     font-size: 12px;
     font-family: Source Han Sans CN-Regular, Source Han Sans CN;
