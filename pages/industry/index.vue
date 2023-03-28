@@ -2,7 +2,7 @@
   <HeaderBar title="产业头条" :parentId="Id"></HeaderBar>
   <van-tabs v-model:active="active" :ellipsis="false" @click-tab="onClickTab">
     <van-tab :title="item.name" v-for="(item, index) in tabList" :key="index">
-      <SwiperSide v-if="showSwiper"></SwiperSide>
+      <SwiperSide v-if="showSwiper" :hotList="hotList"></SwiperSide>
       <van-list
         v-model:loading="loading"
         :finished="finished"
@@ -33,6 +33,7 @@ let tabItem = reactive<{ data: Tabtype }>({
 })
 
 let itemList = ref<ItemListType[]>([])
+let hotList = ref<ItemListType[]>([])
 let showSwiper = ref(true)
 const loading = ref(false)
 const finished = ref(false)
@@ -40,7 +41,7 @@ let idInfo = ref({
   levelOne: '',
   levelTwo: '',
   recommend: '',
-  count: 20
+  count: 5
 })
 interface pageType {
   offset?: number
@@ -84,6 +85,12 @@ const onLoad = async () => {
     ...page.value
   })
   itemList.value.push(...data.data)
+
+  if (tabItem.data?.parentId === '' && page.value.min === undefined) {
+    hotList.value = itemList.value
+    itemList.value = itemList.value.splice(3)
+  }
+
   page.value.min = data.min
   page.value.offset = data.offset
   loading.value = false

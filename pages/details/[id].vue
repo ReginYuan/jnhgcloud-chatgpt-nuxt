@@ -48,7 +48,6 @@ import { useRoute, useRouter } from 'vue-router'
 import { ItemListType } from '~/types/itemList'
 import { getDetail, relatedArticles } from '~/server/api/user'
 const route = useRoute()
-const router = useRouter()
 let content = reactive<{ data: ItemListType }>({
   data: {
     inforId: '',
@@ -66,12 +65,11 @@ let itemList = ref<ItemListType[]>([])
 const getDetails = async () => {
   const { data } = await getDetail({ inforId: route.params.id })
   content.data = data
+  console.log(data.lables)
+
   const res = await relatedArticles({
     inforId: content.data.inforId,
-    levelOne: content.data.levelOne,
-    levelTwo: content.data.levelTwo,
-    pageSize: 10,
-    pageNum: 1
+    lables: data.lables
   })
   itemList.value = res.data
 }

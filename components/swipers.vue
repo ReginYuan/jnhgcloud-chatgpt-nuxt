@@ -37,7 +37,7 @@ let swiperList = ref<ItemListType[]>([])
 onMounted(async () => {
   const { data } = await bannerInfo({
     levelOne: '1636282537209352194',
-    isRecommendBanner: 'Y'
+    recommend: 'Y'
   })
   swiperList.value = data
 })

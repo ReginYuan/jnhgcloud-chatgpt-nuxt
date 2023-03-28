@@ -3,18 +3,12 @@
     <div class="hot_header">
       <img src="~/assets/img/icon-hot.png" alt="" />
     </div>
-    <div class="hot_titile">
-      <div class="hot_titile-item" @click="toDetail(swiperList[0]?.inforId)">
-        <img src="~/assets/img/icon-one.png" alt="" />
-        <span>{{ swiperList && swiperList[0]?.title }}</span>
-      </div>
-      <div class="hot_titile-item" @click="toDetail(swiperList[1]?.inforId)">
-        <img src="~/assets/img/icon-two.png" alt="" />
-        <span>{{ swiperList && swiperList[1]?.title }}</span>
-      </div>
-      <div class="hot_titile-item" @click="toDetail(swiperList[2]?.inforId)">
-        <img src="~/assets/img/icon-three.png" alt="" />
-        <span>{{ swiperList && swiperList[2]?.title }}</span>
+    <div class="hot_titile" v-for="(item, index) in props.hotList">
+      <div class="hot_titile-item" @click="toDetail(item.inforId)">
+        <img v-if="index === 0" src="~/assets/img/icon-one.png" alt="" />
+        <img v-if="index === 1" src="~/assets/img/icon-two.png" alt="" />
+        <img v-if="index === 2" src="~/assets/img/icon-three.png" alt="" />
+        <span>{{ item.title }}</span>
       </div>
     </div>
   </div>
@@ -56,6 +50,7 @@ import 'swiper/css/pagination'
 
 SwiperCore.use([Autoplay, EffectCoverflow, Pagination, A11y])
 const modules = [Pagination, A11y, Autoplay]
+const props = defineProps<{ hotList: ItemListType[] }>()
 
 let swiper_options = reactive({
   // autoplay: {
@@ -84,7 +79,10 @@ let swiperOptions = reactive({
 
 let swiperList = ref<ItemListType[]>([])
 onMounted(async () => {
-  const { data } = await bannerInfo({ levelOne: '1636282443407937538' })
+  const { data } = await bannerInfo({
+    levelOne: '1636282443407937538',
+    recommend: 'Y'
+  })
   swiperList.value = data?.slice(0, 3)
 })
 
