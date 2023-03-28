@@ -23,7 +23,9 @@ const goSearch = () => {
 <style scoped lang="scss">
 .header {
   width: 100%;
+  height: 88px;
   :deep(.van-nav-bar) {
+    padding-top: 42px;
     background-color: transparent;
     font-size: 20px;
     .van-nav-bar__right {
@@ -44,6 +46,9 @@ const goSearch = () => {
     .van-nav-bar__text {
       font-size: 20px;
       color: #ffffff;
+    }
+    .van-nav-bar__text {
+      margin-left: 4px;
     }
   }
 }

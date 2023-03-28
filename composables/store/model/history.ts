@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-export const historyStrore = defineStore('user', {
+export const historyStrore = defineStore('history', {
   state: () => {
     return []
   },

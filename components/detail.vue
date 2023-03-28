@@ -1,10 +1,4 @@
 <template>
-  <van-nav-bar left-arrow @click-left="onClickLeft">
-    <template #right>
-      <van-icon name="star-o" />
-      <img src="~/assets/img/icon-send.png" alt="" />
-    </template>
-  </van-nav-bar>
   <div style="background-color: #f7f7f7; height: 2px"></div>
   <div class="content">
     <div class="title">{{ content.data.title }}</div>
@@ -39,7 +33,6 @@
       </van-cell>
     </van-list>
   </div>
-  <!-- 分享弹层 -->
 </template>
 
 <script setup lang="ts">
@@ -48,6 +41,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { ItemListType } from '~/types/itemList'
 import { getDetail, relatedArticles } from '~/server/api/user'
 const route = useRoute()
+const router = useRouter()
 let content = reactive<{ data: ItemListType }>({
   data: {
     inforId: '',
@@ -65,15 +59,25 @@ let itemList = ref<ItemListType[]>([])
 const getDetails = async () => {
   const { data } = await getDetail({ inforId: route.params.id })
   content.data = data
-  console.log(data.lables)
-
   const res = await relatedArticles({
     inforId: content.data.inforId,
-    lables: data.lables
+    levelOne: content.data.levelOne,
+    levelTwo: content.data.levelTwo,
+    pageSize: 10,
+    pageNum: 1
   })
   itemList.value = res.data
 }
-const onClickLeft = () => history.back()
+const onClickLeft = () => {
+  console.log(content.data.levelOne)
+  if (content.data.levelOne === '1636282443407937538') {
+    router.push('/industry')
+  } else if (content.data.levelOne === '1636282537209352194') {
+    router.push('/bossBank')
+  } else if (content.data.levelOne === '1636282673046081537') {
+    router.push('/bossBank')
+  }
+}
 
 onMounted(() => {
   getDetails()

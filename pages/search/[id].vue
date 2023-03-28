@@ -128,12 +128,6 @@ const searchBtn = async () => {
   itemList.value = []
   isShow.value = true
   finished.value = false
-  // 存储输入框历史记录
-  if (idInfo.value.title != '') {
-    taglist.value.unshift(idInfo.value.title)
-    taglist.value = [...new Set(taglist.value)].slice(0, 10)
-    taglist.value && store.setHistory(taglist.value)
-  }
 }
 const goHistory = (item: any) => {
   idInfo.value.title = item
@@ -150,11 +144,16 @@ const clearBtn = () => {
 const onFocus = () => (isShow.value = false)
 
 const onLoad = async () => {
-  console.log('触底了', itemList.value)
   const { data } = await informationList({ ...idInfo.value, ...page.value })
   itemList.value.push(...data.data)
   page.value.min = data.min
   page.value.offset = data.offset
+  // 存储输入框历史记录
+  if (idInfo.value.title != '') {
+    taglist.value.unshift(idInfo.value.title)
+    taglist.value = [...new Set(taglist.value)].slice(0, 10)
+    taglist.value && store.setHistory(taglist.value)
+  }
   loading.value = false
   if (data.data.length < idInfo.value.count) finished.value = true
 }
@@ -203,7 +202,7 @@ onMounted(() => {
   }
 }
 :deep(.van-tab__text) {
-  font-size: 16px;
+  font-size: 18px;
   color: #222229;
 }
 :deep(.van-tab--active) {
