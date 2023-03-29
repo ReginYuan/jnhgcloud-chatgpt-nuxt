@@ -42,17 +42,16 @@ let showSwiper = ref(true)
 const loading = ref(false)
 const finished = ref(false)
 
-interface pageType {
-  offset?: number
-  min?: string
-}
 let idInfo = ref({
   levelOne: '',
   levelTwo: '',
   recommend: '',
   count: 20
 })
-let page = ref<pageType>({})
+let page = ref({
+  pageSize: 20,
+  pageNum: 1
+})
 
 const getTypeList = async () => {
   const { data } = await getInfo({ parentId: Id.value })
@@ -71,7 +70,7 @@ const onClickTab = async (info: any) => {
   idInfo.value.levelOne = tabItem.data.parentId
   idInfo.value.levelTwo = tabItem.data.inforTypeId
   itemList.value = []
-  page.value = {}
+  page.value.pageNum = 1
   finished.value = false
 }
 const onLoad = async () => {
@@ -87,11 +86,10 @@ const onLoad = async () => {
     ...idInfo.value,
     ...page.value
   })
-  itemList.value.push(...data.data)
-  page.value.min = data.min
-  page.value.offset = data.offset
+  itemList.value.push(...data.records)
+  page.value.pageNum++
   loading.value = false
-  if (data.data.length <= idInfo.value.count) finished.value = true
+  if (data.records.length < page.value.pageSize) finished.value = true
 }
 onMounted(async () => {
   // 判断是ios环境还是安卓的环境
@@ -102,8 +100,8 @@ onMounted(async () => {
 
   if (process.client) {
     // 如果是在ios环境下就调用对应返回ios登录界面的方法
-    console.log('isIOS',isIOS)
-    console.log('window',window)
+    console.log('isIOS', isIOS)
+    console.log('window', window)
     if (isIOS && (window as any).webkit != undefined) {
       // ;(window as any).webkit.messageHandlers.hideNav.postMessage('hideNav')
       showToast({

@@ -60,11 +60,10 @@ let idInfo = ref({
   recommend: '',
   count: 20
 })
-interface pageType {
-  offset?: number
-  min?: string
-}
-let page = ref<pageType>({})
+let page = ref({
+  pageSize: 20,
+  pageNum: 1
+})
 
 const getTypeList = async () => {
   const { data } = await getInfo({ parentId: Id.value })
@@ -91,7 +90,7 @@ const onClickTab = async (info: any) => {
   idInfo.value.levelOne = tabItem.data.parentId
   idInfo.value.levelTwo = tabItem.data.inforTypeId
   itemList.value = []
-  page.value = {}
+  page.value.pageNum = 1
   finished.value = false
 }
 const onLoad = async () => {
@@ -108,11 +107,10 @@ const onLoad = async () => {
     ...idInfo.value,
     ...page.value
   })
-  itemList.value.push(...data.data)
-  page.value.min = data.min
-  page.value.offset = data.offset
+  itemList.value.push(...data.records)
+  page.value.pageNum++
   loading.value = false
-  if (data.data.length < idInfo.value.count) finished.value = true
+  if (data.records.length < page.value.pageSize) finished.value = true
 }
 onMounted(async () => {
   getTypeList()
