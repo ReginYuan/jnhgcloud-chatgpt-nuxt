@@ -136,13 +136,15 @@ export const closewebView = () => {
       )
     }
     // 如果是在安卓环境下就调用对应的返回安卓界面的方法
-    // if(isAndroid && (window as any).androidInterface != undefined){
-    //   ;(window as any).androidInterface.back()
-    // }
     if (isAndroid) {
-      console.log('这是安卓')
-      // ;(window as any).androidInterface.back()
       ;(window as any).android.back()
     }
   }
+}
+
+export const isAppCharacteristic = () => {
+  let us = navigator.userAgent
+  var index = us.indexOf('source=')
+  var source = us.slice(index + 7)
+  return source == 'zshb'
 }

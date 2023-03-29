@@ -1,6 +1,11 @@
 <template>
   <div class="top"></div>
-  <van-nav-bar left-arrow @click-left="onClickLeft" :clickable="false">
+  <van-nav-bar
+    v-if="isApp"
+    left-arrow
+    @click-left="onClickLeft"
+    :clickable="false"
+  >
     <template #right>
       <van-icon
         name="star-o"
@@ -89,6 +94,7 @@ import { ref, reactive, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ItemListType } from '~/types/itemList'
 import { getDetail, relatedArticles, collectApi } from '~/server/api/user'
+import { isAppCharacteristic } from '~/composables/utils/validate'
 const show = ref(false)
 const collect = ref(false)
 const route = useRoute()
@@ -143,16 +149,7 @@ const copyUrl = () => {
   return result
 }
 onMounted(() => {
-  const us = navigator.userAgent
-  console.log(us)
-
-  var isAndroid = us.indexOf('Android') > -1 || us.indexOf('Adr') > -1 //android终端
-  var isiOS = !!us.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) //ios终端
-
-  if (isAndroid || isiOS) isApp.value = true
-  console.log('isAndroid', isAndroid)
-  console.log('isiOS', isiOS)
-
+  isApp.value = isAppCharacteristic()
   getDetails()
 })
 </script>
@@ -163,22 +160,26 @@ onMounted(() => {
   height: 46px;
   background-color: transparent;
 }
+
 :deep(.van-nav-bar) {
   .van-icon-star-o:before {
     color: #222229;
     font-size: 22px;
   }
 }
+
 :deep(.van-icon-star-o:before) {
   color: #222229;
   font-size: 22px;
   margin-right: 20px;
 }
+
 :deep(.van-icon-star:before) {
   color: #fdad15;
   font-size: 22px;
   margin-right: 20px;
 }
+
 :deep(.van-icon-arrow-left) {
   color: #222229;
   font-size: 22px;
@@ -186,16 +187,19 @@ onMounted(() => {
 
 .content {
   margin-bottom: 16px;
+
   .title {
     padding: 12px 16px 0;
     font-size: 18px;
     color: #222222;
   }
+
   .infos {
     display: flex;
     justify-content: space-between;
     font-size: 12px;
     margin: 16px;
+
     .info_tag {
       span {
         color: #fa5151;
@@ -203,8 +207,10 @@ onMounted(() => {
         padding: 0 8px;
       }
     }
+
     .time {
       color: rgba($color: #222222, $alpha: 0.5);
+
       .point {
         display: inline-block;
         width: 5px;
@@ -215,6 +221,7 @@ onMounted(() => {
       }
     }
   }
+
   .text {
     box-sizing: border-box;
     padding: 0 16px;
@@ -222,17 +229,20 @@ onMounted(() => {
     width: 100%;
     font-size: 16px;
     color: #222222;
+
     :deep(img) {
       width: 100%;
       margin: 12px 0;
     }
   }
 }
+
 .tag {
   display: flex;
   flex-wrap: wrap;
   font-size: 12px;
   margin-bottom: 16px;
+
   span {
     display: inline-block;
     height: 26px;
@@ -244,6 +254,7 @@ onMounted(() => {
     border-radius: 36px;
   }
 }
+
 .about {
   .title {
     font-size: 18px;
@@ -251,14 +262,17 @@ onMounted(() => {
     padding: 16px;
   }
 }
+
 //分享弹层
 .share {
   // height: 160px;
   background-color: #f2f2f2;
+
   .share_content {
     background-color: #ffffff;
     height: 160px;
     margin-bottom: 8px;
+
     .share_content_title {
       font-size: 18px;
       color: #222222;
@@ -266,22 +280,26 @@ onMounted(() => {
       text-align: center;
       margin: 16px 0 32px;
     }
+
     .share_share {
       display: flex;
       justify-content: space-evenly;
       font-size: 14px;
       color: #000000;
+
       .share_item {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+
         img {
           margin-bottom: 8px;
         }
       }
     }
   }
+
   .cancel {
     height: 64px;
     line-height: 64px;
