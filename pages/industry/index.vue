@@ -20,6 +20,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import { Tabtype, ItemListType } from '~/types/itemList'
 import { getInfo, informationList } from '~/server/api/user'
+import { hideNav } from '~/composables/utils/validate'
 let Id = ref('1636282443407937538')
 const active = ref(0)
 let tabItem = reactive<{ data: Tabtype }>({
@@ -103,6 +104,7 @@ const onLoad = async () => {
   if (data.data.length < idInfo.value.count) finished.value = true
 }
 onMounted(() => {
+  hideNav()
   getTypeList()
 })
 </script>
