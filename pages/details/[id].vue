@@ -1,10 +1,10 @@
 <template>
-  <div class="top" v-if="isApp"></div>
+  <div class="top" v-show="isApp"></div>
   <van-nav-bar
     left-arrow
     @click-left="onClickLeft"
     :clickable="false"
-    v-if="isApp"
+    v-show="isApp"
   >
     <template #right>
       <van-icon
@@ -46,7 +46,7 @@
   </div>
   <!-- 相关文章 -->
   <div style="background-color: #f7f7f7; height: 8px"></div>
-  <div class="about" v-if="itemList.length > 0 && route.query.type">
+  <div class="about" v-show="itemList.length > 0">
     <div class="title">相关文章</div>
     <van-list>
       <van-cell v-for="(item, index) in itemList" :key="index">
@@ -129,7 +129,7 @@ const onCollect = async (status: boolean) => {
   collect.value = !collect.value
 }
 const copyUrl = () => {
-  const url = window.location.href?.split('?')[0]
+  const url = window.location.href
   // 动态创建 textarea 标签
   const textarea = document.createElement('textarea')
   // 将该 textarea 设为 readonly 防止 iOS 下自动唤起键盘，同时将 textarea 移出可视区域
@@ -148,9 +148,13 @@ const copyUrl = () => {
   return result
 }
 onMounted(() => {
-  // console.log(route.query)
-  const list = navigator.userAgent.split('///')
-  isApp.value = list.length > 1 // true-是app内嵌  false-非app内嵌
+  const list = navigator.userAgent
+  var isAndroid = list.indexOf('Android') > -1 || list.indexOf('Adr') > -1 //android终端
+  var isiOS = !!list.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) //ios终端
+  if (isAndroid || isiOS) isApp.value = true
+  console.log('isAndroid', isAndroid)
+  console.log('isiOS', isiOS)
+
   getDetails()
 })
 </script>
