@@ -87,17 +87,12 @@ export const geTokenAll = () => {
   let isAndroid = us.indexOf('Android') > -1 || us.indexOf('Linux') > -1
   let isIOS =
     us.indexOf('ios_app') > -1 || !!us.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
-    console.log('isAndroid',isAndroid)
   if (process.client) {
     if (isAndroid) {
       var index = us.indexOf('=')
       var token = us.slice(index + 1)
       const user = userStrore()
       user.setToken(token)
-      showToast({
-        message: '' + token
-      })
-
       return
     }
     // 如果是在ios环境下就调用对应返回ios登录界面的方法
