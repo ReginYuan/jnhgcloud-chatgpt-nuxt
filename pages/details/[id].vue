@@ -1,6 +1,11 @@
 <template>
-  <div class="top"></div>
-  <van-nav-bar left-arrow @click-left="onClickLeft" :clickable="false">
+  <div class="top" v-if="isApp"></div>
+  <van-nav-bar
+    left-arrow
+    @click-left="onClickLeft"
+    :clickable="false"
+    v-if="isApp"
+  >
     <template #right>
       <van-icon
         name="star-o"
@@ -41,7 +46,7 @@
   </div>
   <!-- 相关文章 -->
   <div style="background-color: #f7f7f7; height: 8px"></div>
-  <div class="about" v-if="itemList.length > 0">
+  <div class="about" v-if="itemList.length > 0 && route.query.type">
     <div class="title">相关文章</div>
     <van-list>
       <van-cell v-for="(item, index) in itemList" :key="index">
@@ -105,11 +110,11 @@ let content = reactive<{ data: ItemListType }>({
     lables: []
   }
 })
+const isApp = ref(false)
 let itemList = ref<ItemListType[]>([])
 const getDetails = async () => {
   const { data } = await getDetail({ inforId: route.params.id })
   content.data = data
-  console.log(content.data)
   collect.value = data.collect
   const res = await relatedArticles({ inforId: content.data.inforId })
   itemList.value = res.data
@@ -124,7 +129,7 @@ const onCollect = async (status: boolean) => {
   collect.value = !collect.value
 }
 const copyUrl = () => {
-  const url = window.location.href
+  const url = window.location.href?.split('?')[0]
   // 动态创建 textarea 标签
   const textarea = document.createElement('textarea')
   // 将该 textarea 设为 readonly 防止 iOS 下自动唤起键盘，同时将 textarea 移出可视区域
@@ -143,6 +148,9 @@ const copyUrl = () => {
   return result
 }
 onMounted(() => {
+  // console.log(route.query)
+  const list = navigator.userAgent.split('///')
+  isApp.value = list.length > 1 // true-是app内嵌  false-非app内嵌
   getDetails()
 })
 </script>

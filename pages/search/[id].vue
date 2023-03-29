@@ -102,8 +102,6 @@ const getTypeList = async () => {
     item => item.inforTypeId === route.params.id
   )
   active.value = index
-  const item = tabList.value.find(item => item.inforTypeId === route.params.id)
-  idInfo.value.levelOne = item?.inforTypeId as string
 }
 
 const onClickTab = async (info: any) => {
@@ -123,6 +121,8 @@ const onClickTab = async (info: any) => {
 
 const store = historyStrore()
 const searchBtn = async () => {
+  if (idInfo.value.levelOne === '')
+    idInfo.value.levelOne = route.params.id as string
   page.value.pageNum = 1
   itemList.value = []
   isShow.value = true

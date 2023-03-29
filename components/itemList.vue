@@ -41,13 +41,14 @@
 <script setup lang="ts">
 import { onMounted, watch } from 'vue'
 import { ItemListType } from '~/types/itemList'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 const props = defineProps<{
   list: ItemListType
   type?: string
 }>()
 
 const router = useRouter()
+const route = useRoute()
 let color = ref('')
 let backgroundColor = ref('')
 watch(
@@ -66,7 +67,6 @@ watch(
   },
   { immediate: true, deep: true }
 )
-
 const toDetail = (item: ItemListType) => {
   router.push({
     name: 'details-id',
