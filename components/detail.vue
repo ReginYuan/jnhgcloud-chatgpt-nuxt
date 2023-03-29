@@ -124,9 +124,9 @@ onMounted(() => {
       color: rgba($color: #222222, $alpha: 0.5);
       .point {
         display: inline-block;
-        width: 5px;
-        height: 5px;
-        border-radius: 5px;
+        width: 3px;
+        height: 3px;
+        border-radius: 3px;
         margin: 0 3px;
         background-color: #c4c4c4;
       }

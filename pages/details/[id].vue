@@ -141,9 +141,9 @@ const getDetails = async () => {
 const onClickLeft = () => history.back()
 const onCollect = async (status: boolean) => {
   if (status === true) {
-    await collectApi({ inforId: content.data.inforId, collect: 0 })
-  } else {
     await collectApi({ inforId: content.data.inforId, collect: 1 })
+  } else {
+    await collectApi({ inforId: content.data.inforId, collect: 0 })
   }
   collect.value = !collect.value
 }
@@ -164,7 +164,8 @@ const copyUrl = () => {
   return result
 }
 onMounted(() => {
-  isApp.value = isAppCharacteristic()
+  // isApp.value = isAppCharacteristic()
+  isApp.value = true
   console.log(isApp.value)
 
   getDetails()
@@ -230,9 +231,9 @@ onMounted(() => {
 
       .point {
         display: inline-block;
-        width: 5px;
-        height: 5px;
-        border-radius: 5px;
+        width: 3px;
+        height: 3px;
+        border-radius: 3px;
         margin: 0 3px;
         background-color: #c4c4c4;
       }

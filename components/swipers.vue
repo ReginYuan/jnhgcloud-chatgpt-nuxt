@@ -95,10 +95,10 @@ const toDetail = (inforId: string) => {
     color: rgba($color: #000000, $alpha: 0.5);
     .point {
       display: inline-block;
-      width: 5px;
-      height: 5px;
-      border-radius: 5px;
-      margin: 0 3px 2px;
+      width: 3px;
+      height: 3px;
+      border-radius: 3px;
+      margin: 0 3px;
       background-color: #c4c4c4;
     }
   }
