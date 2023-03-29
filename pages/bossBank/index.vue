@@ -103,9 +103,9 @@ onMounted(async () => {
     // 如果是在ios环境下就调用对应返回ios登录界面的方法
     console.log('isIOS',isIOS)
     console.log('window',window)
-    if (isIOS) {
+    if (isIOS && (window as any).webkit != undefined) {
       ;(window as any).webkit.messageHandlers.hideNav()
-      console.log('(window as any).webkit',(window as any).webkit )
+      // console.log('(window as any).webkit',(window as any).webkit )
       return
     }
   }
