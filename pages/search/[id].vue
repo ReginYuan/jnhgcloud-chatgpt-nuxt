@@ -87,14 +87,12 @@ let type = ref('')
 
 let idInfo = ref({
   title: '',
-  levelOne: '',
-  count: 20
+  levelOne: ''
 })
-interface pageType {
-  offset?: number
-  min?: string
-}
-let page = ref<pageType>({})
+let page = ref({
+  pageSize: 20,
+  pageNum: 1
+})
 
 // 获取tab栏数据
 const getTypeList = async () => {
@@ -119,20 +117,20 @@ const onClickTab = async (info: any) => {
   }
   idInfo.value.levelOne = value.inforTypeId
   itemList.value = []
-  page.value = {}
+  page.value.pageNum = 1
   finished.value = false
 }
 
 const store = historyStrore()
 const searchBtn = async () => {
-  page.value = {}
+  page.value.pageNum = 1
   itemList.value = []
   isShow.value = true
   finished.value = false
 }
 const goHistory = (item: any) => {
   idInfo.value.title = item
-  page.value = {}
+  page.value.pageNum = 1
   itemList.value = []
   isShow.value = true
   finished.value = false
@@ -146,9 +144,7 @@ const onFocus = () => (isShow.value = false)
 
 const onLoad = async () => {
   const { data } = await informationList({ ...idInfo.value, ...page.value })
-  itemList.value.push(...data.data)
-  page.value.min = data.min
-  page.value.offset = data.offset
+  itemList.value.push(...data.records)
   // 存储输入框历史记录
   if (idInfo.value.title != '') {
     taglist.value.unshift(idInfo.value.title)
@@ -156,7 +152,8 @@ const onLoad = async () => {
     taglist.value && store.setHistory(taglist.value)
   }
   loading.value = false
-  if (data.data.length < idInfo.value.count) finished.value = true
+  page.value.pageNum++
+  if (data.records.length < page.value.pageSize) finished.value = true
 }
 const onClickLeft = () => history.back()
 

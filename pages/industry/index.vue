@@ -41,14 +41,12 @@ const finished = ref(false)
 let idInfo = ref({
   levelOne: '',
   levelTwo: '',
-  recommend: '',
-  count: 5
+  recommend: ''
 })
-interface pageType {
-  offset?: number
-  min?: string
-}
-let page = ref<pageType>({})
+let page = ref({
+  pageSize: 20,
+  pageNum: 1
+})
 
 // 获取tab栏数据
 let tabList = ref<Tabtype[]>([])
@@ -69,7 +67,7 @@ const onClickTab = async (info: any) => {
   idInfo.value.levelOne = tabItem.data.parentId
   idInfo.value.levelTwo = tabItem.data.inforTypeId
   itemList.value = []
-  page.value = {}
+  page.value.pageNum = 1
   finished.value = false
 }
 const onLoad = async () => {
@@ -85,23 +83,14 @@ const onLoad = async () => {
     ...idInfo.value,
     ...page.value
   })
-  itemList.value.push(...data.data)
-
-  if (tabItem.data?.parentId === '' && page.value.min === undefined) {
+  itemList.value.push(...data.records)
+  if (tabItem.data?.parentId === '' && page.value.pageNum === 1) {
     hotList.value = itemList.value
     itemList.value = itemList.value.splice(3)
   }
-
-  page.value.min = data.min
-  page.value.offset = data.offset
+  page.value.pageNum++
   loading.value = false
-  console.log(
-    data.data.length,
-    idInfo.value.count,
-    data.data.length < idInfo.value.count
-  )
-
-  if (data.data.length < idInfo.value.count) finished.value = true
+  if (data.records.length < page.value.pageSize) finished.value = true
 }
 onMounted(() => {
   hideNav()

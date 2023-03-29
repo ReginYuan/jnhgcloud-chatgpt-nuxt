@@ -52,11 +52,10 @@ let idInfo = ref({
 })
 const loading = ref(false)
 const finished = ref(false)
-interface pageType {
-  offset?: number
-  min?: string
-}
-let page = ref<pageType>({})
+let page = ref({
+  pageSize: 20,
+  pageNum: 1
+})
 
 const getTypeList = async () => {
   tabList.value = []
@@ -76,22 +75,21 @@ const onClickTab = async (info: any) => {
   idInfo.value.levelOne = tabItem.data.parentId
   idInfo.value.levelTwo = tabItem.data.inforTypeId
   itemList.value = []
-  page.value = {}
+  page.value.pageNum = 1
   finished.value = false
 }
 const onLoad = async () => {
-  idInfo.value.levelOne = Id.value
   if (tabItem.data?.parentId === '') {
+    idInfo.value.levelOne = Id.value
     idInfo.value.recommend = 'Y'
   } else {
     idInfo.value.recommend = ''
   }
   const { data } = await informationList({ ...idInfo.value, ...page.value })
-  itemList.value.push(...data.data)
-  page.value.min = data.min
-  page.value.offset = data.offset
+  itemList.value.push(...data.records)
+  page.value.pageNum++
   loading.value = false
-  if (data.data.length <= idInfo.value.count) finished.value = true
+  if (data.records.length < page.value.pageSize) finished.value = true
 }
 
 onMounted(async () => {
