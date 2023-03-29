@@ -1,11 +1,6 @@
 <template>
-  <div class="top" v-show="isApp"></div>
-  <van-nav-bar
-    left-arrow
-    @click-left="onClickLeft"
-    :clickable="false"
-    v-show="isApp"
-  >
+  <div class="top"></div>
+  <van-nav-bar left-arrow @click-left="onClickLeft" :clickable="false">
     <template #right>
       <van-icon
         name="star-o"
