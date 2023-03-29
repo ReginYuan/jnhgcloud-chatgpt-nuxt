@@ -142,7 +142,7 @@ export const closewebView = () => {
     if (isAndroid) {
       console.log('这是安卓')
       // ;(window as any).androidInterface.back()
-      ;(window as any).android.back()
+      ;(window as any).androidFunction.back()
     }
   }
 }
