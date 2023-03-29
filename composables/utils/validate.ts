@@ -87,11 +87,10 @@ export const geTokenAll = () => {
   let isAndroid = us.indexOf('Android') > -1 || us.indexOf('Linux') > -1
   let isIOS =
     us.indexOf('ios_app') > -1 || !!us.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
-    showToast({
-      message:'+'+us,
-      duration:100000000
-      
-    })
+  showToast({
+    message: ''+us,
+    duration: 1000000
+  })
   if (process.client) {
     if (isAndroid) {
       var index = us.indexOf('=')
