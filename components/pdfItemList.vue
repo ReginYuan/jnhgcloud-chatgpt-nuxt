@@ -61,7 +61,7 @@ function toDetail(item: any) {
       .come {
         display: inline-block;
         line-height: 17px;
-        color: #2ac670;
+        color: pink;
         background-color: rgba($color: #2ac670, $alpha: 0.1);
         padding: 0px 8px;
         border-radius: 2px;
