@@ -114,11 +114,19 @@ onMounted(() => {})
     display: flex;
     justify-content: space-between;
     .tag {
+      box-sizing: border-box;
       font-size: 12px;
       color: v-bind('color');
       background-color: v-bind('backgroundColor');
       padding: 1px 8px;
       border-radius: 2px;
+      width: 52px;
+      text-align: center;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
     }
     .time {
       width: 70%;
