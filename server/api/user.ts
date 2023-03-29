@@ -76,7 +76,7 @@ export function collectApi(params: any) {
   return fetchTMDB(
     '/zshb/information/collect',
     {
-      method: 'post',
+      method: 'put',
       headers: {
         isToken: true
       }
