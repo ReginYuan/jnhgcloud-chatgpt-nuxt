@@ -59,10 +59,19 @@ function toDetail(item: any) {
     .tag {
       margin-left: 28px;
       .come {
+        display: inline-block;
+        line-height: 17px;
         color: #2ac670;
         background-color: rgba($color: #2ac670, $alpha: 0.1);
-        padding: 4px 8px;
+        padding: 0px 8px;
         border-radius: 2px;
+        width: 100px;
+        text-align: center;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
       }
       .page {
         margin-left: 9px;
