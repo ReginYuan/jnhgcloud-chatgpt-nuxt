@@ -1,10 +1,9 @@
 import { $fetch } from 'ohmyfetch'
 import LRU from 'lru-cache'
 import { hash as ohash } from 'ohash'
-import { showFailToast } from 'vant'
+import { showFailToast , showToast } from 'vant'
 import errorCode from '~/composables/utils/errorCode'
 import { getToken } from '~/composables/utils/auth'
-
 const apiBaseUrl = '/api'
 
 const cache = new LRU({
@@ -49,6 +48,10 @@ function _fetchTMDB(
         if (getToken() && isToken) {
           // 让每个请求携带自定义token 请根据实际情况自行修改
           config.headers.Authorization = 'Bearer ' + getToken()
+          showToast({
+            message:''+ getToken()
+          })
+
         }
       },
 

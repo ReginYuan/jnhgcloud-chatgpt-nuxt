@@ -100,7 +100,7 @@ export const geTokenAll = () => {
       var index = us.indexOf('=')
       var token = us.slice(index + 1)
       const user = userStrore()
-      // user.setToken(token)
+      user.setToken(token)
       return
     }
   }
