@@ -16,7 +16,7 @@
     </template>
   </van-nav-bar>
   <div style="background-color: #f7f7f7; height: 2px"></div>
-  <div class="content">
+  <div class="content" v-if="content.data.inforId">
     <div class="title">{{ content.data.title }}</div>
     <div class="infos">
       <div class="info_tag">
@@ -109,6 +109,7 @@ let itemList = ref<ItemListType[]>([])
 const getDetails = async () => {
   const { data } = await getDetail({ inforId: route.params.id })
   content.data = data
+  console.log(content.data)
   collect.value = data.collect
   const res = await relatedArticles({ inforId: content.data.inforId })
   itemList.value = res.data
