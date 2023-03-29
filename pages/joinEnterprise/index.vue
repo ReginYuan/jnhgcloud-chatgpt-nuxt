@@ -82,7 +82,7 @@ import {
   code,
   h5applyToJoinCompanySubmission
 } from '~/server/api/joinEnterprise'
-import { hideNav } from '~/composables/utils/validate'
+import { hideNav,closewebView } from '~/composables/utils/validate'
 definePageMeta({ layout: false })
 const router = useRouter()
 
@@ -154,6 +154,7 @@ const sendCode = () => {
 //返回上一级
 const goBack = () => {
   router.go(-1)
+  closewebView()
 }
 const getList = async () => {
   const route = useRoute()

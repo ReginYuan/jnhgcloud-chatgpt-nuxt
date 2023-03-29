@@ -140,11 +140,18 @@ export const closewebView = () => {
     us.indexOf('ios_app') > -1 || !!us.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
 
   if (process.client) {
-    // 如果是在ios环境下就调用对应返回ios登录界面的方法
+    // 如果是在ios环境下就调用对应返回ios界面的方法
     if (isIOS && (window as any).webkit != undefined) {
-      ;(window as any).webkit.messageHandlers.closeWebView.postMessage('closeWebView')
+      ;(window as any).webkit.messageHandlers.closeWebView.postMessage(
+        'closeWebView'
+      )
+    }
+    // 如果是在安卓环境下就调用对应的返回安卓界面的方法
+    // if(isAndroid && (window as any).androidInterface != undefined){
+    //   ;(window as any).androidInterface.back()
+    // }
+    if (isAndroid && (window as any).android != undefined) {
+      ;(window as any).android.back()
     }
   }
 }
-
-
