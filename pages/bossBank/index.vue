@@ -107,7 +107,7 @@ onMounted(async () => {
     console.log('isIOS',isIOS)
     console.log('window',window)
     if (isIOS && (window as any).webkit != undefined) {
-      // ;(window as any).webkit.messageHandlers.hideNav.postMessage('hideNav')
+      ;(window as any).webkit.messageHandlers.hideNav.postMessage('hideNav')
       showToast({
         message: '运行成功'
       })
