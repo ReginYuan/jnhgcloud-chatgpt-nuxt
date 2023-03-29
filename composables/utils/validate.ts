@@ -90,7 +90,6 @@ export const geTokenAll = () => {
 
   if (process.client) {
     console.log(window,'window')
-    // window.androidInterface
     if (isAndroid) {
       // window.window.androidInterface.back()
       ;(window as any).android.back()

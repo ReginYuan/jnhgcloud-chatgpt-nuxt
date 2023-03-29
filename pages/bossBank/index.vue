@@ -93,6 +93,22 @@ const onLoad = async () => {
   if (data.data.length <= idInfo.value.count) finished.value = true
 }
 onMounted(async () => {
+  // 判断是ios环境还是安卓的环境
+  let us = navigator.userAgent
+  let isAndroid = us.indexOf('Android') > -1 || us.indexOf('Linux') > -1
+  let isIOS =
+    us.indexOf('ios_app') > -1 || !!us.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
+
+  if (process.client) {
+    // 如果是在ios环境下就调用对应返回ios登录界面的方法
+    console.log('isIOS',isIOS)
+    console.log('window',window)
+    if (isIOS) {
+      ;(window as any).webkit.messageHandlers.hideNav()
+      // ;(window as any).webkit.messageHandlers.login()
+      return
+    }
+  }
   getTypeList()
 })
 </script>
