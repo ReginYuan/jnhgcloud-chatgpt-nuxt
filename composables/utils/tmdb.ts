@@ -49,7 +49,7 @@ function _fetchTMDB(
           // 让每个请求携带自定义token 请根据实际情况自行修改
           config.headers.Authorization = 'Bearer ' + getToken()
           showToast({
-            message:''+ getToken()
+            message:''+ config.headers.Authorization
           })
 
         }

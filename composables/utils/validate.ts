@@ -79,8 +79,11 @@ export function tansParams(params: { [x: string]: any }) {
   return result
 }
 
-import { showToast } from 'vant'
 import { userStrore } from '../store/model/userStore'
+
+/**
+ *获取ua中token并存储起来
+ */
 export const geTokenAll = () => {
   // 判断是ios环境还是安卓的环境
   let us = navigator.userAgent
@@ -103,14 +106,14 @@ export const geTokenAll = () => {
       var token = str.substr(0, str.length - 12);
       const user = userStrore()
       user.setToken(token)
-      showToast({
-        message:''+ str
-      })
       return
     }
   }
 }
 
+/**
+ * 调用app隐藏头部导航栏
+ */
 export const hideNav = () => {
   // 判断是ios环境还是安卓的环境
   let us = navigator.userAgent
@@ -126,6 +129,9 @@ export const hideNav = () => {
   }
 }
 
+/**
+ * 调用app关闭对应的页面
+ */
 export const closewebView = () => {
   // 判断是ios环境还是安卓的环境
   let us = navigator.userAgent
@@ -147,6 +153,9 @@ export const closewebView = () => {
   }
 }
 
+/**
+ * 判断是否是在app内
+ */
 export const isAppCharacteristic = () => {
   let us = navigator.userAgent
   var index = us.indexOf('source=')
