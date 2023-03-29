@@ -67,7 +67,7 @@
           </div>
           <div class="share_item">
             <div>
-              <img src="~/assets/img/icon-Circle of Friends.png" alt="" />
+              <img src="~/assets/img/icon-Circle-of-Friends.png" alt="" />
             </div>
             <div>朋友圈</div>
           </div>
