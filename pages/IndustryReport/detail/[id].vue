@@ -34,7 +34,8 @@ const onClickLeft = () => history.back()
 }
 
 .content {
-  height: calc(100vh - 46px);
+  // height: 100vh;
+  height: calc(100vh - 92px);
   overflow: auto;
   background-color: #ededef !important;
   // padding: 0 20px;

@@ -111,10 +111,10 @@ onMounted(() => {
   color: #1f46b6;
 }
 .tabbar {
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 46px;
+  // position: fixed;
+  // left: 0;
+  // right: 0;
+  // top: 86px;
   display: flex;
   justify-content: space-between;
   padding: 8px 16px;
@@ -153,7 +153,7 @@ onMounted(() => {
 .pdfPreview {
   display: flex;
   flex-direction: column;
-  margin-top: 45px;
+  margin-top: 10px;
   padding: 0 20px;
   box-sizing: border-box;
   .centerPanel {

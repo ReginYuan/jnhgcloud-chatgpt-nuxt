@@ -53,7 +53,6 @@
   <van-popup
     v-model:show="show"
     position="bottom"
-    :style="{ height: '232px' }"
     :close-on-click-overlay="false"
   >
     <div class="share">
