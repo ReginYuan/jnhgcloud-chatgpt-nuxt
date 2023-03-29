@@ -242,9 +242,6 @@ onMounted(() => {
   }
 }
 //分享弹层
-:deep(.van-popup) {
-  height: 500px;
-}
 .share {
   // height: 160px;
   background-color: #f2f2f2;
