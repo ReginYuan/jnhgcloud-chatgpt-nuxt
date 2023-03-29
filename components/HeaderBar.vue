@@ -18,12 +18,16 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
+import { closewebView } from '~/composables/utils/validate'
 const props = defineProps<{ title: string; parentId: string }>()
 const router = useRouter()
 const goSearch = () => {
   router.push(`/search/${props.parentId}`)
 }
-const onClickLeft = () => history.back()
+const onClickLeft = () => {
+  history.back()
+  closewebView()
+}
 </script>
 
 <style scoped lang="scss">
