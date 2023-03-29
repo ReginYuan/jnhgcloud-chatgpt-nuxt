@@ -33,6 +33,7 @@
       :style="{ width: '330px', height: '188px' }"
       v-for="(item, index) in swiperList"
       :key="index"
+      @click="toDetail(item.inforId)"
       ><img :src="item.coverLink" alt=""
     /></swiper-slide>
   </swiper>

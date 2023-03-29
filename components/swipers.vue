@@ -12,7 +12,11 @@
     :delay="100"
     :disableOnInteraction="false"
   >
-    <swiper-slide v-for="(item, index) in swiperList" :key="index">
+    <swiper-slide
+      v-for="(item, index) in swiperList"
+      :key="index"
+      @click="toDetail(item.inforId)"
+    >
       <div class="content">
         <img :src="item.coverLink" alt="" />
         <div class="title">{{ item.title }}</div>
@@ -27,6 +31,7 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { Swiper, SwiperSlide } from 'swiper/vue' // swiper所需组件
 // 这是分页器和对应方法，swiper好像在6的时候就已经分离了分页器和一些其他工具
 import { Autoplay, Navigation, Pagination, A11y } from 'swiper'
@@ -45,6 +50,14 @@ onMounted(async () => {
   })
   swiperList.value = data
 })
+
+const router = useRouter()
+const toDetail = (inforId: string) => {
+  router.push({
+    name: 'details-id',
+    params: { id: inforId }
+  })
+}
 </script>
 
 <style scoped lang="scss">

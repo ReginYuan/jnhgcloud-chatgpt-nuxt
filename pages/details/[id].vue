@@ -143,9 +143,12 @@ const copyUrl = () => {
   return result
 }
 onMounted(() => {
-  const list = navigator.userAgent
-  var isAndroid = list.indexOf('Android') > -1 || list.indexOf('Adr') > -1 //android终端
-  var isiOS = !!list.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) //ios终端
+  const us = navigator.userAgent
+  console.log(us)
+
+  var isAndroid = us.indexOf('Android') > -1 || us.indexOf('Adr') > -1 //android终端
+  var isiOS = !!us.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) //ios终端
+
   if (isAndroid || isiOS) isApp.value = true
   console.log('isAndroid', isAndroid)
   console.log('isiOS', isiOS)
