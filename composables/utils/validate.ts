@@ -145,7 +145,7 @@ export const closewebView = () => {
 export const isApp = () => {
   let us = navigator.userAgent
   var index = us.indexOf('source=')
-  var source = us.slice(index + 2)
+  var source = us.slice(index + 7)
   showToast({
     message: '' + source,
     duration: 10000000
