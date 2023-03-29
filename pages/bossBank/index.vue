@@ -49,7 +49,7 @@ interface pageType {
   min?: string
 }
 let idInfo = ref({
-  levelOne: Id,
+  levelOne: '',
   levelTwo: '',
   recommend: '',
   count: 20
@@ -78,6 +78,7 @@ const onClickTab = async (info: any) => {
 }
 const onLoad = async () => {
   if (tabItem.data?.parentId === '') {
+    idInfo.value.levelOne = Id.value
     idInfo.value.recommend = 'Y'
     showSwiper.value = true
   } else {

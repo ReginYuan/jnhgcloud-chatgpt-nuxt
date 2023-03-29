@@ -94,6 +94,12 @@ const onLoad = async () => {
   page.value.min = data.min
   page.value.offset = data.offset
   loading.value = false
+  console.log(
+    data.data.length,
+    idInfo.value.count,
+    data.data.length < idInfo.value.count
+  )
+
   if (data.data.length < idInfo.value.count) finished.value = true
 }
 onMounted(() => {
