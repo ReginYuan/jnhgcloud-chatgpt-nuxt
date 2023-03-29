@@ -28,7 +28,7 @@
 import { Tabtype, ItemListType } from '~/types/itemList'
 import { ref, onMounted } from 'vue'
 import { getInfo, informationList } from '~/server/api/user'
-
+import { hideNav } from '~/composables/utils/validate'
 let Id = ref('1636282673046081537')
 
 const active = ref(0)
@@ -93,6 +93,7 @@ const onLoad = async () => {
 }
 
 onMounted(async () => {
+  hideNav()
   getTypeList()
 })
 </script>

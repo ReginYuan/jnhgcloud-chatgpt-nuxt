@@ -82,6 +82,7 @@ import {
   code,
   h5applyToJoinCompanySubmission
 } from '~/server/api/joinEnterprise'
+import { hideNav } from '~/composables/utils/validate'
 definePageMeta({ layout: false })
 const router = useRouter()
 
@@ -164,6 +165,7 @@ const getList = async () => {
   form.companyNo = list.data.companyNo
 }
 onMounted(() => {
+  hideNav()
   getList()
 })
 </script>
