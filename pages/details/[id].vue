@@ -200,7 +200,7 @@ onMounted(() => {
         width: 5px;
         height: 5px;
         border-radius: 5px;
-        margin: 0 3px 2px;
+        margin: 0 3px;
         background-color: #c4c4c4;
       }
     }
