@@ -25,7 +25,7 @@ const goSearch = () => {
   router.push(`/search/${props.parentId}`)
 }
 const onClickLeft = () => {
-  history.back()
+  // history.back()
   closewebView()
 }
 </script>

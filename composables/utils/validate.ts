@@ -142,7 +142,7 @@ export const closewebView = () => {
   if (process.client) {
     // 如果是在ios环境下就调用对应返回ios登录界面的方法
     if (isIOS && (window as any).webkit != undefined) {
-      ;(window as any).webkit.messageHandlers.closewebView.postMessage('closewebView')
+      ;(window as any).webkit.messageHandlers.closeWebView.postMessage('closeWebView')
     }
   }
 }
