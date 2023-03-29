@@ -1,4 +1,5 @@
 <template>
+  <div class="top"></div>
   <div>
     <van-nav-bar title="标题" left-arrow @click-left="onClickLeft">
       <template #right>
@@ -16,6 +17,11 @@ const onClickLeft = () => history.back()
 </script>
 
 <style scoped lang="scss">
+.top {
+  width: 100%;
+  height: 46px;
+  background-color: transparent;
+}
 :deep(.van-icon) {
   color: #222229;
   font-size: 22px;
@@ -28,7 +34,8 @@ const onClickLeft = () => history.back()
 }
 
 .content {
-  height: calc(100vh - 46px);
+  // height: 100vh;
+  height: calc(100vh - 92px);
   overflow: auto;
   background-color: #ededef !important;
   // padding: 0 20px;

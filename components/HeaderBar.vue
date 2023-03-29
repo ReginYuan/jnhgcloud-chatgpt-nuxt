@@ -1,6 +1,11 @@
 <template>
   <div class="header">
-    <van-nav-bar :left-text="props.title" left-arrow :clickable="false">
+    <van-nav-bar
+      :left-text="props.title"
+      left-arrow
+      :clickable="false"
+      @click-left="onClickLeft"
+    >
       <template #right>
         <van-button to="" round @click="goSearch">
           <span>搜索资讯</span>
@@ -18,6 +23,7 @@ const router = useRouter()
 const goSearch = () => {
   router.push(`/search/${props.parentId}`)
 }
+const onClickLeft = () => history.back()
 </script>
 
 <style scoped lang="scss">

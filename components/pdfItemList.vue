@@ -32,7 +32,7 @@ function toDetail(item: any) {
 
 <style lang="scss" scoped>
 .content {
-  padding: 10px 16px 0;
+  padding: 16px 16px 0;
   .title {
     font-size: 18px;
     color: #222222;
@@ -48,13 +48,14 @@ function toDetail(item: any) {
     .text {
       letter-spacing: 1px;
       line-height: 25px;
+      text-align: left;
     }
   }
   .info {
     display: flex;
     justify-content: space-between;
     font-size: 12px;
-    margin: 21px 0 33px;
+    margin: 17px 0;
     .tag {
       margin-left: 28px;
       .come {

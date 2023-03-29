@@ -47,7 +47,7 @@ interface pageType {
   min?: string
 }
 let idInfo = ref({
-  levelOne: '',
+  levelOne: Id,
   levelTwo: '',
   recommend: '',
   count: 20

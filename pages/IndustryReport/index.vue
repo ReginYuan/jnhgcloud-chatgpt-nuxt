@@ -113,4 +113,7 @@ onMounted(async () => {
   bottom: 20px !important;
   border-radius: 4px 4px 0 0 !important;
 }
+:deep(.van-cell) {
+  padding: 0;
+}
 </style>

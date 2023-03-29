@@ -1,5 +1,6 @@
 <template>
   <swiper
+    v-if="swiperList?.length > 0"
     :width="230"
     :centeredSlides="true"
     :spaceBetween="15"
@@ -7,6 +8,9 @@
     :loop="true"
     :loopAdditionalSlides="3"
     :modules="modules"
+    :autoplay="true"
+    :delay="100"
+    :disableOnInteraction="false"
   >
     <swiper-slide v-for="(item, index) in swiperList" :key="index">
       <div class="content">

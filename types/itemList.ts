@@ -28,4 +28,5 @@ export interface ItemListType {
   coverLink: string
   createTime: string
   lables: Labletype[]
+  collect?: boolean
 }
