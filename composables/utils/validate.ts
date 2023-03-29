@@ -87,27 +87,16 @@ export const geTokenAll = () => {
   let isAndroid = us.indexOf('Android') > -1 || us.indexOf('Linux') > -1
   let isIOS =
     us.indexOf('ios_app') > -1 || !!us.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
-
   if (process.client) {
     if (isAndroid) {
-      // window.window.androidInterface.back()
-      ;(window as any).android.back()
-
       var index = us.indexOf('=')
       var token = us.slice(index + 1)
       const user = userStrore()
       user.setToken(token)
-      showToast({
-        message: '' + token
-      })
-
       return
     }
     // 如果是在ios环境下就调用对应返回ios登录界面的方法
     if (isIOS) {
-      // ;(window as any).webkit.messageHandlers.hideNav()
-      // ;(window as any).webkit.messageHandlers.login()
-
       var index = us.indexOf('=')
       var token = us.slice(index + 1)
       const user = userStrore()
@@ -140,11 +129,20 @@ export const closewebView = () => {
     us.indexOf('ios_app') > -1 || !!us.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
 
   if (process.client) {
-    // 如果是在ios环境下就调用对应返回ios登录界面的方法
+    // 如果是在ios环境下就调用对应返回ios界面的方法
     if (isIOS && (window as any).webkit != undefined) {
-      ;(window as any).webkit.messageHandlers.closeWebView.postMessage('closeWebView')
+      ;(window as any).webkit.messageHandlers.closeWebView.postMessage(
+        'closeWebView'
+      )
+    }
+    // 如果是在安卓环境下就调用对应的返回安卓界面的方法
+    // if(isAndroid && (window as any).androidInterface != undefined){
+    //   ;(window as any).androidInterface.back()
+    // }
+    if (isAndroid) {
+      console.log('这是安卓')
+      // ;(window as any).androidInterface.back()
+      ;(window as any).android.back()
     }
   }
 }
-
-
