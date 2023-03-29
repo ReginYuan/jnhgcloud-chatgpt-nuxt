@@ -90,7 +90,8 @@ export const geTokenAll = () => {
   if (process.client) {
     if (isAndroid) {
       var index = us.indexOf('=')
-      var token = us.slice(index + 1)
+      var str = us.slice(index + 1)
+      var token = str.substr(0, str.length - 12);
       const user = userStrore()
       user.setToken(token)
       return
@@ -98,7 +99,8 @@ export const geTokenAll = () => {
     // 如果是在ios环境下就调用对应返回ios登录界面的方法
     if (isIOS) {
       var index = us.indexOf('=')
-      var token = us.slice(index + 1)
+      var str = us.slice(index + 1)
+      var token = str.substr(0, str.length - 12);
       const user = userStrore()
       user.setToken(token)
       return
