@@ -142,13 +142,9 @@ export const closewebView = () => {
   }
 }
 
-export const isApp = () => {
+export const isAppCharacteristic = () => {
   let us = navigator.userAgent
   var index = us.indexOf('source=')
   var source = us.slice(index + 7)
-  showToast({
-    message: '' + source,
-    duration: 10000000
-  })
   return source == 'zshb'
 }

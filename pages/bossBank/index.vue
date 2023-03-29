@@ -24,7 +24,7 @@
 import { getInfo, informationList } from '~/server/api/user'
 import { ref, reactive, onMounted } from 'vue'
 import { Tabtype, ItemListType } from '~/types/itemList'
-import { hideNav, geTokenAll, isApp } from '~/composables/utils/validate'
+import { hideNav, geTokenAll } from '~/composables/utils/validate'
 let Id = ref('1636282537209352194')
 
 const active = ref(0)
@@ -95,7 +95,6 @@ const onLoad = async () => {
 onMounted(async () => {
   geTokenAll()
   hideNav()
-  isApp()
   getTypeList()
 })
 </script>
