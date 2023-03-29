@@ -72,7 +72,7 @@
             <div>朋友圈</div>
           </div>
           <div class="share_item">
-            <div>
+            <div @click="copyUrl">
               <img src="~/assets/img/icon-copy.png" alt="" />
             </div>
             <div>复制链接</div>
@@ -121,6 +121,25 @@ const onCollect = async (status: boolean) => {
     await collectApi({ inforId: content.data.inforId, collect: 1 })
   }
   collect.value = !collect.value
+}
+const copyUrl = () => {
+  const url = window.location.href
+  // 动态创建 textarea 标签
+  const textarea = document.createElement('textarea')
+  // 将该 textarea 设为 readonly 防止 iOS 下自动唤起键盘，同时将 textarea 移出可视区域
+  // textarea.readOnly = 'readonly'
+  // textarea.style.position = 'absolute'
+  // textarea.style.left = '-9999px'
+  // 将要 copy 的值赋给 textarea 标签的 value 属性
+  textarea.value = url
+  // 将 textarea 插入到 body 中
+  document.body.appendChild(textarea)
+  // 选中值并复制
+  textarea.select()
+  const result = document.execCommand('Copy')
+  document.body.removeChild(textarea)
+  showToast('复制成功')
+  return result
 }
 onMounted(() => {
   getDetails()

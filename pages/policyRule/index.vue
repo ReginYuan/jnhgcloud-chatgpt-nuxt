@@ -55,7 +55,7 @@ let showSwiper = ref(false)
 const loading = ref(false)
 const finished = ref(false)
 let idInfo = ref({
-  levelOne: '',
+  levelOne: Id.value,
   levelTwo: '',
   recommend: '',
   count: 20
@@ -67,8 +67,7 @@ interface pageType {
 let page = ref<pageType>({})
 
 const getTypeList = async () => {
-  const parentId = '1636282617106649089'
-  const { data } = await getInfo({ parentId })
+  const { data } = await getInfo({ parentId: Id.value })
   tabList.value = JSON.parse(JSON.stringify(data))
   tabList.value.unshift({
     inforTypeId: '',

@@ -60,8 +60,7 @@ let page = ref<pageType>({})
 
 const getTypeList = async () => {
   tabList.value = []
-  const parentId = '1636282673046081537'
-  const { data } = await getInfo({ parentId })
+  const { data } = await getInfo({ parentId: Id.value })
   tabList.value = JSON.parse(JSON.stringify(data))
   tabList.value.unshift({
     inforTypeId: '',
@@ -81,8 +80,8 @@ const onClickTab = async (info: any) => {
   finished.value = false
 }
 const onLoad = async () => {
+  idInfo.value.levelOne = Id.value
   if (tabItem.data?.parentId === '') {
-    idInfo.value.levelOne = Id.value
     idInfo.value.recommend = 'Y'
   } else {
     idInfo.value.recommend = ''
