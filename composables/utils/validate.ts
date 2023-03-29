@@ -87,10 +87,6 @@ export const geTokenAll = () => {
   let isAndroid = us.indexOf('Android') > -1 || us.indexOf('Linux') > -1
   let isIOS =
     us.indexOf('ios_app') > -1 || !!us.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
-  showToast({
-    message: ''+us,
-    duration: 1000000
-  })
   if (process.client) {
     if (isAndroid) {
       var index = us.indexOf('=')
@@ -140,13 +136,19 @@ export const closewebView = () => {
       )
     }
     // 如果是在安卓环境下就调用对应的返回安卓界面的方法
-    // if(isAndroid && (window as any).androidInterface != undefined){
-    //   ;(window as any).androidInterface.back()
-    // }
     if (isAndroid) {
-      console.log('这是安卓')
-      // ;(window as any).androidInterface.back()
       ;(window as any).android.back()
     }
   }
+}
+
+export const isApp = () => {
+  let us = navigator.userAgent
+  var index = us.indexOf('source=')
+  var source = us.slice(index + 1)
+  showToast({
+    message: '' + source,
+    duration: 10000000
+  })
+  return source == 'zshb'
 }
