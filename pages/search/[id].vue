@@ -102,6 +102,8 @@ const getTypeList = async () => {
     item => item.inforTypeId === route.params.id
   )
   active.value = index
+  // const item = tabList.value.find(item => item.inforTypeId === route.params.id)
+  // idInfo.value.levelOne = item?.inforTypeId as string
 }
 
 const onClickTab = async (info: any) => {
@@ -121,8 +123,6 @@ const onClickTab = async (info: any) => {
 
 const store = historyStrore()
 const searchBtn = async () => {
-  if (idInfo.value.levelOne === '')
-    idInfo.value.levelOne = route.params.id as string
   page.value.pageNum = 1
   itemList.value = []
   isShow.value = true
@@ -160,6 +160,7 @@ const onClickLeft = () => history.back()
 onMounted(() => {
   const history = window.localStorage.getItem('History')
   taglist.value = history ? JSON.parse(history) : []
+  idInfo.value.levelOne = route.params.id as string
   getTypeList()
   if (route.params.id === '1636282443407937538') {
     type.value = 'industry'
