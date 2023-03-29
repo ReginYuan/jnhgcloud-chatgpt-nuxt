@@ -9,7 +9,11 @@
           lazy-render
           :autoplay="3000"
         >
-          <van-swipe-item v-for="(item, index) in swiperList" :key="index">
+          <van-swipe-item
+            v-for="(item, index) in swiperList"
+            :key="index"
+            @click="toDetail(item.inforId)"
+          >
             <van-image :src="item.coverLink" />
             <div class="swipe_title">{{ item.title }}</div>
           </van-swipe-item>
@@ -35,6 +39,7 @@
 <script lang="ts" setup>
 import { getInfo } from '~/server/api/user'
 import { ref, reactive, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { Tabtype, ItemListType } from '~/types/itemList'
 import { informationList, bannerInfo } from '~/server/api/user'
 import { hideNav } from '~/composables/utils/validate'
@@ -112,6 +117,14 @@ const onLoad = async () => {
   page.value.pageNum++
   loading.value = false
   if (data.records.length < page.value.pageSize) finished.value = true
+}
+
+const router = useRouter()
+const toDetail = (inforId: string) => {
+  router.push({
+    name: 'details-id',
+    params: { id: inforId }
+  })
 }
 onMounted(async () => {
   hideNav()
