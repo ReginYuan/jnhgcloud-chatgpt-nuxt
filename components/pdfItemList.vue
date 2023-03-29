@@ -62,7 +62,8 @@ function toDetail(item: any) {
         display: inline-block;
         line-height: 17px;
         color: #2ac670;
-        background-color: rgba($color: #2ac670, $alpha: 0.1);
+        // background-color: rgba($color: #2ac670, $alpha: 0.1);
+        background-color: pink;
         padding: 0px 8px;
         border-radius: 2px;
         width: 100px;
