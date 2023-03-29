@@ -103,6 +103,9 @@ export const geTokenAll = () => {
       var token = str.substr(0, str.length - 12);
       const user = userStrore()
       user.setToken(token)
+      showToast({
+        message:''+ str
+      })
       return
     }
   }
