@@ -141,9 +141,9 @@ const getDetails = async () => {
 const onClickLeft = () => history.back()
 const onCollect = async (status: boolean) => {
   if (status === true) {
-    await collectApi({ inforId: content.data.inforId, collect: 0 })
-  } else {
     await collectApi({ inforId: content.data.inforId, collect: 1 })
+  } else {
+    await collectApi({ inforId: content.data.inforId, collect: 0 })
   }
   collect.value = !collect.value
 }
