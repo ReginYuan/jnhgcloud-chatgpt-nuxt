@@ -105,7 +105,7 @@ onMounted(async () => {
     console.log('window',window)
     if (isIOS) {
       ;(window as any).webkit.messageHandlers.hideNav()
-      // ;(window as any).webkit.messageHandlers.login()
+      console.log('(window as any).webkit',(window as any).webkit )
       return
     }
   }
