@@ -139,7 +139,9 @@ export const closewebView = () => {
     // if(isAndroid && (window as any).androidInterface != undefined){
     //   ;(window as any).androidInterface.back()
     // }
-    if (isAndroid && (window as any).android != undefined) {
+    if (isAndroid) {
+      console.log('这是安卓')
+      // ;(window as any).androidInterface.back()
       ;(window as any).android.back()
     }
   }
