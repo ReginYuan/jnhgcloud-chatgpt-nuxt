@@ -144,10 +144,10 @@ export const closewebView = () => {
 
 export const isApp = () => {
   let us = navigator.userAgent
-  var index = us.indexOf('source=')
+  var index = us.indexOf('source')
   var source = us.slice(index + 1)
   showToast({
-    message: '' + source,
+    message: '我最帅'+source,
     duration: 10000000
   })
   return source == 'zshb'
