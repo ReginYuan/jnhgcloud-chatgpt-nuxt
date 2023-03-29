@@ -1,5 +1,5 @@
 <template>
-  <div class="top"></div>
+  <div class="top" v-if="isApp"></div>
   <van-nav-bar
     v-if="isApp"
     left-arrow
@@ -50,7 +50,7 @@
     <div class="title">相关文章</div>
     <van-list>
       <van-cell v-for="(item, index) in itemList" :key="index">
-        <ItemList :list="item"></ItemList>
+        <ItemList :list="item" :type="type"></ItemList>
       </van-cell>
     </van-list>
   </div>
@@ -111,12 +111,30 @@ let content = reactive<{ data: ItemListType }>({
     lables: []
   }
 })
+const type = ref('')
 const isApp = ref(false)
 let itemList = ref<ItemListType[]>([])
+let color = ref('')
+let backgroundColor = ref('')
 const getDetails = async () => {
   const { data } = await getDetail({ inforId: route.params.id })
   content.data = data
   collect.value = data.collect
+  console.log(content.data.levelOne)
+
+  if (content.data.levelOne === '1636282443407937538') {
+    type.value = 'industry'
+    color.value = '#FA5151'
+    backgroundColor.value = '#ffeeee'
+  } else if (content.data.levelOne === '1636282537209352194') {
+    type.value = 'bossBank'
+    color.value = '#FDAD15'
+    backgroundColor.value = '#fff3dc'
+  } else if (content.data.levelOne === '1636282617106649089') {
+    type.value = 'policyRule'
+    color.value = '#007AFF'
+    backgroundColor.value = '#e6f2ff'
+  }
   const res = await relatedArticles({ inforId: content.data.inforId })
   itemList.value = res.data
 }
@@ -135,9 +153,6 @@ const copyUrl = () => {
   const textarea = document.createElement('textarea')
   // 将该 textarea 设为 readonly 防止 iOS 下自动唤起键盘，同时将 textarea 移出可视区域
   // textarea.readOnly = 'readonly'
-  // textarea.style.position = 'absolute'
-  // textarea.style.left = '-9999px'
-  // 将要 copy 的值赋给 textarea 标签的 value 属性
   textarea.value = url
   // 将 textarea 插入到 body 中
   document.body.appendChild(textarea)
@@ -150,6 +165,8 @@ const copyUrl = () => {
 }
 onMounted(() => {
   isApp.value = isAppCharacteristic()
+  console.log(isApp.value)
+
   getDetails()
 })
 </script>
@@ -202,8 +219,8 @@ onMounted(() => {
 
     .info_tag {
       span {
-        color: #fa5151;
-        background-color: rgba($color: #fa5151, $alpha: 0.1);
+        color: v-bind('color');
+        background-color: v-bind('backgroundColor');
         padding: 0 8px;
       }
     }
@@ -261,6 +278,9 @@ onMounted(() => {
     color: #222222;
     padding: 16px;
   }
+}
+:deep(.van-cell) {
+  padding: 0;
 }
 
 //分享弹层
