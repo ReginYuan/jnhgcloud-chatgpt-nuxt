@@ -21,7 +21,7 @@
     </template>
   </van-nav-bar>
   <div style="background-color: #f7f7f7; height: 2px"></div>
-  <div class="content" v-if="content.data.inforId">
+  <div class="new_content" v-if="content.data.inforId">
     <div class="title">{{ content.data.title }}</div>
     <div class="infos">
       <div class="info_tag">
@@ -187,7 +187,7 @@ onMounted(() => {
   font-size: 22px;
 }
 
-.content {
+.new_content {
   margin-bottom: 16px;
 
   .title {
