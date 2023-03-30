@@ -177,7 +177,7 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   /* align-items: center; */
-  padding: 42px  21px 0 21px;
+  padding: 50px  21px 0 21px;
   font-size: 18px;
   font-family: Source Han Sans CN-Regular, Source Han Sans CN;
   font-weight: 400;
