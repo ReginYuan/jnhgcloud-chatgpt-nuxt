@@ -96,7 +96,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, onActivated } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ItemListType } from '~/types/itemList'
 import { getDetail, relatedArticles, collectApi } from '~/server/api/user'
@@ -153,8 +153,8 @@ const copyUrl = () => {
   return result
 }
 onMounted(() => {
-  isApp.value = isAppCharacteristic()
-  // isApp.value = true
+  // isApp.value = isAppCharacteristic()
+  isApp.value = true
   getDetails()
 })
 </script>

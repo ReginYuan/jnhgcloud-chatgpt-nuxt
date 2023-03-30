@@ -8,6 +8,7 @@
     @change="onChange"
   >
     <van-tab :title="item.name" v-for="(item, index) in tabList" :key="index">
+      <!-- <div class="swiper_a" v-if="showSwiper"></div> -->
       <swipers v-if="showSwiper"></swipers>
       <van-list
         v-model:loading="loading"
@@ -39,6 +40,7 @@ let itemList = ref<ItemListType[]>([])
 let showSwiper = ref(true)
 const loading = ref(false)
 const finished = ref(false)
+const refreshing = ref(false)
 
 let idInfo = ref({
   levelOne: Id.value,
@@ -46,7 +48,7 @@ let idInfo = ref({
   recommend: ''
 })
 let page = ref({
-  pageSize: 20,
+  pageSize: 5,
   pageNum: 1
 })
 
@@ -81,6 +83,11 @@ const onChange = (info: any) => {
   finished.value = false
 }
 const onLoad = async () => {
+  console.log('刷新页面')
+  if (refreshing.value) {
+    itemList.value = []
+    refreshing.value = false
+  }
   if (idInfo.value.levelTwo === '') {
     idInfo.value.recommend = 'Y'
     showSwiper.value = true
@@ -133,17 +140,25 @@ onMounted(async () => {
     }
   }
 }
-// .content {
-//   height: calc(100vh - 100px);
-//   overflow: auto;
-// }
+
 :deep(.van-cell) {
   padding: 0;
 }
 :deep(.van-tabs__line) {
   display: none;
 }
-:deep(.van-swipe-item) {
-  min-height: 100vh;
+:deep(.van-tab__panel-wrapper) {
+  min-height: 80vh;
 }
+// .swiper_b {
+//   width: 100%;
+//   height: 145px;
+//   position: absolute;
+//   top: 135px;
+//   z-index: 9999;
+// }
+// .swiper_a {
+//   width: 100%;
+//   height: 145px;
+// }
 </style>

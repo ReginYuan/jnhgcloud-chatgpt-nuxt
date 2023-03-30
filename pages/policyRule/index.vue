@@ -202,7 +202,10 @@ onMounted(async () => {
     }
   }
 }
-:deep(.van-swipe-item) {
-  min-height: 100vh;
+// :deep(.van-swipe-item) {
+//   min-height: 100vh;
+// }
+:deep(.van-tab__panel-wrapper) {
+  min-height: 80vh;
 }
 </style>

@@ -137,8 +137,8 @@ onMounted(() => {
 :deep(.van-tabs) {
   margin-top: 50px !important;
 }
-:deep(.van-swipe-item) {
-  min-height: 100vh;
+:deep(.van-tab__panel-wrapper) {
+  min-height: 80vh;
 }
 // .content {
 //   height: calc(100vh - 100px);
