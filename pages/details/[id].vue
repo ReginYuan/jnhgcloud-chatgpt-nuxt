@@ -1,6 +1,11 @@
 <template>
-  <div class="top"></div>
-  <van-nav-bar left-arrow @click-left="onClickLeft" :clickable="false">
+  <div class="top" v-if="isApp"></div>
+  <van-nav-bar
+    v-if="isApp"
+    left-arrow
+    @click-left="onClickLeft"
+    :clickable="false"
+  >
     <template #right>
       <van-icon
         name="star-o"
@@ -41,11 +46,11 @@
   </div>
   <!-- 相关文章 -->
   <div style="background-color: #f7f7f7; height: 8px"></div>
-  <div class="about" v-if="itemList.length > 0">
+  <div class="about" v-show="itemList.length > 0">
     <div class="title">相关文章</div>
     <van-list>
       <van-cell v-for="(item, index) in itemList" :key="index">
-        <ItemList :list="item"></ItemList>
+        <ItemList :list="item" :type="type"></ItemList>
       </van-cell>
     </van-list>
   </div>
@@ -89,6 +94,7 @@ import { ref, reactive, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ItemListType } from '~/types/itemList'
 import { getDetail, relatedArticles, collectApi } from '~/server/api/user'
+import { isAppCharacteristic } from '~/composables/utils/validate'
 const show = ref(false)
 const collect = ref(false)
 const route = useRoute()
@@ -105,21 +111,39 @@ let content = reactive<{ data: ItemListType }>({
     lables: []
   }
 })
+const type = ref('')
+const isApp = ref(false)
 let itemList = ref<ItemListType[]>([])
+let color = ref('')
+let backgroundColor = ref('')
 const getDetails = async () => {
   const { data } = await getDetail({ inforId: route.params.id })
   content.data = data
-  console.log(content.data)
   collect.value = data.collect
+  console.log(content.data.levelOne)
+
+  if (content.data.levelOne === '1636282443407937538') {
+    type.value = 'industry'
+    color.value = '#FA5151'
+    backgroundColor.value = '#ffeeee'
+  } else if (content.data.levelOne === '1636282537209352194') {
+    type.value = 'bossBank'
+    color.value = '#FDAD15'
+    backgroundColor.value = '#fff3dc'
+  } else if (content.data.levelOne === '1636282617106649089') {
+    type.value = 'policyRule'
+    color.value = '#007AFF'
+    backgroundColor.value = '#e6f2ff'
+  }
   const res = await relatedArticles({ inforId: content.data.inforId })
   itemList.value = res.data
 }
 const onClickLeft = () => history.back()
 const onCollect = async (status: boolean) => {
   if (status === true) {
-    await collectApi({ inforId: content.data.inforId, collect: 0 })
-  } else {
     await collectApi({ inforId: content.data.inforId, collect: 1 })
+  } else {
+    await collectApi({ inforId: content.data.inforId, collect: 0 })
   }
   collect.value = !collect.value
 }
@@ -129,9 +153,6 @@ const copyUrl = () => {
   const textarea = document.createElement('textarea')
   // 将该 textarea 设为 readonly 防止 iOS 下自动唤起键盘，同时将 textarea 移出可视区域
   // textarea.readOnly = 'readonly'
-  // textarea.style.position = 'absolute'
-  // textarea.style.left = '-9999px'
-  // 将要 copy 的值赋给 textarea 标签的 value 属性
   textarea.value = url
   // 将 textarea 插入到 body 中
   document.body.appendChild(textarea)
@@ -143,6 +164,10 @@ const copyUrl = () => {
   return result
 }
 onMounted(() => {
+  // isApp.value = isAppCharacteristic()
+  isApp.value = true
+  console.log(isApp.value)
+
   getDetails()
 })
 </script>
@@ -153,22 +178,26 @@ onMounted(() => {
   height: 46px;
   background-color: transparent;
 }
+
 :deep(.van-nav-bar) {
   .van-icon-star-o:before {
     color: #222229;
     font-size: 22px;
   }
 }
+
 :deep(.van-icon-star-o:before) {
   color: #222229;
   font-size: 22px;
   margin-right: 20px;
 }
+
 :deep(.van-icon-star:before) {
   color: #fdad15;
   font-size: 22px;
   margin-right: 20px;
 }
+
 :deep(.van-icon-arrow-left) {
   color: #222229;
   font-size: 22px;
@@ -176,35 +205,41 @@ onMounted(() => {
 
 .content {
   margin-bottom: 16px;
+
   .title {
     padding: 12px 16px 0;
     font-size: 18px;
     color: #222222;
   }
+
   .infos {
     display: flex;
     justify-content: space-between;
     font-size: 12px;
     margin: 16px;
+
     .info_tag {
       span {
-        color: #fa5151;
-        background-color: rgba($color: #fa5151, $alpha: 0.1);
+        color: v-bind('color');
+        background-color: v-bind('backgroundColor');
         padding: 0 8px;
       }
     }
+
     .time {
       color: rgba($color: #222222, $alpha: 0.5);
+
       .point {
         display: inline-block;
-        width: 5px;
-        height: 5px;
-        border-radius: 5px;
-        margin: 0 3px 2px;
+        width: 3px;
+        height: 3px;
+        border-radius: 3px;
+        margin: 0 3px;
         background-color: #c4c4c4;
       }
     }
   }
+
   .text {
     box-sizing: border-box;
     padding: 0 16px;
@@ -212,17 +247,20 @@ onMounted(() => {
     width: 100%;
     font-size: 16px;
     color: #222222;
+
     :deep(img) {
       width: 100%;
       margin: 12px 0;
     }
   }
 }
+
 .tag {
   display: flex;
   flex-wrap: wrap;
   font-size: 12px;
   margin-bottom: 16px;
+
   span {
     display: inline-block;
     height: 26px;
@@ -234,6 +272,7 @@ onMounted(() => {
     border-radius: 36px;
   }
 }
+
 .about {
   .title {
     font-size: 18px;
@@ -241,17 +280,20 @@ onMounted(() => {
     padding: 16px;
   }
 }
-//分享弹层
-:deep(.van-popup) {
-  height: 500px;
+:deep(.van-cell) {
+  padding: 0;
 }
+
+//分享弹层
 .share {
   // height: 160px;
   background-color: #f2f2f2;
+
   .share_content {
     background-color: #ffffff;
     height: 160px;
     margin-bottom: 8px;
+
     .share_content_title {
       font-size: 18px;
       color: #222222;
@@ -259,22 +301,26 @@ onMounted(() => {
       text-align: center;
       margin: 16px 0 32px;
     }
+
     .share_share {
       display: flex;
       justify-content: space-evenly;
       font-size: 14px;
       color: #000000;
+
       .share_item {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+
         img {
           margin-bottom: 8px;
         }
       }
     }
   }
+
   .cancel {
     height: 64px;
     line-height: 64px;

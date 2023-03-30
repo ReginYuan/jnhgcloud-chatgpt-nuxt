@@ -102,8 +102,8 @@ const getTypeList = async () => {
     item => item.inforTypeId === route.params.id
   )
   active.value = index
-  const item = tabList.value.find(item => item.inforTypeId === route.params.id)
-  idInfo.value.levelOne = item?.inforTypeId as string
+  // const item = tabList.value.find(item => item.inforTypeId === route.params.id)
+  // idInfo.value.levelOne = item?.inforTypeId as string
 }
 
 const onClickTab = async (info: any) => {
@@ -160,6 +160,7 @@ const onClickLeft = () => history.back()
 onMounted(() => {
   const history = window.localStorage.getItem('History')
   taglist.value = history ? JSON.parse(history) : []
+  idInfo.value.levelOne = route.params.id as string
   getTypeList()
   if (route.params.id === '1636282443407937538') {
     type.value = 'industry'
@@ -250,55 +251,6 @@ onMounted(() => {
     padding: 6px 16px;
     color: #3e3e3e;
     background-color: #f8f8f9;
-  }
-}
-
-// 行业报告
-.content {
-  padding: 10px 16px 0;
-  .title {
-    font-size: 18px;
-    color: #222222;
-    display: flex;
-    .pic {
-      width: 20px;
-      height: 24px;
-      margin-right: 8px;
-      img {
-        height: 100%;
-      }
-    }
-    .text {
-      letter-spacing: 1px;
-      line-height: 25px;
-    }
-  }
-  .info {
-    display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-    margin: 21px 0 33px;
-    .tag {
-      margin-left: 28px;
-      .come {
-        color: #2ac670;
-        background-color: rgba($color: #2ac670, $alpha: 0.1);
-        padding: 4px 8px;
-        border-radius: 2px;
-      }
-      .page {
-        margin-left: 9px;
-        color: #fdad15;
-        background-color: rgba($color: #fdad15, $alpha: 0.1);
-        padding: 4px 8px;
-        border-radius: 2px;
-      }
-    }
-    .time {
-      color: #888888;
-      margin-right: 15px;
-      padding: 4px 0;
-    }
   }
 }
 </style>

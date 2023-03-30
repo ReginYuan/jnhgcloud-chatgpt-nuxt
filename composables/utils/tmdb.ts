@@ -1,10 +1,9 @@
 import { $fetch } from 'ohmyfetch'
 import LRU from 'lru-cache'
 import { hash as ohash } from 'ohash'
-import { showFailToast } from 'vant'
+import { showFailToast , showToast } from 'vant'
 import errorCode from '~/composables/utils/errorCode'
 import { getToken } from '~/composables/utils/auth'
-
 const apiBaseUrl = '/api'
 
 const cache = new LRU({
@@ -57,7 +56,6 @@ function _fetchTMDB(
         // 未设置状态码则默认成功状态
         // let data = JSON.parse(response._data)
         let data = response._data
-        console.log('response',response )
         // let data = response._data
         const code = data.code || data.statusCode || 200
         // 获取错误信息
@@ -139,7 +137,7 @@ function _fetchTMDB(
         // 未设置状态码则默认成功状态
         // let data = JSON.parse(response._data)
         let data = response._data
-        console.log('response',response )
+        console.log('response', response)
         // let data = response._data
         const code = data.code || data.statusCode || 200
         // 获取错误信息
@@ -151,6 +149,7 @@ function _fetchTMDB(
 
           // 判断是ios环境还是安卓的环境
           let us = navigator.userAgent
+          console.log(us)
           let isAndroid = us.indexOf('Android') > -1 || us.indexOf('Linux') > -1
           let isIOS =
             us.indexOf('ios_app') > -1 ||

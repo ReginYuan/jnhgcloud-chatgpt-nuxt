@@ -79,8 +79,11 @@ export function tansParams(params: { [x: string]: any }) {
   return result
 }
 
-import { showToast } from 'vant'
 import { userStrore } from '../store/model/userStore'
+
+/**
+ *获取ua中token并存储起来
+ */
 export const geTokenAll = () => {
   // 判断是ios环境还是安卓的环境
   let us = navigator.userAgent
@@ -90,7 +93,8 @@ export const geTokenAll = () => {
   if (process.client) {
     if (isAndroid) {
       var index = us.indexOf('=')
-      var token = us.slice(index + 1)
+      var str = us.slice(index + 1)
+      var token = str.substr(0, str.length - 12);
       const user = userStrore()
       user.setToken(token)
       return
@@ -98,14 +102,18 @@ export const geTokenAll = () => {
     // 如果是在ios环境下就调用对应返回ios登录界面的方法
     if (isIOS) {
       var index = us.indexOf('=')
-      var token = us.slice(index + 1)
+      var str = us.slice(index + 1)
+      var token = str.substr(0, str.length - 12);
       const user = userStrore()
-      // user.setToken(token)
+      user.setToken(token)
       return
     }
   }
 }
 
+/**
+ * 调用app隐藏头部导航栏
+ */
 export const hideNav = () => {
   // 判断是ios环境还是安卓的环境
   let us = navigator.userAgent
@@ -121,6 +129,9 @@ export const hideNav = () => {
   }
 }
 
+/**
+ * 调用app关闭对应的页面
+ */
 export const closewebView = () => {
   // 判断是ios环境还是安卓的环境
   let us = navigator.userAgent
@@ -136,13 +147,18 @@ export const closewebView = () => {
       )
     }
     // 如果是在安卓环境下就调用对应的返回安卓界面的方法
-    // if(isAndroid && (window as any).androidInterface != undefined){
-    //   ;(window as any).androidInterface.back()
-    // }
     if (isAndroid) {
-      console.log('这是安卓')
-      // ;(window as any).androidInterface.back()
       ;(window as any).android.back()
     }
   }
+}
+
+/**
+ * 判断是否是在app内
+ */
+export const isAppCharacteristic = () => {
+  let us = navigator.userAgent
+  var index = us.indexOf('source=')
+  var source = us.slice(index + 7)
+  return source == 'zshb'
 }

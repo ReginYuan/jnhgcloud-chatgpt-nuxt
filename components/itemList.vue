@@ -41,13 +41,14 @@
 <script setup lang="ts">
 import { onMounted, watch } from 'vue'
 import { ItemListType } from '~/types/itemList'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 const props = defineProps<{
   list: ItemListType
   type?: string
 }>()
 
 const router = useRouter()
+const route = useRoute()
 let color = ref('')
 let backgroundColor = ref('')
 watch(
@@ -66,7 +67,6 @@ watch(
   },
   { immediate: true, deep: true }
 )
-
 const toDetail = (item: ItemListType) => {
   router.push({
     name: 'details-id',
@@ -120,7 +120,7 @@ onMounted(() => {})
       background-color: v-bind('backgroundColor');
       padding: 1px 8px;
       border-radius: 2px;
-      width: 52px;
+      max-width: 100px;
       text-align: center;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -144,10 +144,10 @@ onMounted(() => {})
       }
       .point {
         display: inline-block;
-        width: 5px;
-        height: 5px;
-        border-radius: 5px;
-        margin: 0 3px 2px;
+        width: 3px;
+        height: 3px;
+        border-radius: 3px;
+        margin: 0 3px;
         background-color: #c4c4c4;
       }
     }
