@@ -9,7 +9,10 @@
     <div class="text">
       <div class="title">{{ list.title }}</div>
       <div class="info">
-        <div class="tag">
+        <div
+          class="tag"
+          :style="{ color: list.color, backgroundColor: list.backgroundColor }"
+        >
           {{ list.infoSources }}
         </div>
         <div class="time">
@@ -53,23 +56,9 @@ const props = defineProps<{
 }>()
 
 const router = useRouter()
-const route = useRoute()
-let color = ref('')
-let backgroundColor = ref('')
 watch(
   () => props,
-  (newValue, oldValue) => {
-    if (newValue.type === 'bossBank') {
-      color.value = '#FDAD15'
-      backgroundColor.value = '#fff3dc'
-    } else if (newValue.type === 'industry') {
-      color.value = '#FA5151'
-      backgroundColor.value = '#ffeeee'
-    } else if (newValue.type === 'policyRule') {
-      color.value = '#007AFF'
-      backgroundColor.value = '#e6f2ff'
-    }
-  },
+  (newValue, oldValue) => {},
   { immediate: true, deep: true }
 )
 const toDetail = (item: ItemListType) => {
@@ -121,8 +110,6 @@ onMounted(() => {})
     .tag {
       box-sizing: border-box;
       font-size: 12px;
-      color: v-bind('color');
-      background-color: v-bind('backgroundColor');
       padding: 1px 8px;
       border-radius: 2px;
       max-width: 100px;

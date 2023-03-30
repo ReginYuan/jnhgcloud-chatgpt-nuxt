@@ -14,7 +14,7 @@
           :key="index"
           :border="false"
         >
-          <ItemList :list="item" type="bossBank"></ItemList>
+          <ItemList :list="item"></ItemList>
         </van-cell>
       </van-list>
     </van-tab>

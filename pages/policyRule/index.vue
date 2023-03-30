@@ -30,7 +30,7 @@
           :key="index"
           :border="false"
         >
-          <ItemList :list="item" type="policyRule"></ItemList>
+          <ItemList :list="item"></ItemList>
         </van-cell>
       </van-list>
     </van-tab>

@@ -8,7 +8,11 @@
     </div>
     <div class="info">
       <div class="tag">
-        <span class="come">来源：{{ props.list.infoSources }}</span>
+        <span
+          class="come"
+          :style="{ color: list.color, backgroundColor: list.backgroundColor }"
+          >来源：{{ props.list.infoSources }}</span
+        >
         <!-- <span class="page">{{ item.page }}</span> -->
       </div>
       <div class="time">{{ props.list.createTime?.split(' ')[0] }}</div>
@@ -61,9 +65,6 @@ function toDetail(item: any) {
       .come {
         display: inline-block;
         line-height: 17px;
-        color: #2ac670;
-        // background-color: rgba($color: #2ac670, $alpha: 0.1);
-        background-color: #eafaf1;
         padding: 0px 8px;
         border-radius: 2px;
         max-width: 100px;

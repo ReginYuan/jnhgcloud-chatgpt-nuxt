@@ -10,7 +10,7 @@
         @load="onLoad"
       >
         <van-cell v-for="(item, index) in itemList" :key="index">
-          <ItemList :list="item" type="industry"></ItemList>
+          <ItemList :list="item"></ItemList>
         </van-cell>
       </van-list>
     </van-tab>

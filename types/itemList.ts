@@ -29,4 +29,6 @@ export interface ItemListType {
   createTime: string
   lables: Labletype[]
   collect?: boolean
+  color: string
+  backgroundColor: string
 }
