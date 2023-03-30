@@ -120,7 +120,7 @@ onMounted(() => {})
       background-color: v-bind('backgroundColor');
       padding: 1px 8px;
       border-radius: 2px;
-      width: 52px;
+      max-width: 100px;
       text-align: center;
       overflow: hidden;
       text-overflow: ellipsis;
