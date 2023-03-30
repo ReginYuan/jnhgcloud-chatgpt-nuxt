@@ -11,6 +11,7 @@
     :autoplay="true"
     :delay="100"
     :disableOnInteraction="false"
+    @touchstart.native="touchStart"
   >
     <swiper-slide
       v-for="(item, index) in swiperList"
@@ -41,7 +42,6 @@ import 'swiper/css/pagination'
 import { ItemListType } from '~/types/itemList'
 import { bannerInfo } from '~/server/api/user'
 const modules = [Autoplay, Pagination, Navigation, A11y]
-
 let swiperList = ref<ItemListType[]>([])
 onMounted(async () => {
   const { data } = await bannerInfo({
@@ -50,6 +50,7 @@ onMounted(async () => {
   })
   swiperList.value = data
 })
+const touchStart = (e: any) => e.stopPropagation()
 
 const router = useRouter()
 const toDetail = (inforId: string) => {
