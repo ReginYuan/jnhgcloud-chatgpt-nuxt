@@ -143,4 +143,7 @@ onMounted(async () => {
 :deep(.van-tabs__line) {
   display: none;
 }
+:deep(.van-swipe-item) {
+  min-height: 100vh;
+}
 </style>

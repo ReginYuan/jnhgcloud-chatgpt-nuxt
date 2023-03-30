@@ -202,4 +202,7 @@ onMounted(async () => {
     }
   }
 }
+:deep(.van-swipe-item) {
+  min-height: 100vh;
+}
 </style>

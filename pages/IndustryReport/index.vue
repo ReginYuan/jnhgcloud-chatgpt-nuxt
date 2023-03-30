@@ -114,4 +114,7 @@ onMounted(async () => {
 :deep(.van-cell) {
   padding: 0;
 }
+:deep(.van-swipe-item) {
+  min-height: 100vh;
+}
 </style>
