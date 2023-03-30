@@ -1,6 +1,11 @@
 <template>
+  <!-- 产业头条 -->
+  <pdfItemList
+    :list="list"
+    v-if="list.levelOne === '1636282673046081537'"
+  ></pdfItemList>
   <!-- 一张图片 -->
-  <div class="content-item" v-if="list?.coverLink" @click="toDetail(list)">
+  <div class="content-item" v-else-if="list?.coverLink" @click="toDetail(list)">
     <div class="text">
       <div class="title">{{ list.title }}</div>
       <div class="info">

@@ -223,7 +223,7 @@ onMounted(() => {
 .history {
   display: flex;
   justify-content: space-between;
-  padding: 0 24px 0 16px;
+  padding: 0 24px 0;
   margin-top: 16px;
   .history_title {
     font-size: 16px;
