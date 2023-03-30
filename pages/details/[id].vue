@@ -164,10 +164,7 @@ const copyUrl = () => {
   return result
 }
 onMounted(() => {
-  // isApp.value = isAppCharacteristic()
-  isApp.value = true
-  console.log(isApp.value)
-
+  isApp.value = isAppCharacteristic()
   getDetails()
 })
 </script>
