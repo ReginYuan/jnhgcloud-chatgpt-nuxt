@@ -25,11 +25,12 @@ const goBack = () => {
 </script>
 <style scoped lang="scss">
 .header {
-  height: 44px;
+  /* background-color: #ccc; */
+  /* height: 88px; */
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 0 21px;
+  /* align-items: center; */
+  padding: 42px 21px 0 21px;
   font-size: 18px;
   font-family: Source Han Sans CN-Regular, Source Han Sans CN;
   font-weight: 400;
