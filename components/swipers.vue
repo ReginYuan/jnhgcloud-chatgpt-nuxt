@@ -88,6 +88,8 @@ const toDetail = (inforId: string) => {
     padding: 0 8px;
   }
   .tagInfo {
+    display: flex;
+    align-items: center;
     z-index: 99999999999999 !important;
     position: absolute;
     bottom: -25px;
