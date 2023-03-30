@@ -7,5 +7,6 @@ declare module 'vue' {
     webkit: any
     messageHandlers: any
     Android: any
+    pdfPreviewBuilder: any
   }
 }
