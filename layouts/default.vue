@@ -14,7 +14,7 @@
 <script setup lang="ts">
 definePageMeta({
   KeepAlive: {
-    exclude: ['industry', 'bossBank', 'IndustryReport', 'policyRule']
+    exclude: ['industry', 'bossBank', 'IndustryReport', 'policyRule', 'search']
   }
 })
 </script>

@@ -25,7 +25,13 @@
     <div class="title">{{ content.data.title }}</div>
     <div class="infos">
       <div class="info_tag">
-        <span>{{ content.data.infoSources }}</span>
+        <span
+          :style="{
+            color: content.data.color,
+            backgroundColor: content.data.backgroundColor
+          }"
+          >{{ content.data.infoSources }}</span
+        >
       </div>
       <div class="time">
         {{ content.data.authorBy
@@ -111,11 +117,8 @@ let content = reactive<{ data: ItemListType }>({
     lables: []
   }
 })
-const type = ref('')
 const isApp = ref(false)
 let itemList = ref<ItemListType[]>([])
-let color = ref('')
-let backgroundColor = ref('')
 const getDetails = async () => {
   const { data } = await getDetail({ inforId: route.params.id })
   content.data = data
@@ -204,8 +207,6 @@ onMounted(() => {
 
     .info_tag {
       span {
-        color: v-bind('color');
-        background-color: v-bind('backgroundColor');
         padding: 0 8px;
       }
     }
