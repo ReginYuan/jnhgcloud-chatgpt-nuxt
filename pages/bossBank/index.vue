@@ -1,7 +1,14 @@
 <template>
   <HeaderBar title="老板智库" :parentId="Id"></HeaderBar>
-  <van-tabs v-model:active="active" :ellipsis="false" @click-tab="onClickTab">
+  <van-tabs
+    v-model:active="active"
+    :ellipsis="false"
+    @click-tab="onClickTab"
+    swipeable
+    @change="onChange"
+  >
     <van-tab :title="item.name" v-for="(item, index) in tabList" :key="index">
+      <!-- <div class="swiper_a" v-if="showSwiper"></div> -->
       <swipers v-if="showSwiper"></swipers>
       <van-list
         v-model:loading="loading"
@@ -14,43 +21,34 @@
           :key="index"
           :border="false"
         >
-          <ItemList :list="item" type="bossBank"></ItemList>
+          <ItemList :list="item"></ItemList>
         </van-cell>
       </van-list>
     </van-tab>
   </van-tabs>
 </template>
 <script lang="ts" setup>
+import { ref, onMounted } from 'vue'
 import { getInfo, informationList } from '~/server/api/user'
-import { ref, reactive, onMounted } from 'vue'
 import { Tabtype, ItemListType } from '~/types/itemList'
 import { hideNav, geTokenAll } from '~/composables/utils/validate'
 let Id = ref('1636282537209352194')
 
 const active = ref(0)
 let tabList = ref<Tabtype[]>([])
-let tabItem = reactive<{ data: Tabtype }>({
-  data: {
-    inforTypeId: '',
-    parentId: '',
-    name: '',
-    level: -1,
-    sortBy: -1
-  }
-})
 let itemList = ref<ItemListType[]>([])
 let showSwiper = ref(true)
 const loading = ref(false)
 const finished = ref(false)
+const refreshing = ref(false)
 
 let idInfo = ref({
-  levelOne: '',
+  levelOne: Id.value,
   levelTwo: '',
-  recommend: '',
-  count: 20
+  recommend: ''
 })
 let page = ref({
-  pageSize: 20,
+  pageSize: 5,
   pageNum: 1
 })
 
@@ -59,24 +57,38 @@ const getTypeList = async () => {
   tabList.value = JSON.parse(JSON.stringify(data))
   tabList.value.unshift({
     inforTypeId: '',
-    parentId: '',
+    parentId: Id.value,
     name: '推荐',
     level: 1,
     sortBy: 0
   })
 }
 
+let tabItem = ref<Tabtype>()
 const onClickTab = async (info: any) => {
-  tabItem.data = tabList.value.find(item => item.name === info.title) as Tabtype
-  idInfo.value.levelOne = tabItem.data.parentId
-  idInfo.value.levelTwo = tabItem.data.inforTypeId
+  tabItem.value = tabList.value.find(
+    item => item.name === info.title
+  ) as Tabtype
+  idInfo.value.levelOne = tabItem.value.parentId
+  idInfo.value.levelTwo = tabItem.value.inforTypeId
+  itemList.value = []
+  page.value.pageNum = 1
+  finished.value = false
+}
+const onChange = (info: any) => {
+  idInfo.value.levelOne = tabList.value[info].parentId
+  idInfo.value.levelTwo = tabList.value[info].inforTypeId
   itemList.value = []
   page.value.pageNum = 1
   finished.value = false
 }
 const onLoad = async () => {
-  if (tabItem.data?.parentId === '') {
-    idInfo.value.levelOne = Id.value
+  console.log('刷新页面')
+  if (refreshing.value) {
+    itemList.value = []
+    refreshing.value = false
+  }
+  if (idInfo.value.levelTwo === '') {
     idInfo.value.recommend = 'Y'
     showSwiper.value = true
   } else {
@@ -128,14 +140,25 @@ onMounted(async () => {
     }
   }
 }
-// .content {
-//   height: calc(100vh - 100px);
-//   overflow: auto;
-// }
+
 :deep(.van-cell) {
   padding: 0;
 }
 :deep(.van-tabs__line) {
   display: none;
 }
+:deep(.van-tab__panel-wrapper) {
+  min-height: 80vh;
+}
+// .swiper_b {
+//   width: 100%;
+//   height: 145px;
+//   position: absolute;
+//   top: 135px;
+//   z-index: 9999;
+// }
+// .swiper_a {
+//   width: 100%;
+//   height: 145px;
+// }
 </style>

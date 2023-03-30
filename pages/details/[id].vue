@@ -21,11 +21,17 @@
     </template>
   </van-nav-bar>
   <div style="background-color: #f7f7f7; height: 2px"></div>
-  <div class="content" v-if="content.data.inforId">
+  <div class="new_content" v-if="content.data.inforId">
     <div class="title">{{ content.data.title }}</div>
     <div class="infos">
       <div class="info_tag">
-        <span>{{ content.data.infoSources }}</span>
+        <span
+          :style="{
+            color: content.data.color,
+            backgroundColor: content.data.backgroundColor
+          }"
+          >{{ content.data.infoSources }}</span
+        >
       </div>
       <div class="time">
         {{ content.data.authorBy
@@ -50,7 +56,7 @@
     <div class="title">相关文章</div>
     <van-list>
       <van-cell v-for="(item, index) in itemList" :key="index">
-        <ItemList :list="item" :type="type"></ItemList>
+        <ItemList :list="item"></ItemList>
       </van-cell>
     </van-list>
   </div>
@@ -90,7 +96,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, onActivated } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ItemListType } from '~/types/itemList'
 import { getDetail, relatedArticles, collectApi } from '~/server/api/user'
@@ -111,30 +117,13 @@ let content = reactive<{ data: ItemListType }>({
     lables: []
   }
 })
-const type = ref('')
 const isApp = ref(false)
 let itemList = ref<ItemListType[]>([])
-let color = ref('')
-let backgroundColor = ref('')
 const getDetails = async () => {
   const { data } = await getDetail({ inforId: route.params.id })
   content.data = data
   collect.value = data.collect
-  console.log(content.data.levelOne)
 
-  if (content.data.levelOne === '1636282443407937538') {
-    type.value = 'industry'
-    color.value = '#FA5151'
-    backgroundColor.value = '#ffeeee'
-  } else if (content.data.levelOne === '1636282537209352194') {
-    type.value = 'bossBank'
-    color.value = '#FDAD15'
-    backgroundColor.value = '#fff3dc'
-  } else if (content.data.levelOne === '1636282617106649089') {
-    type.value = 'policyRule'
-    color.value = '#007AFF'
-    backgroundColor.value = '#e6f2ff'
-  }
   const res = await relatedArticles({ inforId: content.data.inforId })
   itemList.value = res.data
 }
@@ -164,7 +153,8 @@ const copyUrl = () => {
   return result
 }
 onMounted(() => {
-  isApp.value = isAppCharacteristic()
+  // isApp.value = isAppCharacteristic()
+  isApp.value = true
   getDetails()
 })
 </script>
@@ -200,7 +190,7 @@ onMounted(() => {
   font-size: 22px;
 }
 
-.content {
+.new_content {
   margin-bottom: 16px;
 
   .title {
@@ -217,8 +207,6 @@ onMounted(() => {
 
     .info_tag {
       span {
-        color: v-bind('color');
-        background-color: v-bind('backgroundColor');
         padding: 0 8px;
       }
     }

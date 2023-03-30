@@ -27,6 +27,8 @@
     :ellipsis="false"
     @click-tab="onClickTab"
     inactive-color="#222229"
+    swipeable
+    @change="onChange"
   >
     <van-tab :title="item.name" v-for="(item, index) in tabList" :key="index">
       <!-- 搜索结果 -->
@@ -43,7 +45,7 @@
             :list="item"
             v-if="item.levelOne === '1636282673046081537'"
           ></PdfItemList>
-          <ItemList :list="item" :type="type" v-else></ItemList>
+          <ItemList :list="item" v-else></ItemList>
         </van-cell>
       </van-list>
       <!-- 历史记录 -->
@@ -83,7 +85,6 @@ let itemList = ref<ItemListType[]>([])
 const loading = ref(false)
 const finished = ref(false)
 const taglist = ref<string[]>([])
-let type = ref('')
 
 let idInfo = ref({
   title: '',
@@ -102,23 +103,34 @@ const getTypeList = async () => {
     item => item.inforTypeId === route.params.id
   )
   active.value = index
-  // const item = tabList.value.find(item => item.inforTypeId === route.params.id)
-  // idInfo.value.levelOne = item?.inforTypeId as string
 }
 
 const onClickTab = async (info: any) => {
   const value = tabList.value.find(item => item.name === info.title) as Tabtype
-  if (value.inforTypeId === '1636282443407937538') {
-    type.value = 'industry'
-  } else if (value.inforTypeId === '1636282537209352194') {
-    type.value = 'bossBank'
-  } else if (value.inforTypeId === '1636282617106649089') {
-    type.value = 'policyRule'
-  }
   idInfo.value.levelOne = value.inforTypeId
   itemList.value = []
   page.value.pageNum = 1
   finished.value = false
+}
+const onChange = (info: any) => {
+  idInfo.value.levelOne = tabList.value[info].inforTypeId
+  console.log(tabList.value, info, idInfo.value.levelOne)
+  itemList.value = []
+  page.value.pageNum = 1
+  finished.value = false
+}
+const onLoad = async () => {
+  const { data } = await informationList({ ...idInfo.value, ...page.value })
+  itemList.value.push(...data.records)
+  // 存储输入框历史记录
+  if (idInfo.value.title != '') {
+    taglist.value.unshift(idInfo.value.title)
+    taglist.value = [...new Set(taglist.value)].slice(0, 10)
+    taglist.value && store.setHistory(taglist.value)
+  }
+  loading.value = false
+  page.value.pageNum++
+  if (data.records.length < page.value.pageSize) finished.value = true
 }
 
 const store = historyStrore()
@@ -141,20 +153,6 @@ const clearBtn = () => {
   taglist.value = []
 }
 const onFocus = () => (isShow.value = false)
-
-const onLoad = async () => {
-  const { data } = await informationList({ ...idInfo.value, ...page.value })
-  itemList.value.push(...data.records)
-  // 存储输入框历史记录
-  if (idInfo.value.title != '') {
-    taglist.value.unshift(idInfo.value.title)
-    taglist.value = [...new Set(taglist.value)].slice(0, 10)
-    taglist.value && store.setHistory(taglist.value)
-  }
-  loading.value = false
-  page.value.pageNum++
-  if (data.records.length < page.value.pageSize) finished.value = true
-}
 const onClickLeft = () => history.back()
 
 onMounted(() => {
@@ -162,13 +160,6 @@ onMounted(() => {
   taglist.value = history ? JSON.parse(history) : []
   idInfo.value.levelOne = route.params.id as string
   getTypeList()
-  if (route.params.id === '1636282443407937538') {
-    type.value = 'industry'
-  } else if (route.params.id === '1636282537209352194') {
-    type.value = 'bossBank'
-  } else if (route.params.id === '1636282617106649089') {
-    type.value = 'policyRule'
-  }
 })
 </script>
 
@@ -223,7 +214,7 @@ onMounted(() => {
 .history {
   display: flex;
   justify-content: space-between;
-  padding: 0 24px 0 16px;
+  padding: 0 24px 0;
   margin-top: 16px;
   .history_title {
     font-size: 16px;
@@ -252,5 +243,11 @@ onMounted(() => {
     color: #3e3e3e;
     background-color: #f8f8f9;
   }
+}
+:deep(.van-cell) {
+  padding: 0;
+}
+:deep(.van-swipe-item) {
+  min-height: 100vh;
 }
 </style>
