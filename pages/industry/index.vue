@@ -1,9 +1,14 @@
 <template>
   <HeaderBar title="产业头条" :parentId="Id"></HeaderBar>
-  <van-tabs v-model:active="active" :ellipsis="false" @click-tab="onClickTab">
+  <van-tabs
+    v-model:active="active"
+    :ellipsis="false"
+    @click-tab="onClickTab"
+    swipeable
+    @change="onChange"
+  >
     <van-tab :title="item.name" v-for="(item, index) in tabList" :key="index">
       <SwiperSide v-if="showSwiper" :hotList="hotList"></SwiperSide>
-      <!-- <KeepAlive> -->
       <van-list
         v-model:loading="loading"
         :finished="finished"
@@ -14,34 +19,23 @@
           <ItemList :list="item"></ItemList>
         </van-cell>
       </van-list>
-      <!-- </KeepAlive> -->
     </van-tab>
   </van-tabs>
 </template>
 <script lang="ts" setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { Tabtype, ItemListType } from '~/types/itemList'
 import { getInfo, informationList } from '~/server/api/user'
 import { hideNav } from '~/composables/utils/validate'
 let Id = ref('1636282443407937538')
 const active = ref(0)
-let tabItem = reactive<{ data: Tabtype }>({
-  data: {
-    inforTypeId: '',
-    parentId: '',
-    name: '',
-    level: -1,
-    sortBy: -1
-  }
-})
-
 let itemList = ref<ItemListType[]>([])
 let hotList = ref<ItemListType[]>([])
 let showSwiper = ref(true)
 const loading = ref(false)
 const finished = ref(false)
 let idInfo = ref({
-  levelOne: '',
+  levelOne: Id.value,
   levelTwo: '',
   recommend: ''
 })
@@ -57,24 +51,33 @@ const getTypeList = async () => {
   tabList.value = JSON.parse(JSON.stringify(data))
   tabList.value.unshift({
     inforTypeId: '',
-    parentId: '',
+    parentId: Id.value,
     name: '推荐',
     level: 1,
     sortBy: 0
   })
 }
 
+let tabItem = ref<Tabtype>()
 const onClickTab = async (info: any) => {
-  tabItem.data = tabList.value.find(item => item.name === info.title) as Tabtype
-  idInfo.value.levelOne = tabItem.data.parentId
-  idInfo.value.levelTwo = tabItem.data.inforTypeId
+  tabItem.value = tabList.value.find(
+    item => item.name === info.title
+  ) as Tabtype
+  idInfo.value.levelOne = tabItem.value.parentId
+  idInfo.value.levelTwo = tabItem.value.inforTypeId
+  itemList.value = []
+  page.value.pageNum = 1
+  finished.value = false
+}
+const onChange = (info: any) => {
+  idInfo.value.levelOne = tabList.value[info].parentId
+  idInfo.value.levelTwo = tabList.value[info].inforTypeId
   itemList.value = []
   page.value.pageNum = 1
   finished.value = false
 }
 const onLoad = async () => {
-  if (tabItem.data?.parentId === '') {
-    idInfo.value.levelOne = Id.value
+  if (idInfo.value.levelTwo === '') {
     idInfo.value.recommend = 'Y'
     showSwiper.value = true
   } else {
@@ -86,7 +89,7 @@ const onLoad = async () => {
     ...page.value
   })
   itemList.value.push(...data.records)
-  if (tabItem.data?.parentId === '' && page.value.pageNum === 1) {
+  if (idInfo.value.levelTwo === '' && page.value.pageNum === 1) {
     hotList.value = itemList.value
     itemList.value = itemList.value.splice(3)
   }

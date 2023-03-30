@@ -153,8 +153,8 @@ const copyUrl = () => {
   return result
 }
 onMounted(() => {
-  // isApp.value = isAppCharacteristic()
-  isApp.value = true
+  isApp.value = isAppCharacteristic()
+  // isApp.value = true
   getDetails()
 })
 </script>

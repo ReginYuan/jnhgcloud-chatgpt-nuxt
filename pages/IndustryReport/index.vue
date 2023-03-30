@@ -9,6 +9,8 @@
     color="#2ac670"
     :ellipsis="false"
     @click-tab="onClickTab"
+    swipeable
+    @change="onChange"
   >
     <van-tab :title="item.name" v-for="(item, index) in tabList" :key="index">
       <van-list
@@ -25,30 +27,17 @@
   </van-tabs>
 </template>
 <script lang="ts" setup>
-import { Tabtype, ItemListType } from '~/types/itemList'
 import { ref, onMounted } from 'vue'
+import { Tabtype, ItemListType } from '~/types/itemList'
 import { getInfo, informationList } from '~/server/api/user'
 import { hideNav } from '~/composables/utils/validate'
 let Id = ref('1636282673046081537')
-
 const active = ref(0)
-let tabList = ref<Tabtype[]>([])
 let itemList = ref<ItemListType[]>([])
-let tabItem = reactive<{ data: Tabtype }>({
-  data: {
-    inforTypeId: '',
-    parentId: '',
-    name: '',
-    level: -1,
-    sortBy: -1
-  }
-})
-
 let idInfo = ref({
-  levelOne: '',
+  levelOne: Id.value,
   levelTwo: '',
-  recommend: '',
-  count: 20
+  recommend: ''
 })
 const loading = ref(false)
 const finished = ref(false)
@@ -57,30 +46,41 @@ let page = ref({
   pageNum: 1
 })
 
+let tabList = ref<Tabtype[]>([])
 const getTypeList = async () => {
   tabList.value = []
   const { data } = await getInfo({ parentId: Id.value })
   tabList.value = JSON.parse(JSON.stringify(data))
   tabList.value.unshift({
     inforTypeId: '',
-    parentId: '',
+    parentId: Id.value,
     name: '推荐',
     level: 1,
     sortBy: 0
   })
 }
 
+let tabItem = ref<Tabtype>()
 const onClickTab = async (info: any) => {
-  tabItem.data = tabList.value.find(item => item.name === info.title) as Tabtype
-  idInfo.value.levelOne = tabItem.data.parentId
-  idInfo.value.levelTwo = tabItem.data.inforTypeId
+  tabItem.value = tabList.value.find(
+    item => item.name === info.title
+  ) as Tabtype
+  idInfo.value.levelOne = tabItem.value.parentId
+  idInfo.value.levelTwo = tabItem.value.inforTypeId
   itemList.value = []
   page.value.pageNum = 1
   finished.value = false
 }
+const onChange = (info: any) => {
+  idInfo.value.levelOne = tabList.value[info].parentId
+  idInfo.value.levelTwo = tabList.value[info].inforTypeId
+  itemList.value = []
+  page.value.pageNum = 1
+  finished.value = false
+}
+
 const onLoad = async () => {
-  if (tabItem.data?.parentId === '') {
-    idInfo.value.levelOne = Id.value
+  if (idInfo.value.levelTwo === '') {
     idInfo.value.recommend = 'Y'
   } else {
     idInfo.value.recommend = ''

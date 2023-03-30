@@ -1,6 +1,12 @@
 <template>
   <HeaderBar title="政策法规" :parentId="Id"></HeaderBar>
-  <van-tabs v-model:active="active" :ellipsis="false" @click-tab="onClickTab">
+  <van-tabs
+    v-model:active="active"
+    :ellipsis="false"
+    @click-tab="onClickTab"
+    swipeable
+    @change="onChange"
+  >
     <van-tab :title="item.name" v-for="(item, index) in tabList" :key="index">
       <div class="policyRule" v-if="showSwiper">
         <van-swipe
@@ -37,24 +43,14 @@
   </van-tabs>
 </template>
 <script lang="ts" setup>
-import { getInfo } from '~/server/api/user'
-import { ref, reactive, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { Tabtype, ItemListType } from '~/types/itemList'
-import { informationList, bannerInfo } from '~/server/api/user'
+import { getInfo, informationList, bannerInfo } from '~/server/api/user'
 import { hideNav } from '~/composables/utils/validate'
 let Id = ref('1636282617106649089')
 const active = ref(0)
-let tabList = ref<Tabtype[]>([])
-let tabItem = reactive<{ data: Tabtype }>({
-  data: {
-    inforTypeId: '',
-    parentId: '',
-    name: '',
-    level: -1,
-    sortBy: -1
-  }
-})
+
 let itemList = ref<ItemListType[]>([])
 let swiperList = ref<ItemListType[]>([])
 let showSwiper = ref(false)
@@ -63,20 +59,20 @@ const finished = ref(false)
 let idInfo = ref({
   levelOne: Id.value,
   levelTwo: '',
-  recommend: '',
-  count: 20
+  recommend: ''
 })
 let page = ref({
   pageSize: 20,
   pageNum: 1
 })
 
+let tabList = ref<Tabtype[]>([])
 const getTypeList = async () => {
   const { data } = await getInfo({ parentId: Id.value })
   tabList.value = JSON.parse(JSON.stringify(data))
   tabList.value.unshift({
     inforTypeId: '',
-    parentId: '',
+    parentId: Id.value,
     name: '推荐',
     level: 1,
     sortBy: 0
@@ -91,18 +87,27 @@ const getBannerList = async () => {
   swiperList.value = data
 }
 
+let tabItem = ref<Tabtype>()
 const onClickTab = async (info: any) => {
-  tabItem.data = tabList.value.find(item => item.name === info.title) as Tabtype
-  idInfo.value.levelOne = tabItem.data.parentId
-  idInfo.value.levelTwo = tabItem.data.inforTypeId
+  tabItem.value = tabList.value.find(
+    item => item.name === info.title
+  ) as Tabtype
+  idInfo.value.levelOne = tabItem.value.parentId
+  idInfo.value.levelTwo = tabItem.value.inforTypeId
+  itemList.value = []
+  page.value.pageNum = 1
+  finished.value = false
+}
+const onChange = (info: any) => {
+  idInfo.value.levelOne = tabList.value[info].parentId
+  idInfo.value.levelTwo = tabList.value[info].inforTypeId
   itemList.value = []
   page.value.pageNum = 1
   finished.value = false
 }
 const onLoad = async () => {
-  if (tabItem.data?.parentId === '') {
+  if (idInfo.value.levelTwo === '') {
     getBannerList()
-    idInfo.value.levelOne = Id.value
     idInfo.value.recommend = 'Y'
     showSwiper.value = true
   } else {
