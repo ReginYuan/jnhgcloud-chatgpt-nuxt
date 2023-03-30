@@ -50,7 +50,7 @@
     <div class="title">相关文章</div>
     <van-list>
       <van-cell v-for="(item, index) in itemList" :key="index">
-        <ItemList :list="item" :type="type"></ItemList>
+        <ItemList :list="item"></ItemList>
       </van-cell>
     </van-list>
   </div>
@@ -120,21 +120,7 @@ const getDetails = async () => {
   const { data } = await getDetail({ inforId: route.params.id })
   content.data = data
   collect.value = data.collect
-  console.log(content.data.levelOne)
 
-  if (content.data.levelOne === '1636282443407937538') {
-    type.value = 'industry'
-    color.value = '#FA5151'
-    backgroundColor.value = '#ffeeee'
-  } else if (content.data.levelOne === '1636282537209352194') {
-    type.value = 'bossBank'
-    color.value = '#FDAD15'
-    backgroundColor.value = '#fff3dc'
-  } else if (content.data.levelOne === '1636282617106649089') {
-    type.value = 'policyRule'
-    color.value = '#007AFF'
-    backgroundColor.value = '#e6f2ff'
-  }
   const res = await relatedArticles({ inforId: content.data.inforId })
   itemList.value = res.data
 }
