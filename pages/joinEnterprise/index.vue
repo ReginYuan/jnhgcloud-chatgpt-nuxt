@@ -187,6 +187,7 @@ onMounted(() => {
     margin-left: 12px;
   }
   .van-icon-arrow-left {
+    margin-top: 4px;
     font-size: 20px;
   }
 }
