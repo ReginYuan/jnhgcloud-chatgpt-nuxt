@@ -253,4 +253,7 @@ onMounted(() => {
     background-color: #f8f8f9;
   }
 }
+:deep(.van-cell) {
+  padding: 0;
+}
 </style>

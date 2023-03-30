@@ -3,6 +3,7 @@
   <van-tabs v-model:active="active" :ellipsis="false" @click-tab="onClickTab">
     <van-tab :title="item.name" v-for="(item, index) in tabList" :key="index">
       <SwiperSide v-if="showSwiper" :hotList="hotList"></SwiperSide>
+      <!-- <KeepAlive> -->
       <van-list
         v-model:loading="loading"
         :finished="finished"
@@ -13,6 +14,7 @@
           <ItemList :list="item"></ItemList>
         </van-cell>
       </van-list>
+      <!-- </KeepAlive> -->
     </van-tab>
   </van-tabs>
 </template>
