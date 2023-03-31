@@ -1,12 +1,12 @@
 {
   "private": true,
   "scripts": {
-    "build-test": "nuxt build --dotenv env/.env.test",
-    "build-pre": "nuxt build --mode pre",
-    "build-production": "nuxt build --dotenv env/.env.production",
-    "build-dev":"nuxt build --dotenv env/.env.development",
-    "build": "nuxt build",
-    "dev": "nuxt dev --dotenv env/.env.development",
+    "build-test": "nuxt build --dotenv env/.env.test --exec babel-node",
+    "build-pre": "nuxt build --mode pre --exec babel-node",
+    "build-production": "nuxt build --dotenv env/.env.production --exec babel-node",
+    "build-dev": "nuxt build --dotenv env/.env.development --exec babel-node",
+    "build": "nuxt build --exec babel-node",
+    "dev": "nuxt dev --dotenv env/.env.development --exec babel-node",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
@@ -33,6 +33,8 @@
     "@unocss/preset-icons": "^0.50.3",
     "@unocss/preset-uno": "^0.50.3",
     "@vant/nuxt": "^1.0.0",
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
     "commitizen": "^4.3.0",
     "cz-customizable": "^7.0.0",
     "eslint": "^8.35.0",
@@ -53,11 +55,13 @@
   },
   "dependencies": {
     "@jridgewell/sourcemap-codec": "^1.4.14",
+    "@originjs/vite-plugin-commonjs": "^1.0.3",
     "@pinia-plugin-persistedstate/nuxt": "^1.0.0",
     "@pinia/nuxt": "^0.4.7",
     "@pzy915/pdf-preview": "^0.0.3",
     "@types/node": "^18.14.2",
     "axios": "^1.3.4",
+    "babel-core": "^6.26.3",
     "js-base64": "^3.7.5",
     "js-cookie": "^3.0.1",
     "kysen-flexible": "^1.0.3",
@@ -73,5 +77,6 @@
     "vite": "4.0.0",
     "vue": "^3.0.0",
     "webpack": "5.0.0"
-  }
+  },
+  "type": "module"
 }
