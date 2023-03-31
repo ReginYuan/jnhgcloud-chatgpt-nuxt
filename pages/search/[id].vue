@@ -48,27 +48,27 @@
           <ItemList :list="item" v-else></ItemList>
         </van-cell>
       </van-list>
-      <!-- 历史记录 -->
-      <div v-else>
-        <div class="history">
-          <div class="history_title">搜索历史</div>
-          <div class="clear">
-            <van-icon name="delete-o" />
-            <span class="clear_text" @click="clearBtn">清空</span>
-          </div>
-        </div>
-        <div class="tag">
-          <div
-            v-for="(item, index) in taglist"
-            :key="index"
-            @click="goHistory(item)"
-          >
-            <span>{{ item }}</span>
-          </div>
-        </div>
-      </div>
     </van-tab>
   </van-tabs>
+  <!-- 历史记录 -->
+  <div v-if="!isShow">
+    <div class="history">
+      <div class="history_title">搜索历史</div>
+      <div class="clear">
+        <van-icon name="delete-o" />
+        <span class="clear_text" @click="clearBtn">清空</span>
+      </div>
+    </div>
+    <div class="tag">
+      <div
+        v-for="(item, index) in taglist"
+        :key="index"
+        @click="goHistory(item)"
+      >
+        <span>{{ item }}</span>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">

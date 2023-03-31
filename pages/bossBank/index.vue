@@ -83,7 +83,6 @@ const onChange = (info: any) => {
   finished.value = false
 }
 const onLoad = async () => {
-  console.log('刷新页面')
   if (refreshing.value) {
     itemList.value = []
     refreshing.value = false

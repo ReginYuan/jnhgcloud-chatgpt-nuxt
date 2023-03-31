@@ -28,6 +28,7 @@
     :autoplay="true"
     :delay="100"
     :disableOnInteraction="false"
+    @touchstart.native="touchStart"
   >
     <swiper-slide
       :style="{ width: '330px', height: '188px' }"
@@ -101,6 +102,7 @@ const toDetail = (inforId: string) => {
     params: { id: inforId }
   })
 }
+const touchStart = (e: any) => e.stopPropagation()
 </script>
 
 <style scoped lang="scss">
