@@ -120,6 +120,18 @@ let content = reactive<{ data: ItemListType }>({
 const isApp = ref(false)
 let itemList = ref<ItemListType[]>([])
 const getDetails = async () => {
+  // let us = navigator.userAgent
+  // console.log(navigator)
+
+  let us = navigator.userAgent
+  // var index = us.indexOf('source=')
+  // console.log(index)
+
+  // var source = us.slice(index + 7)
+  // return source == 'zshb'
+
+  // console.log(us)
+
   const { data } = await getDetail({ inforId: route.params.id })
   content.data = data
   collect.value = data.collect
@@ -153,8 +165,8 @@ const copyUrl = () => {
   return result
 }
 onMounted(() => {
-  // isApp.value = isAppCharacteristic()
-  isApp.value = true
+  isApp.value = isAppCharacteristic()
+  // isApp.value = true
   getDetails()
 })
 </script>

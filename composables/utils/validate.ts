@@ -94,7 +94,7 @@ export const geTokenAll = () => {
     if (isAndroid) {
       var index = us.indexOf('=')
       var str = us.slice(index + 1)
-      var token = str.substr(0, str.length - 12);
+      var token = str.substr(0, str.length - 12)
       const user = userStrore()
       user.setToken(token)
       return
@@ -103,7 +103,7 @@ export const geTokenAll = () => {
     if (isIOS) {
       var index = us.indexOf('=')
       var str = us.slice(index + 1)
-      var token = str.substr(0, str.length - 12);
+      var token = str.substr(0, str.length - 12)
       const user = userStrore()
       user.setToken(token)
       return

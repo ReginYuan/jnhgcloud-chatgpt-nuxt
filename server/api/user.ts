@@ -47,15 +47,14 @@ export function informationList(params: any) {
 
 export function getDetail(params: any) {
   return fetchTMDB(
-    `/zshb/information/details/${params.inforId}`,
+    'zshb/information/details',
     {
       method: 'get',
       headers: {
         isToken: true
       }
     },
-    {},
-    {}
+    params
   )
 }
 
