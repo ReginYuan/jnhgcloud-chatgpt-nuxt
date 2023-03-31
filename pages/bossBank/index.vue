@@ -1,31 +1,34 @@
 <template>
   <HeaderBar title="老板智库" :parentId="Id"></HeaderBar>
-  <van-tabs
-    v-model:active="active"
-    :ellipsis="false"
-    @click-tab="onClickTab"
-    swipeable
-    @change="onChange"
-  >
-    <van-tab :title="item.name" v-for="(item, index) in tabList" :key="index">
-      <!-- <div class="swiper_a" v-if="showSwiper"></div> -->
-      <swipers v-if="showSwiper"></swipers>
-      <van-list
-        v-model:loading="loading"
-        :finished="finished"
-        finished-text="没有更多了"
-        @load="onLoad"
-      >
-        <van-cell
-          v-for="(item, index) in itemList"
-          :key="index"
-          :border="false"
-        >
-          <ItemList :list="item"></ItemList>
-        </van-cell>
-      </van-list>
-    </van-tab>
-  </van-tabs>
+  <div>
+    <van-tabs
+      v-model:active="active"
+      :ellipsis="false"
+      @click-tab="onClickTab"
+      swipeable
+      @change="onChange"
+    >
+      <van-tab :title="item.name" v-for="(item, index) in tabList" :key="index">
+        <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
+          <swipers v-if="showSwiper"></swipers>
+          <van-list
+            v-model:loading="loading"
+            :finished="finished"
+            finished-text="没有更多了"
+            @load="onLoad"
+          >
+            <van-cell
+              v-for="(item, index) in itemList"
+              :key="index"
+              :border="false"
+            >
+              <ItemList :list="item"></ItemList>
+            </van-cell>
+          </van-list>
+        </van-pull-refresh>
+      </van-tab>
+    </van-tabs>
+  </div>
 </template>
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
@@ -48,7 +51,7 @@ let idInfo = ref({
   recommend: ''
 })
 let page = ref({
-  pageSize: 5,
+  pageSize: 20,
   pageNum: 1
 })
 
@@ -82,11 +85,15 @@ const onChange = (info: any) => {
   page.value.pageNum = 1
   finished.value = false
 }
+
+const onRefresh = () => {
+  // 清空列表数据
+  finished.value = false
+  loading.value = true
+  page.value.pageNum = 1
+  onLoad()
+}
 const onLoad = async () => {
-  if (refreshing.value) {
-    itemList.value = []
-    refreshing.value = false
-  }
   if (idInfo.value.levelTwo === '') {
     idInfo.value.recommend = 'Y'
     showSwiper.value = true
@@ -96,8 +103,16 @@ const onLoad = async () => {
   }
   const { data } = await informationList({
     ...idInfo.value,
-    ...page.value
+    ...page.value,
+    key: Date.now()
   })
+  if (refreshing.value) {
+    itemList.value = []
+    refreshing.value = false
+    if (data.records) {
+      showToast('刷新成功')
+    }
+  }
   itemList.value.push(...data.records)
   page.value.pageNum++
   loading.value = false
@@ -146,18 +161,22 @@ onMounted(async () => {
 :deep(.van-tabs__line) {
   display: none;
 }
-:deep(.van-tab__panel-wrapper) {
-  min-height: 80vh;
+:deep(.van-tabs) {
+  margin-top: 88px !important;
+  height: calc(100vh - 88px);
+  overflow: auto;
 }
-// .swiper_b {
-//   width: 100%;
-//   height: 145px;
-//   position: absolute;
-//   top: 135px;
-//   z-index: 9999;
-// }
-// .swiper_a {
-//   width: 100%;
-//   height: 145px;
-// }
+:deep(.van-pull-refresh) {
+  min-height: calc(100vh - 100px);
+}
+:deep(.van-tabs__nav) {
+  width: 100%;
+  height: 44px;
+  position: fixed;
+  top: 88px;
+  left: 0;
+  z-index: 999;
+  overflow: scroll;
+  padding-bottom: 0;
+}
 </style>

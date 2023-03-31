@@ -1,26 +1,30 @@
 <template>
   <HeaderBar title="产业头条" :parentId="Id"></HeaderBar>
-  <van-tabs
-    v-model:active="active"
-    :ellipsis="false"
-    @click-tab="onClickTab"
-    swipeable
-    @change="onChange"
-  >
-    <van-tab :title="item.name" v-for="(item, index) in tabList" :key="index">
-      <SwiperSide v-if="showSwiper" :hotList="hotList"></SwiperSide>
-      <van-list
-        v-model:loading="loading"
-        :finished="finished"
-        finished-text="没有更多了"
-        @load="onLoad"
-      >
-        <van-cell v-for="(item, index) in itemList" :key="index">
-          <ItemList :list="item"></ItemList>
-        </van-cell>
-      </van-list>
-    </van-tab>
-  </van-tabs>
+  <div>
+    <van-tabs
+      v-model:active="active"
+      :ellipsis="false"
+      @click-tab="onClickTab"
+      swipeable
+      @change="onChange"
+    >
+      <van-tab :title="item.name" v-for="(item, index) in tabList" :key="index">
+        <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
+          <SwiperSide v-if="showSwiper" :hotList="hotList"></SwiperSide>
+          <van-list
+            v-model:loading="loading"
+            :finished="finished"
+            finished-text="没有更多了"
+            @load="onLoad"
+          >
+            <van-cell v-for="(item, index) in itemList" :key="index">
+              <ItemList :list="item"></ItemList>
+            </van-cell>
+          </van-list>
+        </van-pull-refresh>
+      </van-tab>
+    </van-tabs>
+  </div>
 </template>
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
@@ -34,6 +38,7 @@ let hotList = ref<ItemListType[]>([])
 let showSwiper = ref(true)
 const loading = ref(false)
 const finished = ref(false)
+const refreshing = ref(false)
 let idInfo = ref({
   levelOne: Id.value,
   levelTwo: '',
@@ -76,6 +81,12 @@ const onChange = (info: any) => {
   page.value.pageNum = 1
   finished.value = false
 }
+const onRefresh = () => {
+  finished.value = false
+  loading.value = true
+  page.value.pageNum = 1
+  onLoad()
+}
 const onLoad = async () => {
   if (idInfo.value.levelTwo === '') {
     idInfo.value.recommend = 'Y'
@@ -86,8 +97,16 @@ const onLoad = async () => {
   }
   const { data } = await informationList({
     ...idInfo.value,
-    ...page.value
+    ...page.value,
+    key: Date.now()
   })
+  if (refreshing.value) {
+    itemList.value = []
+    refreshing.value = false
+    if (data.records) {
+      showToast('刷新成功')
+    }
+  }
   itemList.value.push(...data.records)
   if (idInfo.value.levelTwo === '' && page.value.pageNum === 1) {
     hotList.value = itemList.value
@@ -135,13 +154,21 @@ onMounted(() => {
   display: none;
 }
 :deep(.van-tabs) {
-  margin-top: 50px !important;
+  margin-top: 88px !important;
+  height: calc(100vh - 88px);
+  overflow: auto;
 }
-:deep(.van-tab__panel-wrapper) {
-  min-height: 80vh;
+:deep(.van-pull-refresh) {
+  min-height: calc(100vh - 100px);
 }
-// .content {
-//   height: calc(100vh - 100px);
-//   overflow: auto;
-// }
+:deep(.van-tabs__nav) {
+  width: 100%;
+  height: 44px;
+  position: fixed;
+  top: 88px;
+  left: 0;
+  z-index: 999;
+  overflow: scroll;
+  padding-bottom: 0;
+}
 </style>

@@ -1,5 +1,4 @@
 <template>
-  <div class="top"></div>
   <div class="header">
     <van-nav-bar left-arrow :clickable="false" @click-left="onClickLeft">
       <template #title>
@@ -22,36 +21,40 @@
     </van-nav-bar>
   </div>
   <!-- tab栏 -->
-  <van-tabs
-    v-model:active="active"
-    :ellipsis="false"
-    @click-tab="onClickTab"
-    inactive-color="#222229"
-    swipeable
-    @change="onChange"
-  >
-    <van-tab :title="item.name" v-for="(item, index) in tabList" :key="index">
-      <!-- 搜索结果 -->
-      <van-list
-        v-if="isShow"
-        v-model:loading="loading"
-        :finished="finished"
-        finished-text="没有更多了"
-        @load="onLoad"
-      >
-        <van-cell v-for="(item, index) in itemList" :key="index">
-          <!-- 行业报告 -->
-          <PdfItemList
-            :list="item"
-            v-if="item.levelOne === '1636282673046081537'"
-          ></PdfItemList>
-          <ItemList :list="item" v-else></ItemList>
-        </van-cell>
-      </van-list>
-    </van-tab>
-  </van-tabs>
+  <div>
+    <van-tabs
+      v-model:active="active"
+      :ellipsis="false"
+      @click-tab="onClickTab"
+      inactive-color="#222229"
+      swipeable
+      @change="onChange"
+    >
+      <van-tab :title="item.name" v-for="(item, index) in tabList" :key="index">
+        <!-- 搜索结果 -->
+        <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
+          <van-list
+            v-if="isShow"
+            v-model:loading="loading"
+            :finished="finished"
+            finished-text="没有更多了"
+            @load="onLoad"
+          >
+            <van-cell v-for="(item, index) in itemList" :key="index">
+              <!-- 行业报告 -->
+              <PdfItemList
+                :list="item"
+                v-if="item.levelOne === '1636282673046081537'"
+              ></PdfItemList>
+              <ItemList :list="item" v-else></ItemList>
+            </van-cell>
+          </van-list>
+        </van-pull-refresh>
+      </van-tab>
+    </van-tabs>
+  </div>
   <!-- 历史记录 -->
-  <div v-if="!isShow">
+  <div v-if="!isShow" class="search_history">
     <div class="history">
       <div class="history_title">搜索历史</div>
       <div class="clear">
@@ -84,6 +87,7 @@ let tabList = ref<Tabtype[]>([])
 let itemList = ref<ItemListType[]>([])
 const loading = ref(false)
 const finished = ref(false)
+const refreshing = ref(false)
 const taglist = ref<string[]>([])
 
 let idInfo = ref({
@@ -119,8 +123,26 @@ const onChange = (info: any) => {
   page.value.pageNum = 1
   finished.value = false
 }
+const onRefresh = () => {
+  // 清空列表数据
+  finished.value = false
+  loading.value = true
+  page.value.pageNum = 1
+  onLoad()
+}
 const onLoad = async () => {
-  const { data } = await informationList({ ...idInfo.value, ...page.value })
+  const { data } = await informationList({
+    ...idInfo.value,
+    ...page.value,
+    key: Date.now()
+  })
+  if (refreshing.value) {
+    itemList.value = []
+    refreshing.value = false
+    if (data.records) {
+      showToast('刷新成功')
+    }
+  }
   itemList.value.push(...data.records)
   // 存储输入框历史记录
   if (idInfo.value.title != '') {
@@ -164,10 +186,12 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.top {
+.header {
   width: 100%;
-  height: 46px;
+  padding-top: 44px;
   background-color: transparent;
+  position: fixed;
+  z-index: 99;
 }
 :deep(.van-nav-bar) {
   font-size: 20px;
@@ -209,41 +233,66 @@ onMounted(() => {
   width: 60px;
   height: 2px;
   background-color: #1f46b6;
-  bottom: 20px;
+  bottom: 5px;
 }
-.history {
-  display: flex;
-  justify-content: space-between;
-  padding: 0 24px 0;
-  margin-top: 16px;
-  .history_title {
-    font-size: 16px;
-    color: #222222;
+:deep(.van-tabs) {
+  margin-top: 88px !important;
+  height: calc(100vh - 88px);
+  overflow: auto;
+}
+:deep(.van-pull-refresh) {
+  min-height: calc(100vh - 100px);
+}
+:deep(.van-tabs__nav) {
+  width: 100%;
+  height: 44px;
+  position: fixed;
+  top: 88px;
+  left: 0;
+  z-index: 999;
+  overflow: scroll;
+  padding-bottom: 0;
+}
+.search_history {
+  width: 100%;
+  position: absolute;
+  top: 132px;
+  .history {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 24px 0;
+    margin-top: 16px;
+    .history_title {
+      font-size: 16px;
+      color: #222222;
+    }
+    .clear {
+      font-size: 14px;
+      color: #1f46b6;
+      .clear_text {
+        margin-left: 7px;
+      }
+    }
   }
-  .clear {
-    font-size: 14px;
-    color: #1f46b6;
-    .clear_text {
-      margin-left: 7px;
+  .tag {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 16px;
+    margin: 16px 0;
+    padding: 0 16px;
+    span {
+      display: inline-block;
+      height: 28px;
+      line-height: 28px;
+      margin: 4px;
+      padding: 6px 16px;
+      color: #3e3e3e;
+      background-color: #f8f8f9;
     }
   }
 }
-.tag {
-  display: flex;
-  flex-wrap: wrap;
-  font-size: 16px;
-  margin: 16px 0;
-  padding: 0 16px;
-  span {
-    display: inline-block;
-    height: 28px;
-    line-height: 28px;
-    margin: 4px;
-    padding: 6px 16px;
-    color: #3e3e3e;
-    background-color: #f8f8f9;
-  }
-}
+
 :deep(.van-cell) {
   padding: 0;
 }
