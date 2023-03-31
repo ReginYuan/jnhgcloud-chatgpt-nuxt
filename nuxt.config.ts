@@ -14,7 +14,10 @@ export default defineNuxtConfig({
         transformMixedEsModules: true
       }
     },
-    plugins: [viteCommonjs(), esbuildCommonjs(),]
+    plugins: [viteCommonjs(), esbuildCommonjs()]
+  },
+  build: {
+    transpile: ['@pzy915/pdf-preview/dist/pdf-preview.js']
   },
   css: ['@/assets/base.ignore.css'],
   postcss: {
