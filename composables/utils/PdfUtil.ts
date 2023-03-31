@@ -1,9 +1,11 @@
 import {
   PdfjsDistConfigType,
-  pdfPreviewBuilder,
   PdfPreviewConfig
 } from '@pzy915/pdf-preview'
 
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const {pdfPreviewBuilder} = require('@pzy915/pdf-preview');
 
 export const baseUrl = '/pdfjs-dist-res'
 const workerSrc = `${baseUrl}/build/pdf.worker.js`
