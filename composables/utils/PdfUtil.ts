@@ -1,7 +1,7 @@
 import { PdfjsDistConfigType, PdfPreviewConfig } from '@pzy915/pdf-preview'
 
 import * as pkg from '@pzy915/pdf-preview'
-const { pdfPreviewBuilder } = pkg;
+// const { pdfPreviewBuilder } = pkg;
 
 export const baseUrl = '/pdfjs-dist-res'
 const workerSrc = `${baseUrl}/build/pdf.worker.js`
@@ -12,7 +12,7 @@ const pdfjsDistConfig: PdfjsDistConfigType = {
   cMapUrl
 }
 
-const pdfPreview = pdfPreviewBuilder(pdfjsDistConfig)
+const pdfPreview = pkg.pdfPreviewBuilder(pdfjsDistConfig)
 
 /**
  * 加载pdf文件，并完整渲染
