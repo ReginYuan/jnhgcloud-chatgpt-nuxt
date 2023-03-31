@@ -55,6 +55,7 @@
   },
   "dependencies": {
     "@jridgewell/sourcemap-codec": "^1.4.14",
+    "@originjs/vite-plugin-commonjs": "^1.0.3",
     "@pinia-plugin-persistedstate/nuxt": "^1.0.0",
     "@pinia/nuxt": "^0.4.7",
     "@pzy915/pdf-preview": "^0.0.3",
