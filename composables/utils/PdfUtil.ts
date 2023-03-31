@@ -3,7 +3,7 @@ import { PdfjsDistConfigType, PdfPreviewConfig } from '@pzy915/pdf-preview'
 import * as pkg from '@pzy915/pdf-preview'
 // const { pdfPreviewBuilder } = pkg;
 
-export const baseUrl = '/pdfjs-dist-res/'
+export const baseUrl = '/pdfjs-dist-res'
 const workerSrc = `${baseUrl}/build/pdf.worker.js`
 const cMapUrl = `${baseUrl}/cmaps/`
 
