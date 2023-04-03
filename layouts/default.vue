@@ -1,7 +1,7 @@
 <template>
   <div class="body flex flex-col">
     <main class="main">
-      <slot />
+      <!-- <slot /> -->
       <NuxtPage keepalive></NuxtPage>
     </main>
     <!-- 开启底部安全区适配 -->
