@@ -241,7 +241,7 @@ onMounted(() => {
   overflow: auto;
 }
 :deep(.van-pull-refresh) {
-  min-height: calc(100vh - 100px);
+  min-height: calc(100vh - 133px);
 }
 :deep(.van-tabs__nav) {
   width: 100%;
