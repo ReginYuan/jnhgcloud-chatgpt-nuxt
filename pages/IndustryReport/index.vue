@@ -13,7 +13,7 @@
       swipeable
       @change="onChange"
       sticky
-      offset-top="98"
+      offset-top="23.5vw"
     >
       <van-tab :title="item.name" v-for="(item, index) in tabList" :key="index">
         <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
