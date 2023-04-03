@@ -1,5 +1,5 @@
 <template>
-  <div class="header">
+  <div class="header" style="height: 98px">
     <van-nav-bar
       :left-text="props.title"
       left-arrow
@@ -33,11 +33,10 @@ const onClickLeft = () => {
 <style scoped lang="scss">
 .header {
   width: 100%;
-  height: 88px;
   position: fixed;
   z-index: 999;
   :deep(.van-nav-bar) {
-    padding-top: 42px;
+    padding-top: 44px;
     background-color: transparent;
     font-size: 20px;
     .van-nav-bar__right {

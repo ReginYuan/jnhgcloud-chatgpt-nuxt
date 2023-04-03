@@ -29,6 +29,8 @@
       inactive-color="#222229"
       swipeable
       @change="onChange"
+      sticky
+      offset-top="98"
     >
       <van-tab :title="item.name" v-for="(item, index) in tabList" :key="index">
         <!-- 搜索结果 -->
@@ -189,7 +191,7 @@ onMounted(() => {
 .header {
   width: 100%;
   padding-top: 44px;
-  background-color: transparent;
+  background-color: #ffffff;
   position: fixed;
   z-index: 99;
 }
@@ -237,21 +239,9 @@ onMounted(() => {
 }
 :deep(.van-tabs) {
   margin-top: 88px !important;
-  height: calc(100vh - 88px);
-  overflow: auto;
 }
 :deep(.van-pull-refresh) {
   min-height: calc(100vh - 133px);
-}
-:deep(.van-tabs__nav) {
-  width: 100%;
-  height: 44px;
-  position: fixed;
-  top: 88px;
-  left: 0;
-  z-index: 999;
-  overflow: scroll;
-  padding-bottom: 0;
 }
 .search_history {
   width: 100%;
@@ -295,8 +285,5 @@ onMounted(() => {
 
 :deep(.van-cell) {
   padding: 0;
-}
-:deep(.van-swipe-item) {
-  min-height: 100vh;
 }
 </style>
