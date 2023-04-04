@@ -133,7 +133,6 @@ const onRefresh = () => {
   onLoad()
 }
 
-const store = historyStrore()
 const onLoad = async () => {
   const { data } = await informationList({
     ...idInfo.value,
@@ -152,6 +151,7 @@ const onLoad = async () => {
   if (idInfo.value.title != '') {
     taglist.value.unshift(idInfo.value.title)
     taglist.value = [...new Set(taglist.value)].slice(0, 10)
+    const store = historyStrore()
     taglist.value && store.setHistory(taglist.value)
   }
   loading.value = false
@@ -174,6 +174,7 @@ const goHistory = (item: any) => {
 }
 
 const clearBtn = () => {
+  const store = historyStrore()
   store.setHistory([])
   taglist.value = []
 }
@@ -181,8 +182,8 @@ const onFocus = () => (isShow.value = false)
 const onClickLeft = () => history.back()
 
 onMounted(() => {
-  const history = window.localStorage.getItem('History')
-  taglist.value = history ? JSON.parse(history) : []
+  taglist.value =
+    JSON.parse(localStorage.getItem('history') as string).historylist || []
   idInfo.value.levelOne = route.params.id as string
   getTypeList()
 })
