@@ -1,25 +1,21 @@
 <template>
-  <div class="top" v-if="isApp"></div>
-  <van-nav-bar
-    v-if="isApp"
-    left-arrow
-    @click-left="onClickLeft"
-    :clickable="false"
-  >
-    <template #right>
-      <van-icon
-        name="star-o"
-        v-show="collect === false"
-        @click="onCollect(collect)"
-      />
-      <van-icon
-        name="star"
-        v-show="collect === true"
-        @click="onCollect(collect)"
-      />
-      <img src="~/assets/img/icon-send.png" alt="" @click="show = true" />
-    </template>
-  </van-nav-bar>
+  <div class="header" v-if="isApp">
+    <van-nav-bar left-arrow @click-left="onClickLeft" :clickable="false">
+      <template #right>
+        <van-icon
+          name="star-o"
+          v-show="collect === false"
+          @click="onCollect(collect)"
+        />
+        <van-icon
+          name="star"
+          v-show="collect === true"
+          @click="onCollect(collect)"
+        />
+        <img src="~/assets/img/icon-send.png" alt="" @click="show = true" />
+      </template>
+    </van-nav-bar>
+  </div>
   <div style="background-color: #f7f7f7; height: 2px"></div>
   <div class="new_content" v-if="content.data.inforId">
     <div class="title">{{ content.data.title }}</div>
@@ -166,25 +162,22 @@ const copyUrl = () => {
 }
 onMounted(() => {
   isApp.value = isAppCharacteristic()
-  // isApp.value = true
   getDetails()
 })
 </script>
 
 <style lang="scss" scoped>
-.top {
+.header {
   width: 100%;
-  height: 46px;
+  padding-top: 46px;
   background-color: transparent;
 }
-
 :deep(.van-nav-bar) {
   .van-icon-star-o:before {
     color: #222229;
     font-size: 22px;
   }
 }
-
 :deep(.van-icon-star-o:before) {
   color: #222229;
   font-size: 22px;
