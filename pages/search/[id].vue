@@ -132,6 +132,8 @@ const onRefresh = () => {
   page.value.pageNum = 1
   onLoad()
 }
+
+const store = historyStrore()
 const onLoad = async () => {
   const { data } = await informationList({
     ...idInfo.value,
@@ -157,7 +159,6 @@ const onLoad = async () => {
   if (data.records.length < page.value.pageSize) finished.value = true
 }
 
-const store = historyStrore()
 const searchBtn = async () => {
   page.value.pageNum = 1
   itemList.value = []
