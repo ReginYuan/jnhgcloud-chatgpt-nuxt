@@ -132,7 +132,7 @@ onMounted(async () => {
   font-size: 18px;
 }
 :deep(.van-tabs__line) {
-  bottom: 3px !important;
+  bottom: 18px !important;
   border-radius: 4px 4px 0 0 !important;
 }
 :deep(.van-cell) {
