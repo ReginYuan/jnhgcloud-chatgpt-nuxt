@@ -16,7 +16,7 @@
         </van-search>
       </template>
       <template #right>
-        <span class="search" @click="searchBtn">搜索</span>
+        <span class="search" @click="searchBtn(null)">搜索</span>
       </template>
     </van-nav-bar>
   </div>
@@ -68,7 +68,7 @@
       <div
         v-for="(item, index) in taglist"
         :key="index"
-        @click="goHistory(item)"
+        @click="searchBtn(item)"
       >
         <span>{{ item }}</span>
       </div>
@@ -147,6 +147,13 @@ const onLoad = async () => {
     }
   }
   itemList.value.push(...data.records)
+  loading.value = false
+  page.value.pageNum++
+  if (data.records.length < page.value.pageSize) finished.value = true
+}
+
+const searchBtn = (item: any) => {
+  if (item) idInfo.value.title = item
   // 存储输入框历史记录
   if (idInfo.value.title != '') {
     taglist.value.unshift(idInfo.value.title)
@@ -154,25 +161,11 @@ const onLoad = async () => {
     const store = historyStrore()
     taglist.value && store.setHistory(taglist.value)
   }
-  loading.value = false
-  page.value.pageNum++
-  if (data.records.length < page.value.pageSize) finished.value = true
-}
-
-const searchBtn = async () => {
   page.value.pageNum = 1
   itemList.value = []
   isShow.value = true
   finished.value = false
 }
-const goHistory = (item: any) => {
-  idInfo.value.title = item
-  page.value.pageNum = 1
-  itemList.value = []
-  isShow.value = true
-  finished.value = false
-}
-
 const clearBtn = () => {
   const store = historyStrore()
   store.setHistory([])
