@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <!-- 头部区域 -->
+  <div v-if="isApp">
     <div class="header">
       <van-icon name="arrow-left" @click="goBack" />
       <span>企业加入邀请</span>
@@ -73,6 +72,9 @@
       </van-form>
     </div>
   </div>
+  <div v-else>
+    <img class="image" src="~/assets/img/pic-share2.png" alt="" />
+  </div>
 </template>
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
@@ -81,8 +83,12 @@ import {
   h5joinCompanyCheck,
   code,
   h5applyToJoinCompanySubmission
-} from '~/server/api/joinEnterprise'
-import { hideNav,closewebView } from '~/composables/utils/validate'
+} from '~/server/api/joinEnterprise'  
+import {
+  hideNav,
+  closewebView,
+  isAppCharacteristic
+} from '~/composables/utils/validate'
 definePageMeta({ layout: false })
 const router = useRouter()
 
@@ -93,10 +99,10 @@ const form = reactive({
   reason: undefined,
   companyNo: undefined
 })
-const disabled = ref(false)
-const codeMsg = ref('获取验证码')
+const disabled = ref(false)const codeMsg = ref('获取验证码')
 const codeNum = ref(60)
 const companyName = ref()
+const isApp = ref()
 //提交申请
 const onSubmit = values => {
   console.log(form, 'form')
@@ -166,6 +172,11 @@ const getList = async () => {
   form.companyNo = list.data.companyNo
 }
 onMounted(() => {
+  console.log(isAppCharacteristic(), 'isAppCharacteristic()')
+  //app里是true 不在是false
+  isApp.value = !isAppCharacteristic()
+  // isApp.value = false
+  console.log(isApp.value, 'isApp.value')
   hideNav()
   getList()
 })
@@ -177,7 +188,7 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   /* align-items: center; */
-  padding: 50px  21px 0 21px;
+  padding: 50px 21px 0 21px;
   font-size: 18px;
   font-family: Source Han Sans CN-Regular, Source Han Sans CN;
   font-weight: 400;
@@ -242,11 +253,15 @@ onMounted(() => {
     color: #b2bac6;
     margin-top: 10px;
   }
-  ::v-deep .van-cell{
+  ::v-deep .van-cell {
     display: block;
   }
 }
 ::v-deep .van-cell {
   overflow: hidden;
+}
+img.image {
+  width: 100%;
+  height: 100vh;
 }
 </style>
