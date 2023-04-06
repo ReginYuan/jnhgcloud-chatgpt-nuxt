@@ -3,7 +3,7 @@
     <van-nav-bar left-arrow :clickable="false" @click-left="onClickLeft">
       <template #title>
         <van-search
-          v-model="idInfo.title"
+          v-model="page.title"
           placeholder="搜索资讯"
           background="transparent"
           shape="round"
@@ -92,11 +92,9 @@ const finished = ref(false)
 const refreshing = ref(false)
 const taglist = ref<string[]>([])
 
-let idInfo = ref({
-  title: '',
-  levelOne: ''
-})
 let page = ref({
+  title: '',
+  levelOne: '',
   pageSize: 20,
   pageNum: 1
 })
@@ -113,14 +111,13 @@ const getTypeList = async () => {
 
 const onClickTab = async (info: any) => {
   const value = tabList.value.find(item => item.name === info.title) as Tabtype
-  idInfo.value.levelOne = value.inforTypeId
+  page.value.levelOne = value.inforTypeId
   itemList.value = []
   page.value.pageNum = 1
   finished.value = false
 }
 const onChange = (info: any) => {
-  idInfo.value.levelOne = tabList.value[info].inforTypeId
-  console.log(tabList.value, info, idInfo.value.levelOne)
+  page.value.levelOne = tabList.value[info].inforTypeId
   itemList.value = []
   page.value.pageNum = 1
   finished.value = false
@@ -134,11 +131,7 @@ const onRefresh = () => {
 }
 
 const onLoad = async () => {
-  const { data } = await informationList({
-    ...idInfo.value,
-    ...page.value,
-    key: Date.now()
-  })
+  const { data } = await informationList({ ...page.value, key: Date.now() })
   if (refreshing.value) {
     itemList.value = []
     refreshing.value = false
@@ -153,10 +146,10 @@ const onLoad = async () => {
 }
 
 const searchBtn = (item: any) => {
-  if (item) idInfo.value.title = item
+  if (item) page.value.title = item
   // 存储输入框历史记录
-  if (idInfo.value.title != '') {
-    taglist.value.unshift(idInfo.value.title)
+  if (page.value.title != '') {
+    taglist.value.unshift(page.value.title)
     taglist.value = [...new Set(taglist.value)].slice(0, 10)
     const store = historyStrore()
     taglist.value && store.setHistory(taglist.value)
@@ -177,7 +170,7 @@ const onClickLeft = () => history.back()
 onMounted(() => {
   taglist.value =
     JSON.parse(localStorage.getItem('history') as string).historylist || []
-  idInfo.value.levelOne = route.params.id as string
+  page.value.levelOne = route.params.id as string
   getTypeList()
 })
 </script>

@@ -47,12 +47,10 @@ const loading = ref(false)
 const finished = ref(false)
 const refreshing = ref(false)
 
-let idInfo = ref({
+let page = ref({
   levelOne: Id.value,
   levelTwo: '',
-  recommend: ''
-})
-let page = ref({
+  recommend: '',
   pageSize: 20,
   pageNum: 1
 })
@@ -74,15 +72,15 @@ const onClickTab = async (info: any) => {
   tabItem.value = tabList.value.find(
     item => item.name === info.title
   ) as Tabtype
-  idInfo.value.levelOne = tabItem.value.parentId
-  idInfo.value.levelTwo = tabItem.value.inforTypeId
+  page.value.levelOne = tabItem.value.parentId
+  page.value.levelTwo = tabItem.value.inforTypeId
   itemList.value = []
   page.value.pageNum = 1
   finished.value = false
 }
 const onChange = (info: any) => {
-  idInfo.value.levelOne = tabList.value[info].parentId
-  idInfo.value.levelTwo = tabList.value[info].inforTypeId
+  page.value.levelOne = tabList.value[info].parentId
+  page.value.levelTwo = tabList.value[info].inforTypeId
   itemList.value = []
   page.value.pageNum = 1
   finished.value = false
@@ -96,18 +94,14 @@ const onRefresh = () => {
   onLoad()
 }
 const onLoad = async () => {
-  if (idInfo.value.levelTwo === '') {
-    idInfo.value.recommend = 'Y'
+  if (page.value.levelTwo === '') {
+    page.value.recommend = 'Y'
     showSwiper.value = true
   } else {
-    idInfo.value.recommend = ''
+    page.value.recommend = ''
     showSwiper.value = false
   }
-  const { data } = await informationList({
-    ...idInfo.value,
-    ...page.value,
-    key: Date.now()
-  })
+  const { data } = await informationList({ ...page.value, key: Date.now() })
   if (refreshing.value) {
     itemList.value = []
     refreshing.value = false

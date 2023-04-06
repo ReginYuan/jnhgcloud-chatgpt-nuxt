@@ -16,6 +16,7 @@
       </template>
     </van-nav-bar>
   </div>
+  <div style="height: 90px" v-if="isApp"></div>
   <div style="background-color: #f7f7f7; height: 2px"></div>
   <div class="new_content" v-if="content.data.inforId">
     <div class="title">{{ content.data.title }}</div>
@@ -92,8 +93,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, onActivated } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { ref, reactive, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import { ItemListType } from '~/types/itemList'
 import { getDetail, relatedArticles, collectApi } from '~/server/api/user'
 import { isAppCharacteristic } from '~/composables/utils/validate'
@@ -116,18 +117,6 @@ let content = reactive<{ data: ItemListType }>({
 const isApp = ref(false)
 let itemList = ref<ItemListType[]>([])
 const getDetails = async () => {
-  // let us = navigator.userAgent
-  // console.log(navigator)
-
-  let us = navigator.userAgent
-  // var index = us.indexOf('source=')
-  // console.log(index)
-
-  // var source = us.slice(index + 7)
-  // return source == 'zshb'
-
-  // console.log(us)
-
   const { data } = await getDetail({ inforId: route.params.id })
   content.data = data
   collect.value = data.collect
@@ -168,9 +157,12 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .header {
+  position: fixed;
+  top: 0;
   width: 100%;
   padding-top: 46px;
-  background-color: transparent;
+  background-color: #ffffff;
+  z-index: 99;
 }
 :deep(.van-nav-bar) {
   .van-icon-star-o:before {
