@@ -99,7 +99,8 @@ const form = reactive({
   reason: undefined,
   companyNo: undefined
 })
-const disabled = ref(false)const codeMsg = ref('获取验证码')
+const disabled = ref(false)
+const codeMsg = ref('获取验证码')
 const codeNum = ref(60)
 const companyName = ref()
 const isApp = ref()
