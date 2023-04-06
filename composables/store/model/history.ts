@@ -1,12 +1,13 @@
 import { defineStore } from 'pinia'
 export const historyStrore = defineStore('history', {
   state: () => {
-    return []
+    return {
+      historylist: []
+    }
   },
   actions: {
     setHistory(value: string[]) {
-      this.$state = value
-      window.localStorage.setItem('History', JSON.stringify(value))
+      this.$state.historylist = value
     }
   },
   // 开启数据持久化

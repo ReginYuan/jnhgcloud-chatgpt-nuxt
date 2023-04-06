@@ -3,7 +3,7 @@
     <van-nav-bar left-arrow :clickable="false" @click-left="onClickLeft">
       <template #title>
         <van-search
-          v-model="idInfo.title"
+          v-model="page.title"
           placeholder="搜索资讯"
           background="transparent"
           shape="round"
@@ -16,7 +16,7 @@
         </van-search>
       </template>
       <template #right>
-        <span class="search" @click="searchBtn">搜索</span>
+        <span class="search" @click="searchBtn(null)">搜索</span>
       </template>
     </van-nav-bar>
   </div>
@@ -29,6 +29,8 @@
       inactive-color="#222229"
       swipeable
       @change="onChange"
+      sticky
+      offset-top="23.5vw"
     >
       <van-tab :title="item.name" v-for="(item, index) in tabList" :key="index">
         <!-- 搜索结果 -->
@@ -66,7 +68,7 @@
       <div
         v-for="(item, index) in taglist"
         :key="index"
-        @click="goHistory(item)"
+        @click="searchBtn(item)"
       >
         <span>{{ item }}</span>
       </div>
@@ -90,11 +92,9 @@ const finished = ref(false)
 const refreshing = ref(false)
 const taglist = ref<string[]>([])
 
-let idInfo = ref({
-  title: '',
-  levelOne: ''
-})
 let page = ref({
+  title: '',
+  levelOne: '',
   pageSize: 20,
   pageNum: 1
 })
@@ -111,14 +111,13 @@ const getTypeList = async () => {
 
 const onClickTab = async (info: any) => {
   const value = tabList.value.find(item => item.name === info.title) as Tabtype
-  idInfo.value.levelOne = value.inforTypeId
+  page.value.levelOne = value.inforTypeId
   itemList.value = []
   page.value.pageNum = 1
   finished.value = false
 }
 const onChange = (info: any) => {
-  idInfo.value.levelOne = tabList.value[info].inforTypeId
-  console.log(tabList.value, info, idInfo.value.levelOne)
+  page.value.levelOne = tabList.value[info].inforTypeId
   itemList.value = []
   page.value.pageNum = 1
   finished.value = false
@@ -130,12 +129,9 @@ const onRefresh = () => {
   page.value.pageNum = 1
   onLoad()
 }
+
 const onLoad = async () => {
-  const { data } = await informationList({
-    ...idInfo.value,
-    ...page.value,
-    key: Date.now()
-  })
+  const { data } = await informationList({ ...page.value, key: Date.now() })
   if (refreshing.value) {
     itemList.value = []
     refreshing.value = false
@@ -144,33 +140,27 @@ const onLoad = async () => {
     }
   }
   itemList.value.push(...data.records)
-  // 存储输入框历史记录
-  if (idInfo.value.title != '') {
-    taglist.value.unshift(idInfo.value.title)
-    taglist.value = [...new Set(taglist.value)].slice(0, 10)
-    taglist.value && store.setHistory(taglist.value)
-  }
   loading.value = false
   page.value.pageNum++
   if (data.records.length < page.value.pageSize) finished.value = true
 }
 
-const store = historyStrore()
-const searchBtn = async () => {
+const searchBtn = (item: any) => {
+  if (item) page.value.title = item
+  // 存储输入框历史记录
+  if (page.value.title != '') {
+    taglist.value.unshift(page.value.title)
+    taglist.value = [...new Set(taglist.value)].slice(0, 10)
+    const store = historyStrore()
+    taglist.value && store.setHistory(taglist.value)
+  }
   page.value.pageNum = 1
   itemList.value = []
   isShow.value = true
   finished.value = false
 }
-const goHistory = (item: any) => {
-  idInfo.value.title = item
-  page.value.pageNum = 1
-  itemList.value = []
-  isShow.value = true
-  finished.value = false
-}
-
 const clearBtn = () => {
+  const store = historyStrore()
   store.setHistory([])
   taglist.value = []
 }
@@ -178,9 +168,9 @@ const onFocus = () => (isShow.value = false)
 const onClickLeft = () => history.back()
 
 onMounted(() => {
-  const history = window.localStorage.getItem('History')
-  taglist.value = history ? JSON.parse(history) : []
-  idInfo.value.levelOne = route.params.id as string
+  taglist.value =
+    JSON.parse(localStorage.getItem('history') as string).historylist || []
+  page.value.levelOne = route.params.id as string
   getTypeList()
 })
 </script>
@@ -189,7 +179,7 @@ onMounted(() => {
 .header {
   width: 100%;
   padding-top: 44px;
-  background-color: transparent;
+  background-color: #ffffff;
   position: fixed;
   z-index: 99;
 }
@@ -237,21 +227,9 @@ onMounted(() => {
 }
 :deep(.van-tabs) {
   margin-top: 88px !important;
-  height: calc(100vh - 88px);
-  overflow: auto;
 }
 :deep(.van-pull-refresh) {
   min-height: calc(100vh - 133px);
-}
-:deep(.van-tabs__nav) {
-  width: 100%;
-  height: 44px;
-  position: fixed;
-  top: 88px;
-  left: 0;
-  z-index: 999;
-  overflow: scroll;
-  padding-bottom: 0;
 }
 .search_history {
   width: 100%;
@@ -295,8 +273,5 @@ onMounted(() => {
 
 :deep(.van-cell) {
   padding: 0;
-}
-:deep(.van-swipe-item) {
-  min-height: 100vh;
 }
 </style>
