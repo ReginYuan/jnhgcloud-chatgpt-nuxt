@@ -165,11 +165,15 @@ const clearBtn = () => {
   taglist.value = []
 }
 const onFocus = () => (isShow.value = false)
-const onClickLeft = () => history.back()
+const onClickLeft = () => {
+  history.back()
+  page.value.title = ''
+  isShow.value = false
+}
 
 onMounted(() => {
   taglist.value =
-    JSON.parse(localStorage.getItem('history') as string).historylist || []
+    JSON.parse(localStorage.getItem('history') as string)?.historylist || []
   page.value.levelOne = route.params.id as string
   getTypeList()
 })
