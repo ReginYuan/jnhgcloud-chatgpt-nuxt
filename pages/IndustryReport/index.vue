@@ -9,7 +9,7 @@
       title-inactive-color="#888888"
       color="#2ac670"
       :ellipsis="false"
-      @click-tab="onClickTab"
+      @click-tab="onChange"
       swipeable
       @change="onChange"
       sticky
@@ -39,18 +39,8 @@ import { getInfo, informationList } from '~/server/api/user'
 import { hideNav } from '~/composables/utils/validate'
 let Id = ref('1636282673046081537')
 const active = ref(0)
-let itemList = ref<ItemListType[]>([])
-let page = ref({
-  levelOne: Id.value,
-  levelTwo: '',
-  recommend: '',
-  pageSize: 20,
-  pageNum: 1
-})
-const loading = ref(false)
-const finished = ref(false)
-const refreshing = ref(false)
 
+// 获取tab栏数据
 let tabList = ref<Tabtype[]>([])
 const getTypeList = async () => {
   tabList.value = []
@@ -65,18 +55,22 @@ const getTypeList = async () => {
   })
 }
 
-let tabItem = ref<Tabtype>()
-const onClickTab = async (info: any) => {
-  tabItem.value = tabList.value.find(
-    item => item.name === info.title
-  ) as Tabtype
-  page.value.levelOne = tabItem.value.parentId
-  page.value.levelTwo = tabItem.value.inforTypeId
-  itemList.value = []
-  page.value.pageNum = 1
-  finished.value = false
-}
+// 获取列表数据
+let itemList = ref<ItemListType[]>([])
+let page = ref({
+  levelOne: Id.value,
+  levelTwo: '',
+  recommend: '',
+  pageSize: 20,
+  pageNum: 1
+})
+const loading = ref(false)
+const finished = ref(false)
+const refreshing = ref(false)
 const onChange = (info: any) => {
+  if (typeof info === 'object') {
+    info = tabList.value.findIndex(item => item.name === info.title)
+  }
   page.value.levelOne = tabList.value[info].parentId
   page.value.levelTwo = tabList.value[info].inforTypeId
   itemList.value = []

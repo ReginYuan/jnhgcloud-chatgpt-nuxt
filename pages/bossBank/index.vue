@@ -4,7 +4,7 @@
     <van-tabs
       v-model:active="active"
       :ellipsis="false"
-      @click-tab="onClickTab"
+      @click-tab="onChange"
       swipeable
       @change="onChange"
       sticky
@@ -19,11 +19,7 @@
             finished-text="没有更多了"
             @load="onLoad"
           >
-            <van-cell
-              v-for="(item, index) in itemList"
-              :key="index"
-              :border="false"
-            >
+            <van-cell v-for="(item, index) in itemList" :key="index">
               <ItemList :list="item"></ItemList>
             </van-cell>
           </van-list>
@@ -36,25 +32,11 @@
 import { ref, onMounted } from 'vue'
 import { getInfo, informationList } from '~/server/api/user'
 import { Tabtype, ItemListType } from '~/types/itemList'
-import { hideNav, geTokenAll } from '~/composables/utils/validate'
 let Id = ref('1636282537209352194')
-
 const active = ref(0)
+
+// 获取tab栏数据
 let tabList = ref<Tabtype[]>([])
-let itemList = ref<ItemListType[]>([])
-let showSwiper = ref(true)
-const loading = ref(false)
-const finished = ref(false)
-const refreshing = ref(false)
-
-let page = ref({
-  levelOne: Id.value,
-  levelTwo: '',
-  recommend: '',
-  pageSize: 20,
-  pageNum: 1
-})
-
 const getTypeList = async () => {
   const { data } = await getInfo({ parentId: Id.value })
   tabList.value = JSON.parse(JSON.stringify(data))
@@ -67,25 +49,29 @@ const getTypeList = async () => {
   })
 }
 
-let tabItem = ref<Tabtype>()
-const onClickTab = async (info: any) => {
-  tabItem.value = tabList.value.find(
-    item => item.name === info.title
-  ) as Tabtype
-  page.value.levelOne = tabItem.value.parentId
-  page.value.levelTwo = tabItem.value.inforTypeId
-  itemList.value = []
-  page.value.pageNum = 1
-  finished.value = false
-}
+// 获取列表数据
+let itemList = ref<ItemListType[]>([])
+let showSwiper = ref(true)
+const loading = ref(false)
+const finished = ref(false)
+const refreshing = ref(false)
+let page = ref({
+  levelOne: Id.value,
+  levelTwo: '',
+  recommend: '',
+  pageSize: 20,
+  pageNum: 1
+})
 const onChange = (info: any) => {
+  if (typeof info === 'object') {
+    info = tabList.value.findIndex(item => item.name === info.title)
+  }
   page.value.levelOne = tabList.value[info].parentId
   page.value.levelTwo = tabList.value[info].inforTypeId
   itemList.value = []
   page.value.pageNum = 1
   finished.value = false
 }
-
 const onRefresh = () => {
   // 清空列表数据
   finished.value = false
@@ -115,8 +101,6 @@ const onLoad = async () => {
   if (data.records.length < page.value.pageSize) finished.value = true
 }
 onMounted(async () => {
-  geTokenAll()
-  hideNav()
   getTypeList()
 })
 </script>

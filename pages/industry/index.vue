@@ -4,7 +4,7 @@
     <van-tabs
       v-model:active="active"
       :ellipsis="false"
-      @click-tab="onClickTab"
+      @click-tab="onChange"
       swipeable
       @change="onChange"
       sticky
@@ -32,22 +32,8 @@
 import { ref, onMounted } from 'vue'
 import { Tabtype, ItemListType } from '~/types/itemList'
 import { getInfo, informationList } from '~/server/api/user'
-import { hideNav } from '~/composables/utils/validate'
 let Id = ref('1636282443407937538')
 const active = ref(0)
-let itemList = ref<ItemListType[]>([])
-let hotList = ref<ItemListType[]>([])
-let showSwiper = ref(true)
-const loading = ref(false)
-const finished = ref(false)
-const refreshing = ref(false)
-let page = ref({
-  levelOne: Id.value,
-  levelTwo: '',
-  recommend: '',
-  pageSize: 20,
-  pageNum: 1
-})
 
 // 获取tab栏数据
 let tabList = ref<Tabtype[]>([])
@@ -63,18 +49,24 @@ const getTypeList = async () => {
   })
 }
 
-let tabItem = ref<Tabtype>()
-const onClickTab = async (info: any) => {
-  tabItem.value = tabList.value.find(
-    item => item.name === info.title
-  ) as Tabtype
-  page.value.levelOne = tabItem.value.parentId
-  page.value.levelTwo = tabItem.value.inforTypeId
-  itemList.value = []
-  page.value.pageNum = 1
-  finished.value = false
-}
+// 获取列表数据
+let itemList = ref<ItemListType[]>([])
+let hotList = ref<ItemListType[]>([])
+let showSwiper = ref(true)
+const loading = ref(false)
+const finished = ref(false)
+const refreshing = ref(false)
+let page = ref({
+  levelOne: Id.value,
+  levelTwo: '',
+  recommend: '',
+  pageSize: 20,
+  pageNum: 1
+})
 const onChange = (info: any) => {
+  if (typeof info === 'object') {
+    info = tabList.value.findIndex(item => item.name === info.title)
+  }
   page.value.levelOne = tabList.value[info].parentId
   page.value.levelTwo = tabList.value[info].inforTypeId
   itemList.value = []
@@ -113,7 +105,6 @@ const onLoad = async () => {
   if (data.records.length < page.value.pageSize) finished.value = true
 }
 onMounted(() => {
-  hideNav()
   getTypeList()
 })
 </script>

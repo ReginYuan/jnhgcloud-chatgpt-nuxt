@@ -4,7 +4,7 @@
     <van-tabs
       v-model:active="active"
       :ellipsis="false"
-      @click-tab="onClickTab"
+      @click-tab="onChange"
       swipeable
       @change="onChange"
       sticky
@@ -35,11 +35,7 @@
             finished-text="没有更多了"
             @load="onLoad"
           >
-            <van-cell
-              v-for="(item, index) in itemList"
-              :key="index"
-              :border="false"
-            >
+            <van-cell v-for="(item, index) in itemList" :key="index">
               <ItemList :list="item"></ItemList>
             </van-cell>
           </van-list>
@@ -84,6 +80,7 @@ const getTypeList = async () => {
   })
 }
 
+// 获取轮播图数据
 const getBannerList = async () => {
   const { data } = await bannerInfo({
     levelOne: Id.value,
@@ -92,18 +89,11 @@ const getBannerList = async () => {
   swiperList.value = data
 }
 
-let tabItem = ref<Tabtype>()
-const onClickTab = async (info: any) => {
-  tabItem.value = tabList.value.find(
-    item => item.name === info.title
-  ) as Tabtype
-  page.value.levelOne = tabItem.value.parentId
-  page.value.levelTwo = tabItem.value.inforTypeId
-  itemList.value = []
-  page.value.pageNum = 1
-  finished.value = false
-}
+// 获取列表数据
 const onChange = (info: any) => {
+  if (typeof info === 'object') {
+    info = tabList.value.findIndex(item => item.name === info.title)
+  }
   page.value.levelOne = tabList.value[info].parentId
   page.value.levelTwo = tabList.value[info].inforTypeId
   itemList.value = []

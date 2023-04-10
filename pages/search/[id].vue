@@ -25,7 +25,7 @@
     <van-tabs
       v-model:active="active"
       :ellipsis="false"
-      @click-tab="onClickTab"
+      @click-tab="onChange"
       inactive-color="#222229"
       swipeable
       @change="onChange"
@@ -109,14 +109,10 @@ const getTypeList = async () => {
   active.value = index
 }
 
-const onClickTab = async (info: any) => {
-  const value = tabList.value.find(item => item.name === info.title) as Tabtype
-  page.value.levelOne = value.inforTypeId
-  itemList.value = []
-  page.value.pageNum = 1
-  finished.value = false
-}
 const onChange = (info: any) => {
+  if (typeof info === 'object') {
+    info = tabList.value.findIndex(item => item.name === info.title)
+  }
   page.value.levelOne = tabList.value[info].inforTypeId
   itemList.value = []
   page.value.pageNum = 1
