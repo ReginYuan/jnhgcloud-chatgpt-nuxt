@@ -3,7 +3,10 @@
   "extends": "./.nuxt/tsconfig.json",
   "compilerOptions": {
     "outDir": "./",
-    "module": "es2015"
+    "target": "es6",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
   },
   "exclude": ["node_modules", "dist"]
 }

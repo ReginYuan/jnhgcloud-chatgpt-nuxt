@@ -11,6 +11,7 @@ export default defineNuxtConfig({
     },
     build: {
       commonjsOptions: {
+        include: [/node_modules/],
         transformMixedEsModules: true
       }
     },

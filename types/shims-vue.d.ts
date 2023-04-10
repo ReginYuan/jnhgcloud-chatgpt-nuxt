@@ -8,6 +8,7 @@ declare module 'vue' {
     messageHandlers: any
     Android: any
     pdfPreviewBuilder: any,
-    commonjs: any
+    commonjs: any,
+    workerSrc: any
   }
 }
