@@ -1,6 +1,5 @@
 <template>
-  <div class="top"></div>
-  <div>
+  <div class="header" v-if="isApp">
     <van-nav-bar title="标题" left-arrow @click-left="onClickLeft">
       <template #right>
         <img src="~/assets/img/icon-send.png" alt="" @click="show = true" />
@@ -46,7 +45,10 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from 'vue'
+import { isAppCharacteristic } from '~/composables/utils/validate'
 const show = ref(false)
+const isApp = ref(false)
 const copyUrl = () => {
   const url = window.location.href
   // 动态创建 textarea 标签
@@ -67,13 +69,16 @@ const copyUrl = () => {
   return result
 }
 const onClickLeft = () => history.back()
+onMounted(() => {
+  isApp.value = isAppCharacteristic()
+})
 </script>
 
 <style scoped lang="scss">
-.top {
+.header {
   width: 100%;
-  height: 46px;
-  background-color: transparent;
+  padding-top: 46px;
+  background-color: #ffffff;
 }
 :deep(.van-icon) {
   color: #222229;
@@ -87,7 +92,6 @@ const onClickLeft = () => history.back()
 }
 
 .content {
-  // height: 100vh;
   height: calc(100vh - 92px);
   overflow: auto;
   background-color: #ededef !important;

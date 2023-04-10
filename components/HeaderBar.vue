@@ -33,9 +33,12 @@ const onClickLeft = () => {
 <style scoped lang="scss">
 .header {
   width: 100%;
+  position: fixed;
+  z-index: 999;
   height: 88px;
   :deep(.van-nav-bar) {
-    padding-top: 42px;
+    padding-top: 44px;
+    height: 44px;
     background-color: transparent;
     font-size: 20px;
     .van-nav-bar__right {

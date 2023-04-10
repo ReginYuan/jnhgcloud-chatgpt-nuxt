@@ -1,31 +1,36 @@
 <template>
   <HeaderBar title="老板智库" :parentId="Id"></HeaderBar>
-  <van-tabs
-    v-model:active="active"
-    :ellipsis="false"
-    @click-tab="onClickTab"
-    swipeable
-    @change="onChange"
-  >
-    <van-tab :title="item.name" v-for="(item, index) in tabList" :key="index">
-      <!-- <div class="swiper_a" v-if="showSwiper"></div> -->
-      <swipers v-if="showSwiper"></swipers>
-      <van-list
-        v-model:loading="loading"
-        :finished="finished"
-        finished-text="没有更多了"
-        @load="onLoad"
-      >
-        <van-cell
-          v-for="(item, index) in itemList"
-          :key="index"
-          :border="false"
-        >
-          <ItemList :list="item"></ItemList>
-        </van-cell>
-      </van-list>
-    </van-tab>
-  </van-tabs>
+  <div>
+    <van-tabs
+      v-model:active="active"
+      :ellipsis="false"
+      @click-tab="onClickTab"
+      swipeable
+      @change="onChange"
+      sticky
+      offset-top="23.5vw"
+    >
+      <van-tab :title="item.name" v-for="(item, index) in tabList" :key="index">
+        <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
+          <swipers v-if="showSwiper"></swipers>
+          <van-list
+            v-model:loading="loading"
+            :finished="finished"
+            finished-text="没有更多了"
+            @load="onLoad"
+          >
+            <van-cell
+              v-for="(item, index) in itemList"
+              :key="index"
+              :border="false"
+            >
+              <ItemList :list="item"></ItemList>
+            </van-cell>
+          </van-list>
+        </van-pull-refresh>
+      </van-tab>
+    </van-tabs>
+  </div>
 </template>
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
@@ -42,13 +47,11 @@ const loading = ref(false)
 const finished = ref(false)
 const refreshing = ref(false)
 
-let idInfo = ref({
+let page = ref({
   levelOne: Id.value,
   levelTwo: '',
-  recommend: ''
-})
-let page = ref({
-  pageSize: 5,
+  recommend: '',
+  pageSize: 20,
   pageNum: 1
 })
 
@@ -69,35 +72,43 @@ const onClickTab = async (info: any) => {
   tabItem.value = tabList.value.find(
     item => item.name === info.title
   ) as Tabtype
-  idInfo.value.levelOne = tabItem.value.parentId
-  idInfo.value.levelTwo = tabItem.value.inforTypeId
+  page.value.levelOne = tabItem.value.parentId
+  page.value.levelTwo = tabItem.value.inforTypeId
   itemList.value = []
   page.value.pageNum = 1
   finished.value = false
 }
 const onChange = (info: any) => {
-  idInfo.value.levelOne = tabList.value[info].parentId
-  idInfo.value.levelTwo = tabList.value[info].inforTypeId
+  page.value.levelOne = tabList.value[info].parentId
+  page.value.levelTwo = tabList.value[info].inforTypeId
   itemList.value = []
   page.value.pageNum = 1
   finished.value = false
 }
+
+const onRefresh = () => {
+  // 清空列表数据
+  finished.value = false
+  loading.value = true
+  page.value.pageNum = 1
+  onLoad()
+}
 const onLoad = async () => {
+  if (page.value.levelTwo === '') {
+    page.value.recommend = 'Y'
+    showSwiper.value = true
+  } else {
+    page.value.recommend = ''
+    showSwiper.value = false
+  }
+  const { data } = await informationList({ ...page.value, key: Date.now() })
   if (refreshing.value) {
     itemList.value = []
     refreshing.value = false
+    if (data.records) {
+      showToast('刷新成功')
+    }
   }
-  if (idInfo.value.levelTwo === '') {
-    idInfo.value.recommend = 'Y'
-    showSwiper.value = true
-  } else {
-    idInfo.value.recommend = ''
-    showSwiper.value = false
-  }
-  const { data } = await informationList({
-    ...idInfo.value,
-    ...page.value
-  })
   itemList.value.push(...data.records)
   page.value.pageNum++
   loading.value = false
@@ -146,18 +157,10 @@ onMounted(async () => {
 :deep(.van-tabs__line) {
   display: none;
 }
-:deep(.van-tab__panel-wrapper) {
-  min-height: 80vh;
+:deep(.van-tabs) {
+  margin-top: 88px !important;
 }
-// .swiper_b {
-//   width: 100%;
-//   height: 145px;
-//   position: absolute;
-//   top: 135px;
-//   z-index: 9999;
-// }
-// .swiper_a {
-//   width: 100%;
-//   height: 145px;
-// }
+:deep(.van-pull-refresh) {
+  min-height: calc(100vh - 133px);
+}
 </style>

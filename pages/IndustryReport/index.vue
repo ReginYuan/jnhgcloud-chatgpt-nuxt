@@ -1,30 +1,36 @@
 <template>
   <HeaderBar title="行业报告" :parentId="Id"></HeaderBar>
-  <van-tabs
-    v-model:active="active"
-    :line-width="10"
-    :line-height="5"
-    title-active-color="#000000"
-    title-inactive-color="#888888"
-    color="#2ac670"
-    :ellipsis="false"
-    @click-tab="onClickTab"
-    swipeable
-    @change="onChange"
-  >
-    <van-tab :title="item.name" v-for="(item, index) in tabList" :key="index">
-      <van-list
-        v-model:loading="loading"
-        :finished="finished"
-        finished-text="没有更多了"
-        @load="onLoad"
-      >
-        <van-cell v-for="(item, index) in itemList" :key="index">
-          <PdfItemList :list="item"></PdfItemList>
-        </van-cell>
-      </van-list>
-    </van-tab>
-  </van-tabs>
+  <div>
+    <van-tabs
+      v-model:active="active"
+      :line-width="10"
+      :line-height="5"
+      title-active-color="#000000"
+      title-inactive-color="#888888"
+      color="#2ac670"
+      :ellipsis="false"
+      @click-tab="onClickTab"
+      swipeable
+      @change="onChange"
+      sticky
+      offset-top="23.5vw"
+    >
+      <van-tab :title="item.name" v-for="(item, index) in tabList" :key="index">
+        <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
+          <van-list
+            v-model:loading="loading"
+            :finished="finished"
+            finished-text="没有更多了"
+            @load="onLoad"
+          >
+            <van-cell v-for="(item, index) in itemList" :key="index">
+              <PdfItemList :list="item"></PdfItemList>
+            </van-cell>
+          </van-list>
+        </van-pull-refresh>
+      </van-tab>
+    </van-tabs>
+  </div>
 </template>
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
@@ -34,17 +40,16 @@ import { hideNav } from '~/composables/utils/validate'
 let Id = ref('1636282673046081537')
 const active = ref(0)
 let itemList = ref<ItemListType[]>([])
-let idInfo = ref({
+let page = ref({
   levelOne: Id.value,
   levelTwo: '',
-  recommend: ''
-})
-const loading = ref(false)
-const finished = ref(false)
-let page = ref({
+  recommend: '',
   pageSize: 20,
   pageNum: 1
 })
+const loading = ref(false)
+const finished = ref(false)
+const refreshing = ref(false)
 
 let tabList = ref<Tabtype[]>([])
 const getTypeList = async () => {
@@ -65,27 +70,40 @@ const onClickTab = async (info: any) => {
   tabItem.value = tabList.value.find(
     item => item.name === info.title
   ) as Tabtype
-  idInfo.value.levelOne = tabItem.value.parentId
-  idInfo.value.levelTwo = tabItem.value.inforTypeId
+  page.value.levelOne = tabItem.value.parentId
+  page.value.levelTwo = tabItem.value.inforTypeId
   itemList.value = []
   page.value.pageNum = 1
   finished.value = false
 }
 const onChange = (info: any) => {
-  idInfo.value.levelOne = tabList.value[info].parentId
-  idInfo.value.levelTwo = tabList.value[info].inforTypeId
+  page.value.levelOne = tabList.value[info].parentId
+  page.value.levelTwo = tabList.value[info].inforTypeId
   itemList.value = []
   page.value.pageNum = 1
   finished.value = false
 }
-
+const onRefresh = () => {
+  // 清空列表数据
+  finished.value = false
+  loading.value = true
+  page.value.pageNum = 1
+  onLoad()
+}
 const onLoad = async () => {
-  if (idInfo.value.levelTwo === '') {
-    idInfo.value.recommend = 'Y'
+  if (page.value.levelTwo === '') {
+    page.value.recommend = 'Y'
   } else {
-    idInfo.value.recommend = ''
+    page.value.recommend = ''
   }
-  const { data } = await informationList({ ...idInfo.value, ...page.value })
+  const { data } = await informationList({ ...page.value, key: Date.now() })
+  if (refreshing.value) {
+    itemList.value = []
+    refreshing.value = false
+    if (data.records) {
+      showToast('刷新成功')
+    }
+  }
   itemList.value.push(...data.records)
   page.value.pageNum++
   loading.value = false
@@ -108,13 +126,16 @@ onMounted(async () => {
   font-size: 18px;
 }
 :deep(.van-tabs__line) {
-  bottom: 20px !important;
+  bottom: 18px !important;
   border-radius: 4px 4px 0 0 !important;
 }
 :deep(.van-cell) {
   padding: 0;
 }
-:deep(.van-tab__panel-wrapper) {
-  min-height: 80vh;
+:deep(.van-tabs) {
+  margin-top: 88px !important;
+}
+:deep(.van-pull-refresh) {
+  min-height: calc(100vh - 132px);
 }
 </style>

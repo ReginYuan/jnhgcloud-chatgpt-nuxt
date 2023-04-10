@@ -115,6 +115,7 @@ onMounted(() => {})
       max-width: 100px;
       text-align: center;
       overflow: hidden;
+      word-break: break-all;
       text-overflow: ellipsis;
       display: -webkit-box;
       -webkit-line-clamp: 1;

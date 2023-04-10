@@ -18,7 +18,7 @@ export default defineNuxtConfig({
     plugins: [viteCommonjs(), esbuildCommonjs()]
   },
   build: {
-    transpile: ['@pzy915/pdf-preview','pdfjs-dist/build','pdfjs-dist/lib','~/public/pdfjs-dist-res/build']
+    transpile: ['@pzy915/pdf-preview', 'pdfjs-dist']
   },
   css: ['@/assets/base.ignore.css'],
   postcss: {

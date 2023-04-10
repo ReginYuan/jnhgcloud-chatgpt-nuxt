@@ -1,25 +1,22 @@
 <template>
-  <div class="top" v-if="isApp"></div>
-  <van-nav-bar
-    v-if="isApp"
-    left-arrow
-    @click-left="onClickLeft"
-    :clickable="false"
-  >
-    <template #right>
-      <van-icon
-        name="star-o"
-        v-show="collect === false"
-        @click="onCollect(collect)"
-      />
-      <van-icon
-        name="star"
-        v-show="collect === true"
-        @click="onCollect(collect)"
-      />
-      <img src="~/assets/img/icon-send.png" alt="" @click="show = true" />
-    </template>
-  </van-nav-bar>
+  <div class="header" v-if="isApp">
+    <van-nav-bar left-arrow @click-left="onClickLeft" :clickable="false">
+      <template #right>
+        <van-icon
+          name="star-o"
+          v-show="collect === false"
+          @click="onCollect(collect)"
+        />
+        <van-icon
+          name="star"
+          v-show="collect === true"
+          @click="onCollect(collect)"
+        />
+        <img src="~/assets/img/icon-send.png" alt="" @click="show = true" />
+      </template>
+    </van-nav-bar>
+  </div>
+  <div style="height: 90px" v-if="isApp"></div>
   <div style="background-color: #f7f7f7; height: 2px"></div>
   <div class="new_content" v-if="content.data.inforId">
     <div class="title">{{ content.data.title }}</div>
@@ -96,8 +93,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, onActivated } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { ref, reactive, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import { ItemListType } from '~/types/itemList'
 import { getDetail, relatedArticles, collectApi } from '~/server/api/user'
 import { isAppCharacteristic } from '~/composables/utils/validate'
@@ -120,18 +117,6 @@ let content = reactive<{ data: ItemListType }>({
 const isApp = ref(false)
 let itemList = ref<ItemListType[]>([])
 const getDetails = async () => {
-  // let us = navigator.userAgent
-  // console.log(navigator)
-
-  let us = navigator.userAgent
-  // var index = us.indexOf('source=')
-  // console.log(index)
-
-  // var source = us.slice(index + 7)
-  // return source == 'zshb'
-
-  // console.log(us)
-
   const { data } = await getDetail({ inforId: route.params.id })
   content.data = data
   collect.value = data.collect
@@ -166,25 +151,25 @@ const copyUrl = () => {
 }
 onMounted(() => {
   isApp.value = isAppCharacteristic()
-  // isApp.value = true
   getDetails()
 })
 </script>
 
 <style lang="scss" scoped>
-.top {
+.header {
+  position: fixed;
+  top: 0;
   width: 100%;
-  height: 46px;
-  background-color: transparent;
+  padding-top: 46px;
+  background-color: #ffffff;
+  z-index: 99;
 }
-
 :deep(.van-nav-bar) {
   .van-icon-star-o:before {
     color: #222229;
     font-size: 22px;
   }
 }
-
 :deep(.van-icon-star-o:before) {
   color: #222229;
   font-size: 22px;
