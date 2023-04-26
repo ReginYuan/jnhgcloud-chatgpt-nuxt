@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  definePageMeta({ layout: 'page' })
+definePageMeta({ layout: 'macrograph' })
 </script>
 
 <template>
