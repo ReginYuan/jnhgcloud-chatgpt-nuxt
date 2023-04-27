@@ -1,14 +1,18 @@
 <template>
   <div class="body flex flex-col">
     <van-tabbar v-model="active" fixed>
-      <van-tabbar-item icon="home-o">宏观数据</van-tabbar-item>
+      <van-tabbar-item icon="home-o" to="/macrograph/macroData"
+        >宏观数据</van-tabbar-item
+      >
       <van-tabbar-item icon="search" to="/macrograph/investmentClimate"
         >投资环境</van-tabbar-item
       >
       <van-tabbar-item icon="friends-o" to="/macrograph/landData"
         >土地数据</van-tabbar-item
       >
-      <van-tabbar-item icon="setting-o">政策报告</van-tabbar-item>
+      <van-tabbar-item icon="setting-o" to="/macrograph/policyReport"
+        >政策报告</van-tabbar-item
+      >
     </van-tabbar>
     <main class="main">
       <!-- <slot /> -->
