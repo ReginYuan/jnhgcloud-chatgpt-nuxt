@@ -80,7 +80,7 @@
     "typescript": "^4.9.5",
     "vant": "^4.0.11",
     "vite": "4.0.0",
-    "vue": "^3.0.0",
+    "vue": "^3.2.47",
     "webpack": "5.0.0"
   },
   "type": "module"
