@@ -10,7 +10,9 @@
     <div class="success">提交成功</div>
     <div class="title">您的企业认证申请已提交，平台正在审核中，请耐心等待</div>
     <div style="margin: 16px">
-      <van-button block type="primary">下载筑数合宝APP</van-button>
+      <van-button block type="primary" @click="download"
+        >下载筑数合宝APP</van-button
+      >
     </div>
   </div>
 </template>
@@ -21,6 +23,21 @@ const router = useRouter()
 //返回上一级
 const goBack = () => {
   router.go(-1)
+}
+const download = () => {
+  let us = navigator.userAgent
+  let isAndroid = us.indexOf('Android') > -1 || us.indexOf('Linux') > -1
+  let isIOS =
+    us.indexOf('ios_app') > -1 || !!us.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
+  if (process.client) {
+    if (isAndroid) {
+      window.location.href = 'http://image.zhushuhebao.com/app/app-debug.apk'
+    }
+    if (isIOS) {
+      window.location.href =
+        'https://apps.apple.com/cn/app/jie-zou-da-shi/id493901993'
+    }
+  }
 }
 </script>
 <style scoped lang="scss">
