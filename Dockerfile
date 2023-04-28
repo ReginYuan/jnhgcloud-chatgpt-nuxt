@@ -11,6 +11,7 @@
 #
 #CMD cd .output && pnpm run dev
 
+#FROM registory.jnhgsz.com:8090/jenkins/node-ubuntu:latest
 FROM gitlab.jnhgsz.com/jenkins/node-ubuntu:latest
 
 WORKDIR /arch-hgsz
