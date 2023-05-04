@@ -239,6 +239,34 @@
               "years": "2021年",
               "id": "2021111"
             }
+          ],
+          "tableData": [
+            [
+              {
+                "user": "济南弘业房地产开发有限公司",
+                "area": "549.41",
+                "region": "天桥区",
+                "landuse": "文体娱乐用地",
+                "price": "22526",
+                "unitprice": "41.0"
+              },
+              {
+                "user": "济南弘业房地产开发有限公司",
+                "area": "549.41",
+                "region": "天桥区",
+                "landuse": "文体娱乐用地",
+                "price": "22526",
+                "unitprice": "41.0"
+              },
+              {
+                "user": "济南弘业房地产开发有限公司",
+                "area": "549.41",
+                "region": "天桥区",
+                "landuse": "文体娱乐用地",
+                "price": "22526",
+                "unitprice": "41.0"
+              }
+            ]
           ]
         },
         "businessTradePrice": {

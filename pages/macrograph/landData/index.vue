@@ -12,15 +12,18 @@ let transacte = reactive<trans>({
   title: '',
   tradeArea: {
     first_level_title: '',
-    tabData: []
+    tabData: [],
+    tableData: []
   },
   businessTradePrice: {
     first_level_title: '',
-    tabData: []
+    tabData: [],
+    tableData: []
   },
   mineralTradePrice: {
     first_level_title: '',
-    tabData: []
+    tabData: [],
+    tableData: []
   }
 })
 transacte = data.data.children.dealData
@@ -31,6 +34,8 @@ const active1 = ref(0)
 const active2 = ref(0)
 const handleArea = (item: any, index: number) => {
   active.value = index
+  tableData.value = transacte.tradeArea.tableData[index]
+  console.log(tableData.value)
 }
 const handleBusiness = (item: any, index: number) => {
   active1.value = index
@@ -49,71 +54,54 @@ const headerData = ref<tableHeader[]>([])
 const tableData = ref<{ [key: string]: any }[]>([])
 headerData.value = [
   {
-    title: '指标',
-    props: '第一列'
+    title: '土地使用权人',
+    props: 'user'
   },
   {
-    title: '位置',
-    props: '第二列'
+    title: '面积（亩）',
+    props: 'area'
   },
   {
-    title: '得分',
-    props: '第三列'
+    title: '区域',
+    props: 'region'
   },
   {
-    title: '省内排名',
-    props: '第四列'
+    title: '土地用途',
+    props: 'landuse'
   },
   {
-    title: '全国排名',
-    props: '第五列'
+    title: '成交价格（万元）',
+    props: 'price'
   },
   {
-    title: '指标1',
-    props: '第六列'
+    title: '成交单价（万元/亩）',
+    props: 'unitprice'
   }
 ]
-
 tableData.value = [
   {
-    第一列: 11,
-    第二列: 12,
-    第三列: 13,
-    第四列: 14,
-    第五列: 15,
-    第六列: 16
+    user: '济南弘业房地产开发有限公司',
+    area: '549.41',
+    region: '天桥区',
+    landuse: '文体娱乐用地',
+    price: '22526',
+    unitprice: '41.0'
   },
   {
-    第四列: 21,
-    第二列: 22,
-    第三列: 23,
-    第一列: 999,
-    第五列: 25,
-    第六列: 26
+    user: '济南弘业房地产开发有限公司',
+    area: '549.41',
+    region: '天桥区',
+    landuse: '文体娱乐用地',
+    price: '22526',
+    unitprice: '41.0'
   },
   {
-    第一列: 31,
-    第二列: 32,
-    第三列: 33,
-    第四列: 34,
-    第五列: 35,
-    第六列: 36
-  },
-  {
-    第一列: 31,
-    第二列: 32,
-    第三列: 33,
-    第四列: 34,
-    第五列: 35,
-    第六列: 36
-  },
-  {
-    第一列: 31,
-    第二列: 32,
-    第三列: 33,
-    第四列: 34,
-    第五列: 35,
-    第六列: 36
+    user: '济南弘业房地产开发有限公司',
+    area: '549.41',
+    region: '天桥区',
+    landuse: '文体娱乐用地',
+    price: '22526',
+    unitprice: '41.0'
   }
 ]
 </script>
@@ -168,6 +156,7 @@ tableData.value = [
               <table-index
                 :headerData="headerData"
                 :tableData="tableData"
+                :tableScrollWidth="600"
               ></table-index>
             </div>
           </div>
