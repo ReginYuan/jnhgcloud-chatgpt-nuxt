@@ -21,6 +21,7 @@ interface year {
 interface deal {
   first_level_title: string
   tabData: year[]
+  tableData: []
 }
 export interface trans {
   title: string

@@ -6,6 +6,8 @@ const props = defineProps<{
   headerData: { title: string; props: string }[]
   // 表格数据
   tableData: { [key: string]: any }[]
+  // 表格宽度
+  tableScrollWidth: number
 }>()
 
 // 表头
@@ -30,7 +32,7 @@ const tableBodyCols = props.headerData
         <div class="right-div2">
           <table
             class="right-table2"
-            :style="{ width: (firstRow.length - 1) * 100 + 'px' }"
+            :style="{ width: `${props.tableScrollWidth}px` }"
           >
             <tr>
               <th
