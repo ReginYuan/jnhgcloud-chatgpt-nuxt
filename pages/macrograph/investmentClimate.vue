@@ -37,9 +37,7 @@ onMounted(() => {
 
 <template>
   <div>
-
     <div id="myMap" ref="myMap" style="width:300px;height:300px"></div>
-
   </div>
 </template>
 
