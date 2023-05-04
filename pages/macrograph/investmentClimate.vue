@@ -42,3 +42,4 @@ onMounted(() => {
 </template>
 
 <style scoped></style>
+`1`
