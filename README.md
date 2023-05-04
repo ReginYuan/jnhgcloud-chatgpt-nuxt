@@ -1,5 +1,5 @@
 # template-nuxt-h5
-  nuxt h5  筑数合宝h5系统
+  筑数合宝h5系统
 
 # 安装依赖
   pnpm  install
