@@ -1,18 +1,30 @@
 <template>
   <div class="body flex flex-col">
     <van-tabbar v-model="active" fixed>
-      <van-tabbar-item icon="home-o" to="/macrograph/macroData"
-        >宏观数据</van-tabbar-item
-      >
-      <van-tabbar-item icon="search" to="/macrograph/investmentClimate"
-        >投资环境</van-tabbar-item
-      >
-      <van-tabbar-item icon="friends-o" to="/macrograph/landData"
-        >土地数据</van-tabbar-item
-      >
-      <van-tabbar-item icon="setting-o" to="/macrograph/policyReport"
-        >政策报告</van-tabbar-item
-      >
+      <van-tabbar-item icon="home-o" to="/macrograph/macroData">
+        <span>宏观数据</span>
+        <template #icon="props">
+          <img :src="props.active ? macroImg : unmacroImg" />
+        </template>
+      </van-tabbar-item>
+      <van-tabbar-item icon="search" to="/macrograph/investmentClimate">
+        <span>投资环境</span>
+        <template #icon="props">
+          <img :src="props.active ? invest : uninvestImg" />
+        </template>
+      </van-tabbar-item>
+      <van-tabbar-item icon="friends-o" to="/macrograph/landData">
+        <span>土地数据</span>
+        <template #icon="props">
+          <img :src="props.active ? landdataImg : unlanddataImg" />
+        </template>
+      </van-tabbar-item>
+      <van-tabbar-item icon="setting-o" to="/macrograph/policyReport">
+        <span>政策报告</span>
+        <template #icon="props">
+          <img :src="props.active ? policyImg : unpolicyImg" />
+        </template>
+      </van-tabbar-item>
     </van-tabbar>
     <main class="main">
       <!-- <slot /> -->
@@ -25,6 +37,14 @@
 
 <script setup lang="ts">
 const active = ref(0)
+import macroImg from '~/assets/img/macro-tabbar.png'
+import unmacroImg from '~/assets/img/unmacro-tabbar.png'
+import invest from '~/assets/img/invest-tabbar.png'
+import uninvestImg from '~/assets/img/uninvest-tabbar.png'
+import landdataImg from '~/assets/img/landdata-tabbar.png'
+import unlanddataImg from '~/assets/img/unlanddata-tabbar.png'
+import policyImg from '~/assets/img/policy-tabbar.png'
+import unpolicyImg from '~/assets/img/unpolicy-tabbar.png'
 </script>
 
 <style scoped>
