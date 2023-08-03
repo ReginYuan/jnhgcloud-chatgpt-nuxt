@@ -9,6 +9,5 @@ declare module 'vue' {
     Android: any
     pdfPreviewBuilder: any,
     commonjs: any,
-    workerSrc: any
   }
 }

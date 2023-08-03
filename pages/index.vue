@@ -4,19 +4,12 @@
 
 <template>
    <div class="index">
-     
+      <div class="index-header"></div>
+      <div class="index-main"></div>
+      <div class="index-main"></div>
    </div>
 </template>
 
-<style scoped>
-.index {
-   display: flex;
-   flex-direction: column;
-}
-
-.lazy {
-   width: 80px !important;
-   height: 80px !important;
-}
-
+<style lang="scss" scoped>
+@import '../assets/css/index.css';
 </style>

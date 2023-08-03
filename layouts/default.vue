@@ -1,5 +1,5 @@
 <template>
-  <div class="body flex flex-col">
+  <div class="layouts">
     <main class="main">
       <!-- <slot /> -->
       <NuxtPage keepalive></NuxtPage>
@@ -10,11 +10,11 @@
 </template>
 
 <script setup lang="ts">
-definePageMeta({
-  KeepAlive: {
-    exclude: ['industry', 'bossBank', 'IndustryReport', 'policyRule', 'search']
-  }
-})
 </script>
 
-<style scoped></style>
+<style scoped>
+.layouts {
+  display: flex;
+  flex-direction: column;
+}
+</style>

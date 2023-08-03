@@ -1,5 +1,5 @@
-# template-nuxt-h5
-  筑数合宝h5系统
+# jnhgcloud-chatgpt-nuxt
+  筑数合宝chatgpt系统，使用到了nuxt3+pinia+vant4等技术,如果有需要可以调整技术架构
 
 # 安装依赖
   pnpm  install

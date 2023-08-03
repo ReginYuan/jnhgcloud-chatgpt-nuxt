@@ -5,7 +5,7 @@
 </template>
 <script setup>
 import { onMounted } from 'vue'
-import { geTokenAll } from '~/composables/utils/validate'
+import { geTokenAll } from '~/utils/validate'
 onMounted(() => {
   geTokenAll()
 })

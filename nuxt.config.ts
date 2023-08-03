@@ -17,10 +17,8 @@ export default defineNuxtConfig({
     },
     plugins: [viteCommonjs(), esbuildCommonjs()]
   },
-  build: {
-    transpile: ['@pzy915/pdf-preview', 'pdfjs-dist']
-  },
-  css: ['@/assets/base.ignore.css'],
+  build: {},
+  css: ['@/assets/css/base.ignore.css'],
   postcss: {
     plugins: {
       // tailwindcss: {},
@@ -45,10 +43,5 @@ export default defineNuxtConfig({
       }
     }
   },
-  modules: [
-    '@vant/nuxt',
-    '@pinia/nuxt',
-    '@pinia-plugin-persistedstate/nuxt',
-    '@unocss/nuxt'
-  ]
+  modules: ['@vant/nuxt', '@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt']
 })
