@@ -1,0 +1,251 @@
+.index {
+  display: flex;
+  flex-direction: column;
+  background-color: aqua;
+  height: 100%;
+  width: 100%;
+}
+
+.index_header {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: #0000ff;
+}
+
+.index_header_top {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 40px;
+  height: 88px;
+}
+
+.index_header_top_left,
+.index_header_top_right {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.index_header_top_left_logo {
+  width: 37px;
+  height: 37px;
+  margin-right: 10px;
+}
+
+.index_header_top_right_road {
+  width: 32px;
+  height: 32px;
+  margin-right: 10px;
+}
+
+.index_header_top_left_name {
+  flex: 1;
+  display: flex;
+  position: relative;
+  margin-left: 25px;
+}
+
+.index_header_top_left_name_text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 47px;
+  font-size: 20px;
+  font-family: 'PingFang HK-Regular, PingFang HK';
+  font-weight: 400;
+  color: #ffffff;
+}
+
+.index_header_top_left_name_alpha {
+  width: 40px;
+  height: 20px;
+  position: absolute;
+  left: 100%;
+  top: 0;
+}
+
+.index_header_top_right_text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 140px;
+  height: 29px;
+  font-size: 20px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #ffffff;
+}
+
+.index_header_content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 320px 340px;
+}
+
+.index_header_content_item {
+  min-width: 650px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 50px;
+}
+
+.index_header_content_one {
+  font-size: 36px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #ffffff;
+}
+
+.index_header_content_two {
+  height: 117px;
+  font-size: 80px;
+  font-family: PingFang HK-Semibold, PingFang HK;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.index_header_content_three {
+  display: flex;
+  flex-direction: row;
+  font-size: 26px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #ffffff;
+}
+
+.index_header_content_four_register,
+.index_header_content_four_consult {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 168px;
+  height: 54px;
+  border-radius: 36px 36px 36px 36px;
+  opacity: 1;
+  border: 1px solid #ffffff;
+}
+
+.index_header_content_four_register {
+  background: #ffffff;
+  color: #3c7ef9;
+}
+
+.index_header_content_four_consult {
+  margin-left: 30px;
+  background-color: #3c7ef9;
+  color: #ffffff;
+}
+
+.index_header_footer {
+  width: 100%;
+  margin: 93px 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: left;
+  height: 160px;
+}
+
+.index_header_footer_top {
+  width: 100%;
+  min-width: 90px;
+  height: 26px;
+  font-size: 18px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #ffffff;
+}
+
+.index_header_footer_bottom {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.index_header_footer_bottom_item {
+  max-width: 147px;
+  height: 40px;
+  font-size: 27px;
+  font-family: PingFang HK-Regular, PingFang HK;
+  font-weight: 400;
+  color: #ffffff;
+  margin-right: 50px;
+}
+
+@media (max-width: 600px) {
+  .index_header_top {
+    margin: 18px !important;
+  }
+
+  .index_header_top_left_name_text {
+    font-size: 21px;
+    width: 50px;
+  }
+  .index_header_top_right_text {
+    font-size: 13px;
+    width: 100px;
+  }
+
+  .index_header_top_left_logo,
+  .index_header_top_right_road {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+  }
+
+  .index_header_content {
+    margin: 0 16px;
+  }
+
+  .index_header_content_item {
+    min-width: 312px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 50px;
+  }
+
+  .index_header_content_one {
+    font-size: 20px;
+  }
+
+  .index_header_content_two {
+    font-size: 40px;
+  }
+
+  .index_header_content_three {
+    font-size: 16px;
+  }
+
+  .index_header_content_four_register,
+  .index_header_content_four_consult {
+    width: 116px;
+    height: 40px;
+  }
+
+  .index_header_footer {
+    margin: 137px 16px 118px 16px;
+  }
+
+  .index_header_footer_top {
+    font-size: 16px;
+  }
+
+  .index_header_footer_bottom_item {
+    width: 90px;
+    font-size: 14px;
+    margin-right: 17px;
+  }
+}

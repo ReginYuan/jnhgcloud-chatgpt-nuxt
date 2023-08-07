@@ -18,18 +18,7 @@ export default defineNuxtConfig({
     plugins: [viteCommonjs(), esbuildCommonjs()]
   },
   build: {},
-  css: ['@/assets/css/base.ignore.css'],
-  postcss: {
-    plugins: {
-      // tailwindcss: {},
-      'postcss-pxtorem': {
-        rootValue: 50,
-        propList: ['*'],
-        mediaQuery: false,
-        exclude: 'ignore'
-      }
-    }
-  },
+  css: ['@/assets/css/base.ignore.scss'],
   // 代理转发
   nitro: {
     preset: 'node-server',
@@ -43,5 +32,17 @@ export default defineNuxtConfig({
       }
     }
   },
-  modules: ['@vant/nuxt', '@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt']
+  modules: ['@vant/nuxt', '@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt'],
+  app: {
+    head: {
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1.0' }
+        // 其他 meta 标签...
+      ],
+      script: [
+      ]
+
+    }
+  }
 })

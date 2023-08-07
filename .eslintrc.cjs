@@ -8,14 +8,15 @@ module.exports = {
     'plugin:vue/vue3-recommended',
     'plugin:nuxt/recommended',
     'plugin:@typescript-eslint/recommended',
-    "@antfu"
+    '@antfu'
   ],
   overrides: [],
-  parser: '@babel/eslint-parser',
-  parser: '@typescript-eslint/parser',
+  parser: 'vue-eslint-parser',
   parserOptions: {
     ecmaVersion: 'latest',
-    sourceType: 'module'
+    sourceType: 'module',
+    parser: 'vue',
+    parser: ['@typescript-eslint/parser', '@babel/eslint-parser']
   },
   plugins: ['vue', '@typescript-eslint'],
   rules: {
@@ -25,6 +26,18 @@ module.exports = {
     'vue/max-attributes-per-line': 0,
     'space-before-function-paren': 'off',
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'warn'
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
+    'vue/html-self-closing': [
+      'error',
+      {
+        html: {
+          void: 'always',
+          normal: 'never',
+          component: 'always'
+        },
+        svg: 'always',
+        math: 'always'
+      }
+    ]
   }
 }

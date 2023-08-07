@@ -1,0 +1,576 @@
+@charset "utf-8";
+/* --------------------重置样式-------------------------------- */
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+p,
+blockquote,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+button,
+input,
+textarea,
+th,
+td {
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+}
+
+/*设置默认字体*/
+body {
+  font-size: 14px;
+  font-style: normal;
+  font-family: -apple-system, BlinkMacSystemFont, segoe ui, Roboto,
+    helvetica neue, Arial, noto sans, sans-serif, apple color emoji,
+    segoe ui emoji, segoe ui symbol, noto color emoji;
+}
+
+/*字体太小用户体检不好，让small恢复12px*/
+small {
+  font-size: 12px;
+}
+
+h1 {
+  font-size: 18px;
+}
+
+h2 {
+  font-size: 16px;
+}
+
+h3 {
+  font-size: 14px;
+}
+
+h4,
+h5,
+h6 {
+  font-size: 100%;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  background-color: transparent;
+}
+
+a:hover,
+a:active {
+  outline-width: 0;
+  text-decoration: none;
+}
+
+/*重置表格*/
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/*重置hr*/
+hr {
+  border: 0;
+  height: 1px;
+}
+
+/*图形图片*/
+img {
+  border-style: none;
+}
+
+img:not([src]) {
+  display: none;
+}
+
+svg:not(:root) {
+  overflow: hidden;
+}
+
+/*下面的操作是针对于html5页面布局准备的，不支持ie6~8以及其他低版本的浏览器*/
+html {
+  /*禁用系统默认菜单*/
+  -webkit-touch-callout: none;
+  /*关闭iphone & Android的浏览器纵向和横向模式中自动调整字体大小的功能*/
+  -webkit-text-size-adjust: 100%;
+}
+
+input,
+textarea,
+button,
+a {
+  /*表单或者a标签在手机点击时会出现边框或彩色的背景区域，意思是去除点击背景框*/
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+/*重置html5元素的默认样式*/
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+main,
+menu,
+nav,
+section,
+summary {
+  display: block;
+}
+
+audio,
+canvas,
+progress,
+video {
+  display: inline-block;
+}
+
+audio:not([controls]),
+video:not([controls]) {
+  display: none;
+  height: 0;
+}
+
+progress {
+  vertical-align: baseline;
+}
+
+mark {
+  background-color: #ff0;
+  color: #000;
+}
+
+sub,
+sup {
+  position: relative;
+  font-size: 75%;
+  line-height: 0;
+  vertical-align: baseline;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+sup {
+  top: -0.5em;
+}
+
+button,
+input,
+select,
+textarea {
+  font-size: 100%;
+  outline: 0;
+}
+
+button,
+input {
+  overflow: visible;
+}
+
+button,
+select {
+  text-transform: none;
+}
+
+textarea {
+  overflow: auto;
+}
+
+button,
+html [type='button'],
+[type='reset'],
+[type='submit'] {
+  -webkit-appearance: button;
+}
+
+button::-moz-focus-inner,
+[type='button']::-moz-focus-inner,
+[type='reset']::-moz-focus-inner,
+[type='submit']::-moz-focus-inner {
+  border-style: none;
+  padding: 0;
+}
+
+button:-moz-focusring,
+[type='button']:-moz-focusring,
+[type='reset']:-moz-focusring,
+[type='submit']:-moz-focusring {
+  outline: 1px dotted ButtonText;
+}
+
+[type='checkbox'],
+[type='radio'] {
+  box-sizing: border-box;
+  padding: 0;
+}
+
+[type='number']::-webkit-inner-spin-button,
+[type='number']::-webkit-outer-spin-button {
+  height: auto;
+}
+
+[type='search'] {
+  -webkit-appearance: textfield;
+  outline-offset: -2px;
+}
+
+[type='search']::-webkit-search-cancel-button,
+[type='search']::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+::-webkit-input-placeholder {
+  color: inherit;
+  opacity: 0.54;
+}
+
+::-webkit-file-upload-button {
+  -webkit-appearance: button;
+  font: inherit;
+}
+
+/*-----------------通用方法-----------------------*/
+
+:root {
+  --theme: #1890ff;
+}
+
+.show {
+  display: block !important;
+}
+
+.hide {
+  display: none !important;
+}
+
+/*-----------------通用布局(g-)-----------------------*/
+
+/*-----------------通用模块(m-)-----------------------*/
+
+/*-----------------通用元件(u-)-----------------------*/
+
+/*-----------------响应式系统-----------------------*/
+
+/* grid布局 公用样式 */
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  // grid-template-rows: 50px;
+  // grid-auto-rows: 50px;
+}
+
+.row .div {
+  grid-area: auto/auto/auto/span 12;
+}
+
+.row > [class*='col'] {
+  grid-area: auto/auto/auto/span 12;
+}
+.row .col-1 {
+  grid-area: auto/auto/auto/span 1;
+}
+.row .col-2 {
+  grid-area: auto/auto/auto/span 2;
+}
+.row .col-3 {
+  grid-area: auto/auto/auto/span 3;
+}
+.row .col-4 {
+  grid-area: auto/auto/auto/span 4;
+}
+.row .col-5 {
+  grid-area: auto/auto/auto/span 5;
+}
+.row .col-6 {
+  grid-area: auto/auto/auto/span 6;
+}
+.row .col-7 {
+  grid-area: auto/auto/auto/span 7;
+}
+.row .col-8 {
+  grid-area: auto/auto/auto/span 8;
+}
+.row .col-9 {
+  grid-area: auto/auto/auto/span 9;
+}
+.row .col-10 {
+  grid-area: auto/auto/auto/span 10;
+}
+.row .col-11 {
+  grid-area: auto/auto/auto/span 11;
+}
+.row .col-12 {
+  grid-area: auto/auto/auto/span 12;
+}
+
+@media (min-width: 390px) {
+  .row .col-sm-1 {
+    grid-area: auto/auto/auto/span 1;
+  }
+  .row .col-sm-2 {
+    grid-area: auto/auto/auto/span 2;
+  }
+  .row .col-sm-3 {
+    grid-area: auto/auto/auto/span 3;
+  }
+  .row .col-sm-4 {
+    grid-area: auto/auto/auto/span 4;
+  }
+  .row .col-sm-5 {
+    grid-area: auto/auto/auto/span 5;
+  }
+  .row .col-sm-6 {
+    grid-area: auto/auto/auto/span 6;
+  }
+  .row .col-sm-7 {
+    grid-area: auto/auto/auto/span 7;
+  }
+  .row .col-sm-8 {
+    grid-area: auto/auto/auto/span 8;
+  }
+  .row .col-sm-9 {
+    grid-area: auto/auto/auto/span 9;
+  }
+  .row .col-sm-10 {
+    grid-area: auto/auto/auto/span 10;
+  }
+  .row .col-sm-11 {
+    grid-area: auto/auto/auto/span 11;
+  }
+  .row .col-sm-12 {
+    grid-area: auto/auto/auto/span 12;
+  }
+}
+
+@media (min-width: 576px) {
+  .row .col-sm-1 {
+    grid-area: auto/auto/auto/span 1;
+  }
+  .row .col-sm-2 {
+    grid-area: auto/auto/auto/span 2;
+  }
+  .row .col-sm-3 {
+    grid-area: auto/auto/auto/span 3;
+  }
+  .row .col-sm-4 {
+    grid-area: auto/auto/auto/span 4;
+  }
+  .row .col-sm-5 {
+    grid-area: auto/auto/auto/span 5;
+  }
+  .row .col-sm-6 {
+    grid-area: auto/auto/auto/span 6;
+  }
+  .row .col-sm-7 {
+    grid-area: auto/auto/auto/span 7;
+  }
+  .row .col-sm-8 {
+    grid-area: auto/auto/auto/span 8;
+  }
+  .row .col-sm-9 {
+    grid-area: auto/auto/auto/span 9;
+  }
+  .row .col-sm-10 {
+    grid-area: auto/auto/auto/span 10;
+  }
+  .row .col-sm-11 {
+    grid-area: auto/auto/auto/span 11;
+  }
+  .row .col-sm-12 {
+    grid-area: auto/auto/auto/span 12;
+  }
+}
+
+@media (min-width: 768px) {
+  .row .col-md-1 {
+    grid-area: auto/auto/auto/span 1;
+  }
+  .row .col-md-2 {
+    grid-area: auto/auto/auto/span 2;
+  }
+  .row .col-md-3 {
+    grid-area: auto/auto/auto/span 3;
+  }
+  .row .col-md-4 {
+    grid-area: auto/auto/auto/span 4;
+  }
+  .row .col-md-5 {
+    grid-area: auto/auto/auto/span 5;
+  }
+  .row .col-md-6 {
+    grid-area: auto/auto/auto/span 6;
+  }
+  .row .col-md-7 {
+    grid-area: auto/auto/auto/span 7;
+  }
+  .row .col-md-8 {
+    grid-area: auto/auto/auto/span 8;
+  }
+  .row .col-md-9 {
+    grid-area: auto/auto/auto/span 9;
+  }
+  .row .col-md-10 {
+    grid-area: auto/auto/auto/span 10;
+  }
+  .row .col-md-11 {
+    grid-area: auto/auto/auto/span 11;
+  }
+  .row .col-md-12 {
+    grid-area: auto/auto/auto/span 12;
+  }
+}
+
+@media (min-width: 992px) {
+  :root {
+    --container: 940px;
+  }
+
+  .row > [class*='col'] {
+    padding: 0 15px;
+  }
+
+  .row .col-lg-1 {
+    grid-area: auto/auto/auto/span 1;
+  }
+  .row .col-lg-2 {
+    grid-area: auto/auto/auto/span 2;
+  }
+  .row .col-lg-3 {
+    grid-area: auto/auto/auto/span 3;
+  }
+  .row .col-lg-4 {
+    grid-area: auto/auto/auto/span 4;
+  }
+  .row .col-lg-5 {
+    grid-area: auto/auto/auto/span 5;
+  }
+  .row .col-lg-6 {
+    grid-area: auto/auto/auto/span 6;
+  }
+  .row .col-lg-7 {
+    grid-area: auto/auto/auto/span 7;
+  }
+  .row .col-lg-8 {
+    grid-area: auto/auto/auto/span 8;
+  }
+  .row .col-lg-9 {
+    grid-area: auto/auto/auto/span 9;
+  }
+  .row .col-lg-10 {
+    grid-area: auto/auto/auto/span 10;
+  }
+  .row .col-lg-11 {
+    grid-area: auto/auto/auto/span 11;
+  }
+  .row .col-lg-12 {
+    grid-area: auto/auto/auto/span 12;
+  }
+}
+
+@media (min-width: 1200px) {
+  :root {
+    --container: 1160px;
+  }
+
+  .row > [class*='col'] {
+    padding: 0 15px;
+  }
+
+  .row .col-xl-1 {
+    grid-area: auto/auto/auto/span 1;
+  }
+  .row .col-xl-2 {
+    grid-area: auto/auto/auto/span 2;
+  }
+  .row .col-xl-3 {
+    grid-area: auto/auto/auto/span 3;
+  }
+  .row .col-xl-4 {
+    grid-area: auto/auto/auto/span 4;
+  }
+  .row .col-xl-5 {
+    grid-area: auto/auto/auto/span 5;
+  }
+  .row .col-xl-6 {
+    grid-area: auto/auto/auto/span 6;
+  }
+  .row .col-xl-7 {
+    grid-area: auto/auto/auto/span 7;
+  }
+  .row .col-xl-8 {
+    grid-area: auto/auto/auto/span 8;
+  }
+  .row .col-xl-9 {
+    grid-area: auto/auto/auto/span 9;
+  }
+  .row .col-xl-10 {
+    grid-area: auto/auto/auto/span 10;
+  }
+  .row .col-xl-11 {
+    grid-area: auto/auto/auto/span 11;
+  }
+  .row .col-xl-12 {
+    grid-area: auto/auto/auto/span 12;
+  }
+}
+
+@media (min-width: 1400px) {
+  .row .col-xxl-1 {
+    grid-area: auto/auto/auto/span 1;
+  }
+  .row .col-xxl-2 {
+    grid-area: auto/auto/auto/span 2;
+  }
+  .row .col-xxl-3 {
+    grid-area: auto/auto/auto/span 3;
+  }
+  .row .col-xxl-4 {
+    grid-area: auto/auto/auto/span 4;
+  }
+  .row .col-xxl-5 {
+    grid-area: auto/auto/auto/span 5;
+  }
+  .row .col-xxl-6 {
+    grid-area: auto/auto/auto/span 6;
+  }
+  .row .col-xxl-7 {
+    grid-area: auto/auto/auto/span 7;
+  }
+  .row .col-xxl-8 {
+    grid-area: auto/auto/auto/span 8;
+  }
+  .row .col-xxl-9 {
+    grid-area: auto/auto/auto/span 9;
+  }
+  .row .col-xxl-10 {
+    grid-area: auto/auto/auto/span 10;
+  }
+  .row .col-xxl-11 {
+    grid-area: auto/auto/auto/span 11;
+  }
+  .row .col-xxl-12 {
+    grid-area: auto/auto/auto/span 12;
+  }
+}

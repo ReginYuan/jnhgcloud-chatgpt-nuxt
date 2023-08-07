@@ -16,5 +16,20 @@
 .layouts {
   display: flex;
   flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  padding: 0 !important;
+  margin: 0 !important;
+  scrollbar-width: none;
+  overflow: hidden;
+  scrollbar-width: none !important;
+}
+
+
+.main{
+  height: 100%;
+  width: 100%;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 </style>
